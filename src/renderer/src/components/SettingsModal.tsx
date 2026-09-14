@@ -310,6 +310,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onSave, 
           <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '11px', color: '#cbd5e1' }}>
             <input
               type="checkbox"
+              checked={settings.soundFeedback !== false}
+              onChange={(e) => onSave({ soundFeedback: e.target.checked })}
+            />
+            <span>Audio Cues</span>
+          </label>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '11px', color: '#cbd5e1' }}>
+            <input
+              type="checkbox"
               checked={settings.aiPolishing !== false}
               onChange={(e) => onSave({ aiPolishing: e.target.checked })}
             />

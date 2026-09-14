@@ -13,7 +13,9 @@ import { TaskPreviewCard } from './components/TaskPreviewCard'
 import { AgentApprovalCard } from './components/AgentApprovalCard'
 import { SettingsModal } from './components/SettingsModal'
 import { WisprFlowDashboard } from './components/WisprFlowDashboard'
-import { addHistoryItem, getSnippets } from './types/dashboard'
+import { addHistoryItem, getSnippets, getVocabulary } from './types/dashboard'
+import { audioChimes } from './core/audio-chimes'
+import { SelectionTransformer } from './core/selection-transformer'
 
 declare global {
   interface Window {
@@ -326,6 +328,7 @@ export const App: React.FC = () => {
     if (isRecordingRef.current || isStoppingRef.current) return
     isRecordingRef.current = true
     console.log('[QEVRA] [REC] Audio capture starting...')
+    audioChimes.playStart(settings.soundFeedback !== false)
     setShowMenu(false)
     setStage('listening')
     stageRef.current = 'listening'
@@ -387,6 +390,7 @@ export const App: React.FC = () => {
 
     isStoppingRef.current = true
     isRecordingRef.current = false
+    audioChimes.playStop(settings.soundFeedback !== false)
     setStage('analyzing')
     stageRef.current = 'analyzing'
     setExecutionStatus('Transcribing with Groq Whisper...')
@@ -459,12 +463,24 @@ export const App: React.FC = () => {
     setExecutionStatus('Transcribing with Whisper-large-v3...')
     console.log(`[QEVRA] Transcribing with Groq Whisper-large-v3 (${audioBlob.size} bytes, ${recResult.durationMs}ms)...`)
 
+    // Compile dynamic Whisper context prompt from custom vocabulary + active window (OpenFlow / FreeFlow pattern)
+    let dynamicPrompt = ''
+    try {
+      const vocabTerms = getVocabulary().map((v) => v.term).filter(Boolean).slice(0, 30).join(', ')
+      const promptParts: string[] = []
+      if (vocabTerms) promptParts.push(vocabTerms)
+      if (context.activeApp) promptParts.push(`App: ${context.activeApp}`)
+      if (context.windowTitle) promptParts.push(`Window: ${context.windowTitle}`)
+      dynamicPrompt = promptParts.join('. ')
+    } catch {}
+
     const { text: rawGroqTranscript, error: groqErr } = await transcribeWithGroq(
       audioBlob,
       apiKey,
       {
         model: settings.whisperModel || 'whisper-large-v3',
         language: settings.whisperLanguage || 'auto',
+        prompt: dynamicPrompt || undefined,
         translateToEnglish: settings.englishLettersOnly !== false
       }
     )
@@ -581,6 +597,23 @@ export const App: React.FC = () => {
           }
         } catch {}
       }
+
+      // In-Place Selection Transformation ("Edit Mode" inspired by FreeFlow)
+      // When the user has highlighted text and speaks an edit/transform command
+      if (SelectionTransformer.isTransformCommand(textToProcess, currentCtx)) {
+        setExecutionStatus('Transforming selection in-place...')
+        const transformResult = await SelectionTransformer.transform(
+          textToProcess,
+          currentCtx,
+          apiKey
+        )
+        if (transformResult.isTransform && transformResult.transformedText) {
+          console.log(`[QEVRA] [EDIT-MODE] Selection transformed in-place: "${transformResult.transformedText.substring(0, 40)}..."`)
+          textToProcess = transformResult.transformedText
+          setTranscript(transformResult.transformedText)
+        }
+      }
+
       handleProcessSpeech(textToProcess, undefined, autoPasteOnRelease, currentCtx)
     } else {
       console.warn(`[QEVRA] No text to process.`)
@@ -707,8 +740,14 @@ export const App: React.FC = () => {
       })
 
       if (result.outcome === 'needs_user') {
+        audioChimes.playError(settings.soundFeedback !== false)
         setExecutionStatus(`⚠️ ${result.message}`)
       } else {
+        if (result.success) {
+          audioChimes.playSuccess(settings.soundFeedback !== false)
+        } else {
+          audioChimes.playError(settings.soundFeedback !== false)
+        }
         setExecutionStatus(result.message)
       }
 
