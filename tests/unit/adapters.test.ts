@@ -214,6 +214,50 @@ describe('ApplicationAdapterRegistry - Routing & Output Formatting', () => {
     expect(res.formattedContent).toContain('CORE SECTIONS & MODULES:')
     expect(res.formattedContent).toContain('DELIVERABLES:')
   })
+
+  it('cleanMetaSpeech strips conversational prefixes ("So here\'s a task for you...", "the end of the goal is to...")', () => {
+    const speech =
+      "So here's a task for you: so the end of the goal is to check whether the entire system is working or not."
+    const cleaned = ApplicationAdapterRegistry.cleanMetaSpeech(speech)
+    expect(cleaned).toBe('check whether the entire system is working or not')
+  })
+
+  it('formats system audit task prompt for Antigravity Composer cleanly without meta speech', () => {
+    const context: SystemContext = {
+      activeApp: 'Antigravity IDE',
+      windowTitle: 'App.tsx - QEVRA',
+      detectedCategory: 'code'
+    }
+
+    const auditReq: ExtractedRequirements = {
+      technologies: ['TypeScript', 'Vitest / Unit Tests', 'Electron IPC'],
+      styling: ['Robust, clean, type-safe'],
+      sections: [
+        'Hold-to-Talk Key Detection (WinKeyServer & Key Release)',
+        'Ambient Window Context Tracking & OCR/Vision',
+        '3-Way Speech Intent Classifier (Dictation, Query, Task)'
+      ],
+      constraints: [
+        'Ensure 0 TypeScript compilation errors (tsc --noEmit)',
+        'Verify all unit and integration test suites pass (137+ tests)'
+      ],
+      isExplicitCode: true,
+      isTask: true
+    }
+
+    const speech =
+      "So here's a task for you: so the end of the goal is to check whether the entire system is working or not. So based upon what we discussed, what are the features that we discussed earlier and how I want it to be worked, so based upon all those things, fully check each and everything whether these things are working or not, and we need to do something to get those things rightly working on."
+
+    const res = ApplicationAdapterRegistry.routeAndFormat('debug', speech, context, auditReq, 'smart_assistant')
+
+    expect(res.adapterName).toBe('antigravity_composer')
+    expect(res.formattedContent).toContain('TASK:\ncheck whether the entire system is working or not')
+    expect(res.formattedContent).not.toContain("here's a task for you")
+    expect(res.formattedContent).not.toContain('the end of the goal is to')
+    expect(res.formattedContent).toContain('TypeScript')
+    expect(res.formattedContent).toContain('Ensure 0 TypeScript compilation errors (tsc --noEmit)')
+    expect(res.formattedContent).toContain('Verify all unit and integration test suites pass (137+ tests)')
+  })
 })
 
 

@@ -135,4 +135,33 @@ describe('IntentClassifier - 12 Intent Taxonomy', () => {
     expect(res.requirements.sections.some((s) => s.toLowerCase().includes('menu'))).toBe(true)
     expect(res.requirements.sections.some((s) => s.toLowerCase().includes('reservation'))).toBe(true)
   })
+
+  it('classifies system audit and verification commands as debug tasks with audit specifications', () => {
+    const speech =
+      "So here's a task for you: so the end of the goal is to check whether the entire system is working or not. So based upon what we discussed, what are the features that we discussed earlier and how I want it to be worked, so based upon all those things, fully check each and everything whether these things are working or not, and we need to do something to get those things rightly working on."
+
+    const res = classifyIntent(speech, {
+      activeApp: 'Antigravity IDE',
+      windowTitle: 'intent-classifier.ts - QEVRA',
+      detectedCategory: 'code'
+    })
+
+    expect(res.isTask).toBe(true)
+    expect(res.interactionType).toBe('task')
+    expect(res.intent).toBe('debug')
+    expect(res.domain).toBe('coding')
+    expect(res.action).toBe('system_audit_and_verification')
+    expect(res.requirements.technologies).toContain('Vitest / Unit Tests')
+    expect(res.requirements.technologies).toContain('TypeScript')
+    expect(res.requirements.constraints.some((c) => c.includes('TypeScript compilation'))).toBe(true)
+    expect(res.requirements.constraints.some((c) => c.includes('unit and integration test suites'))).toBe(true)
+  })
+
+  it('classifies direct "check whether the system is working" as a task', () => {
+    const res = classifyIntent('Check whether the entire system is working or not', defaultContext)
+    expect(res.isTask).toBe(true)
+    expect(res.interactionType).toBe('task')
+    expect(res.intent).toBe('debug')
+    expect(res.action).toBe('system_audit_and_verification')
+  })
 })

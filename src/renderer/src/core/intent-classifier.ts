@@ -80,6 +80,26 @@ export function classifyIntent(
     text.includes('understand the context and') ||
     text.includes('read the screen and')
 
+  const isAuditOrVerification =
+    text.includes('check whether the') ||
+    text.includes('check whether') ||
+    text.includes('check if the') ||
+    text.includes('check if') ||
+    text.includes('is working or not') ||
+    text.includes('working or not') ||
+    text.includes('system is working') ||
+    text.includes('entire system is working') ||
+    text.includes('fully check') ||
+    text.includes('audit the') ||
+    text.includes('perform an audit') ||
+    text.includes('verify whether') ||
+    text.includes('verify if') ||
+    text.includes('test those things') ||
+    text.includes('test everything') ||
+    text.includes('test whether') ||
+    text.includes('rightly working') ||
+    text.includes('make sure everything is working')
+
   if (isAgentAction) {
     intent = 'reply'
     domain = 'communication'
@@ -137,6 +157,11 @@ export function classifyIntent(
     domain = cat === 'code' ? 'coding' : 'document'
     action = 'explain_concept'
     confidence = 0.95
+  } else if (isAuditOrVerification) {
+    intent = 'debug'
+    domain = 'coding'
+    action = 'system_audit_and_verification'
+    confidence = 0.98
   } else if (
     text.startsWith('debug') ||
     text.includes('fix the bug') ||
@@ -245,7 +270,8 @@ export function classifyIntent(
   const queryStarters = /^(what|where|who|why|when|how|which|whose|tell me|can you|could you|is there|are there|do you know|did i|have i|am i|should i|what's|how's|who's|where's)\b/i
   const isQuestion = text.endsWith('?') || queryStarters.test(text) || text.includes('what was i') || text.includes('where is') || text.includes('how to')
 
-  const taskStarters = /^(build|create|make a|make it|generate|scaffold|code|refactor|refit|implement|update|fix|debug|clean up|improve|optimize|modify|edit|delete|remove|kill|run|execute|open|start|install|search for|look up|find|summarize|tldr|explain|walk me through|write tests|reply to|tell him|tell her|tell them|prompt:|task:)\b/i
+  const taskStarters =
+    /^(build|create|make a|make it|generate|scaffold|code|refactor|refit|implement|update|fix|debug|clean up|improve|optimize|modify|edit|delete|remove|kill|run|execute|open|start|install|search for|look up|find|summarize|tldr|explain|walk me through|write tests|reply to|tell him|tell her|tell them|prompt:|task:|check|verify|audit|test|validate|inspect|examine|make sure|(so\s+)?here's a task|(so\s+)?task for you|(so\s+)?the goal is to|(so\s+)?the end of the goal is to)\b/i
   const hasTaskKeyword =
     text.includes('build a') ||
     text.includes('create a') ||
@@ -262,7 +288,20 @@ export function classifyIntent(
     text.includes('custom hook') ||
     text.includes('export to csv') ||
     text.includes('need a prompt') ||
-    text.includes('give me a prompt')
+    text.includes('give me a prompt') ||
+    text.includes('system is working') ||
+    text.includes('is working or not') ||
+    text.includes('working or not') ||
+    text.includes('check whether') ||
+    text.includes('check if') ||
+    text.includes('verify if') ||
+    text.includes('verify whether') ||
+    text.includes('fully check') ||
+    text.includes('task for you') ||
+    text.includes("here's a task") ||
+    text.includes('audit') ||
+    text.includes('end to end') ||
+    text.includes('rightly working')
 
   let interactionType: SpeechInteractionType = 'dictation'
 
@@ -272,7 +311,7 @@ export function classifyIntent(
     domain = 'research'
     action = 'answer_user_query'
     confidence = 0.95
-  } else if (isAgentAction || isVagueCommand || taskStarters.test(text) || hasTaskKeyword || intent !== 'write') {
+  } else if (isAgentAction || isVagueCommand || isAuditOrVerification || taskStarters.test(text) || hasTaskKeyword || intent !== 'write') {
     interactionType = 'task'
   } else {
     interactionType = 'dictation'
@@ -302,6 +341,11 @@ export function classifyIntent(
   if (text.includes('csv')) technologies.push('CSV Export')
   if (text.includes('restaurant') && technologies.length === 0) {
     technologies.push('HTML5', 'Modern CSS / Tailwind', 'JavaScript')
+  }
+  if (isAuditOrVerification) {
+    if (!technologies.includes('Vitest / Unit Tests')) technologies.push('Vitest / Unit Tests')
+    if (!technologies.includes('TypeScript')) technologies.push('TypeScript')
+    if (!technologies.includes('Electron IPC')) technologies.push('Electron IPC')
   }
 
   const styling: string[] = []
@@ -337,6 +381,14 @@ export function classifyIntent(
     if (!sections.some((s) => s.includes('Reviews') || s.includes('Testimonials'))) sections.push('Customer Testimonials & Reviews')
     if (!sections.some((s) => s.includes('Footer') || s.includes('Hours'))) sections.push('Location, Business Hours & Interactive Map')
   }
+  if (isAuditOrVerification) {
+    sections.push(
+      'Hold-to-Talk Key Detection (WinKeyServer & Key Release)',
+      'Ambient Window Context Tracking & OCR/Vision',
+      '3-Way Speech Intent Classifier (Dictation, Query, Task)',
+      'Universal Application Output Adapters & Auto-Paste'
+    )
+  }
 
   let tone: string | undefined = undefined
   if (text.includes('professional') || text.includes('formal')) tone = 'Professional'
@@ -349,6 +401,11 @@ export function classifyIntent(
   }
   if (text.includes('no external') || text.includes('vanilla')) constraints.push('Zero external dependencies')
   if (text.includes('cleaner') || text.includes('dry')) constraints.push('DRY and readable')
+  if (isAuditOrVerification) {
+    constraints.push('Ensure 0 TypeScript compilation errors (tsc --noEmit)')
+    constraints.push('Verify all unit and integration test suites pass (137+ tests)')
+    constraints.push('Confirm Hold-to-Talk Alt release immediately stops and auto-pastes without manual clicks')
+  }
 
   return {
     intent,

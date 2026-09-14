@@ -192,15 +192,24 @@ export class ApplicationAdapterRegistry {
   }
 
   public static cleanMetaSpeech(speech: string): string {
-    return speech
+    let text = speech
       .replace(
         /(i need a prompt for that so give me a prompt for that thing|so give me a prompt for that thing|give me a prompt for that thing|i need a prompt for that|i need a prompt for this|give me a prompt for that|give me a prompt for this|give me a prompt|generate a prompt for that|write a prompt for that|create a prompt for that|so give me a prompt|give me the prompt)/gi,
         ''
       )
+      .trim()
+
+    text = text
+      .replace(/^(so\s+)?here's a task(\s+for\s+you)?[:\s,-]*/i, '')
+      .replace(/^(so\s+)?the end of the goal is to\s*/i, '')
+      .replace(/^(so\s+)?the goal is to\s*/i, '')
+      .replace(/^(so\s+)?based upon what we discussed[.:,;]?\s*/i, '')
       .replace(/^prompt:\s*/i, '')
       .replace(/^task:\s*/i, '')
       .replace(/[.,\s]+$/g, '')
       .trim()
+
+    return text
   }
 
   private static formatUniversalPrompt(
