@@ -1,0 +1,981 @@
+/* ==========================================================
+   WISPR FLOW SIGNATURE DESIGN SYSTEM FOR QEVRA
+   Obsidian Glass, Fluid Soundwave & Floating Capsule Architecture
+   ========================================================== */
+
+:root {
+  --wf-bg-pill: rgba(13, 14, 17, 0.94);
+  --wf-bg-sheet: rgba(18, 19, 24, 0.96);
+  --wf-bg-card: rgba(26, 28, 35, 0.85);
+  --wf-bg-hover: rgba(255, 255, 255, 0.08);
+  --wf-bg-active: rgba(255, 255, 255, 0.12);
+  
+  --wf-border: rgba(255, 255, 255, 0.12);
+  --wf-border-focus: rgba(139, 92, 246, 0.5);
+  --wf-border-glow: rgba(99, 102, 241, 0.3);
+
+  --wf-text-main: #ffffff;
+  --wf-text-muted: #9499ad;
+  --wf-text-subtle: #5f6477;
+
+  /* Wispr Flow Signature Gradient Colors */
+  --wf-accent-violet: #8b5cf6;
+  --wf-accent-indigo: #6366f1;
+  --wf-accent-pink: #ec4899;
+  --wf-accent-cyan: #06b6d4;
+  --wf-accent-emerald: #10b981;
+  --wf-accent-amber: #f59e0b;
+  --wf-accent-red: #f43f5e;
+
+  --wf-gradient-wave: linear-gradient(90deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
+  --wf-gradient-pill: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+html, body, #root {
+  background: transparent !important;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: transparent !important;
+  color: var(--wf-text-main);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6px 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================
+   Wispr Flow Floating Capsule HUD
+   ========================================================== */
+.wf-container {
+  width: 100%;
+  max-width: 610px;
+  background: var(--wf-bg-pill);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--wf-border);
+  border-radius: 9999px; /* Authentic Wispr Flow Pill */
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+/* When expanded for Q&A or preview, transitions into a sleek rounded sheet */
+.wf-container.is-expanded {
+  border-radius: 24px;
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.85), 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+/* Primary Capsule Bar */
+.wf-capsule-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 10px 0 14px;
+  gap: 12px;
+  -webkit-app-region: drag; /* Draggable on desktop */
+}
+
+.wf-left, .wf-center, .wf-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+}
+
+/* Brand Capsule Mark */
+.wf-brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.wf-logo-glow {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+/* Context Tag / Mode Badge (e.g., "✦ Cursor", "✦ Gmail") */
+.wf-context-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.wf-context-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Center Live Speech / Sound Wave Stream */
+.wf-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wf-live-speech {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wf-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+
+.wf-live-speech.placeholder {
+  color: var(--wf-text-subtle);
+  font-weight: 400;
+}
+
+.wf-caret {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--wf-accent-cyan);
+  margin-left: 3px;
+  animation: wf-blink 1s infinite;
+}
+
+.wf-text-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--wf-text-main);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+.wf-text-input::placeholder {
+  color: var(--wf-text-subtle);
+  font-weight: 400;
+}
+
+/* Right Controls */
+.wf-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Wispr Flow Recording Action Button */
+.wf-record-btn {
+  height: 36px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wf-record-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: scale(1.02);
+}
+
+.wf-record-btn.is-recording {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  border-color: #fb7185;
+  box-shadow: 0 0 18px rgba(244, 63, 94, 0.55);
+  animation: wf-record-pulse 1.8s infinite;
+}
+
+.wf-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--wf-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wf-icon-btn:hover {
+  color: #fff;
+  background: var(--wf-bg-hover);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Persistent Mode Controls (Record, Pause/Resume, Stop/Done, Cancel) */
+.wf-control-btn {
+  height: 32px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wf-control-btn:hover {
+  transform: translateY(-1px);
+}
+
+.wf-pause-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.wf-pause-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.wf-pause-btn.is-paused {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  color: #fef3c7;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  animation: wf-record-pulse 2s infinite;
+}
+
+.wf-done-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-color: #34d399;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.wf-done-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.55);
+}
+
+.wf-cancel-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--wf-text-muted);
+}
+
+.wf-cancel-btn:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #fda4af;
+}
+
+.wf-pause-badge {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  margin-right: 6px;
+}
+
+
+/* ==========================================================
+   Fluid Soundwave Visualizer (Wispr Flow Signature)
+   ========================================================== */
+.wf-wave-container {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 24px;
+  padding: 0 4px;
+}
+
+.wf-wave-bar {
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--wf-gradient-wave);
+  transition: height 0.06s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 4px;
+}
+
+/* ==========================================================
+   Expanded Sheet: Smart Q&A & Polish Output
+   ========================================================== */
+.wf-sheet-body {
+  padding: 12px 14px 14px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--wf-bg-sheet);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+
+/* Quick Test Preset Pills */
+.wf-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.wf-preset-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--wf-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.wf-preset-pill:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Smart Q&A Card in Wispr Flow Aesthetic */
+.wf-qa-card {
+  background: var(--wf-bg-card);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.wf-qa-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-qa-question {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wf-qa-hint {
+  font-size: 10.5px;
+  color: var(--wf-accent-violet);
+  background: rgba(139, 92, 246, 0.12);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.wf-qa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.wf-qa-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.wf-qa-btn:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+.wf-key-badge {
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--wf-accent-cyan);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* Output / Polish Result Card */
+.wf-output-card {
+  background: var(--wf-bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wf-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-target-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--wf-accent-cyan);
+}
+
+.wf-text-preview {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #e2e8f0;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  max-height: 135px;
+  overflow-y: auto;
+}
+
+.wf-output-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wf-btn-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+
+.wf-btn-primary:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.wf-btn-subtle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 9999px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.wf-btn-subtle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Animations */
+@keyframes wf-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes wf-record-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(244, 63, 94, 0.5); }
+  50% { box-shadow: 0 0 24px rgba(244, 63, 94, 0.85); }
+}
+
+/* Autonomous Agent Human-in-the-Loop (HITL) Approval Card */
+.wf-approval-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(15, 17, 23, 0.75);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 12px;
+  padding: 12px 14px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+.wf-approval-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wf-approval-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.wf-target-app-pill {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  border-radius: 9999px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.wf-approval-badge {
+  font-size: 10.5px;
+  color: var(--wf-text-subtle);
+}
+
+.wf-approval-body {
+  width: 100%;
+}
+
+.wf-approval-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #f1f5f9;
+  resize: vertical;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.wf-approval-textarea:focus {
+  border-color: rgba(139, 92, 246, 0.6);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.wf-approval-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-approval-hint {
+  font-size: 10.5px;
+  color: var(--wf-text-muted);
+}
+
+.wf-approval-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-approval-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wf-btn-reject {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  color: #fda4af;
+}
+
+.wf-btn-reject:hover {
+  background: rgba(244, 63, 94, 0.25);
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #fff;
+}
+
+.wf-btn-approve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 1px solid rgba(52, 211, 153, 0.5);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+}
+
+.wf-btn-approve:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.55);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================
+   COMPACT FLOATING PILL OVERLAY (WISPR FLOW MINI HUD)
+   Identical aesthetic to native floating voice widget
+   ========================================================== */
+
+.wf-compact-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  user-select: none;
+}
+
+.wf-compact-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  background: #141417;
+  background: linear-gradient(180deg, #1c1c20 0%, #111114 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px; /* Rounded rectangle format */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), 0 1px 2px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-app-region: drag;
+}
+
+.wf-compact-pill:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.82), 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.wf-compact-pill.is-active-recording {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 255, 255, 0.08);
+}
+
+/* Left drag handle section */
+.wf-drag-handle-section {
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  -webkit-app-region: drag;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.wf-drag-handle-section:active {
+  cursor: grabbing;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wf-drag-handle-bar {
+  width: 3.5px;
+  height: 16px;
+  background: #8e8e93;
+  border-radius: 9999px;
+  pointer-events: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.wf-drag-handle-section:hover .wf-drag-handle-bar {
+  background: #a1a1aa;
+}
+
+/* Center Pill Buttons */
+.wf-pill-btn {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: all 0.15s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wf-pill-btn.wf-mic-btn {
+  width: 46px;
+  color: #e4e4e7;
+}
+
+.wf-pill-btn.wf-mic-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.wf-pill-btn.wf-mic-btn.is-recording {
+  color: #f43f5e;
+}
+
+.wf-pill-btn.wf-mic-btn.is-recording::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(244, 63, 94, 0.2);
+  animation: wf-pulse-mic 1.4s infinite ease-out;
+}
+
+@keyframes wf-pulse-mic {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(0.8); opacity: 0.8; }
+}
+
+.wf-pill-btn.wf-more-btn {
+  width: 44px;
+  color: #a1a1aa;
+}
+
+.wf-pill-btn.wf-more-btn:hover,
+.wf-pill-btn.wf-more-btn.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Active Recording Stream in Compact Mode - React Bits Pro AI Chat 8 Style */
+.wf-compact-recording-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+.reactbits-waveform-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5px;
+  height: 28px;
+  padding: 0 4px;
+}
+
+.reactbits-waveform-bar {
+  width: 4.5px;
+  min-width: 4.5px;
+  background: #ffffff;
+  border-radius: 9999px;
+  transition: height 0.08s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.12s ease;
+  transform-origin: center;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+.wf-compact-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wf-compact-action-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-app-region: no-drag;
+}
+
+.wf-compact-action-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.wf-compact-action-btn.wf-btn-done {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.wf-compact-action-btn.wf-btn-done:hover {
+  background: rgba(16, 185, 129, 0.4);
+  color: #fff;
+}
+
+.wf-compact-action-btn.wf-btn-cancel {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fda4af;
+}
+
+.wf-compact-action-btn.wf-btn-cancel:hover {
+  background: rgba(244, 63, 94, 0.35);
+  color: #fff;
+}
+
+/* Compact Status Bar */
+.wf-compact-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+  white-space: nowrap;
+  -webkit-app-region: no-drag;
+}
+
+/* Attached Popover Menu */
+.wf-popover-menu {
+  margin-top: 6px;
+  width: 228px;
+  background: rgba(24, 24, 28, 0.97);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.15);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+  animation: wf-pop-fade 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9999;
+}
+
+@keyframes wf-pop-fade {
+  from { opacity: 0; transform: translateY(-5px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.wf-popover-header {
+  padding: 4px 8px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-popover-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #d4d4d8;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, color 0.12s ease;
+  width: 100%;
+}
+
+.wf-popover-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.wf-popover-item.is-active {
+  color: #8b5cf6;
+  font-weight: 600;
+}
+
+.wf-popover-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-popover-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 3px 0;
+}
+
