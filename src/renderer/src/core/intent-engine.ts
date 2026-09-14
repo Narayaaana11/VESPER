@@ -36,7 +36,8 @@ export async function processIntent(
     previousTask,
     previousTaskTimestamp
   )
-  const speechToProcess = chained.isChained ? chained.synthesizedPrompt : rawSpeech
+  const isDirectDictation = settings.dictationMode === 'direct'
+  const speechToProcess = chained.isChained && !isDirectDictation ? chained.synthesizedPrompt : rawSpeech
 
   // 1. Classify Intent & Extract Requirements
   const provider = AIFactory.getProvider(settings)

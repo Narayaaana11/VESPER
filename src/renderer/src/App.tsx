@@ -68,7 +68,7 @@ const getInitialApiKey = (): string => {
 }
 
 const getInitialSettings = (): AppSettings => {
-  const envMode = ((import.meta as any).env?.VITE_DICTATION_MODE as any) || 'smart_assistant'
+  const envMode = ((import.meta as any).env?.VITE_DICTATION_MODE as any) || 'direct'
   const defaults: AppSettings = {
     hotkey: 'CommandOrControl+Shift+Space',
     holdKey: 'RIGHT ALT',
@@ -327,7 +327,13 @@ export const App: React.FC = () => {
   toggleListeningRef.current = toggleListening
 
   const startListening = async () => {
-    if (isRecordingRef.current || isStoppingRef.current) return
+    if (isRecordingRef.current) return
+    // Self-healing guard: if audio recorder is not actively recording, clear any stale isStoppingRef lock
+    if (!audioRecorderRef.current.isRecording) {
+      isStoppingRef.current = false
+    } else if (isStoppingRef.current) {
+      return
+    }
     isRecordingRef.current = true
     console.log('[QEVRA] [REC] Audio capture starting...')
     audioChimes.playStart(settings.soundFeedback !== false)
@@ -474,11 +480,13 @@ export const App: React.FC = () => {
     setExecutionStatus('Transcribing with Whisper-large-v3...')
     console.log(`[QEVRA] Transcribing with Groq Whisper-large-v3 (${audioBlob.size} bytes, ${recResult.durationMs}ms)...`)
 
-    // Compile dynamic Whisper context prompt from custom vocabulary + active window (OpenFlow / FreeFlow pattern)
+    // Compile dynamic Whisper context prompt from custom vocabulary + domain priming + active window
     let dynamicPrompt = ''
     try {
       const vocabTerms = getVocabulary().map((v) => v.term).filter(Boolean).slice(0, 30).join(', ')
-      const promptParts: string[] = []
+      const promptParts: string[] = [
+        'pricing tiers, pro plan, enterprise, popular badge, responsive, components, layout, free plan, navbar, modal, button'
+      ]
       if (vocabTerms) promptParts.push(vocabTerms)
       if (context.activeApp) promptParts.push(`App: ${context.activeApp}`)
       if (context.windowTitle) promptParts.push(`Window: ${context.windowTitle}`)
@@ -499,9 +507,12 @@ export const App: React.FC = () => {
     if (groqErr) {
       console.error('[QEVRA] Groq STT error:', groqErr)
       setExecutionStatus(`⚠️ ${groqErr}`)
+      isStoppingRef.current = false
+      isRecordingRef.current = false
       setTimeout(() => {
         setExecutionStatus(null)
         setStage('idle')
+        stageRef.current = 'idle'
       }, 3000)
       return
     }
@@ -517,9 +528,12 @@ export const App: React.FC = () => {
       console.warn(`[QEVRA] ❌ Whisper transcript rejected: ${whisperValidation.reason} | Raw: "${rawGroqTranscript}"`)
       setExecutionStatus('Transcription unclear — please try again.')
       setTranscript('')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
       setTimeout(() => {
         setExecutionStatus(null)
         setStage('idle')
+        stageRef.current = 'idle'
       }, 2500)
       return
     }
@@ -569,9 +583,12 @@ export const App: React.FC = () => {
           console.warn(`[QEVRA] [FAIL] Polished output rejected: ${polishValidation.reason} | Polished: "${polished}"`)
           setExecutionStatus('Transcription unclear — please try again.')
           setTranscript('')
+          isStoppingRef.current = false
+          isRecordingRef.current = false
           setTimeout(() => {
             setExecutionStatus(null)
             setStage('idle')
+            stageRef.current = 'idle'
           }, 2500)
           return
         }
@@ -664,12 +681,16 @@ export const App: React.FC = () => {
     if (isBlocked) {
       setExecutionStatus(`⚠️ Blocked: ${securityWarning || 'Harmful action prevented'}`)
       setStage('ready')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
       return
     }
 
     if (question && !currentClarifications[question.id] && !autoPasteOnRelease) {
       setActiveQuestion(question)
       setStage('clarifying')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
       return
     }
 
@@ -697,6 +718,8 @@ export const App: React.FC = () => {
       setAgentProposal(proposal)
       setExecutionStatus(null)
       setStage('approving')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
       return
     }
 
@@ -705,6 +728,8 @@ export const App: React.FC = () => {
       setQueryResult({ question: speechText, answer: task.queryAnswer })
       setExecutionStatus(`💡 ${task.queryAnswer.substring(0, 45)}...`)
       setStage('ready')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
 
       try {
         navigator.clipboard.writeText(task.queryAnswer)
@@ -723,10 +748,14 @@ export const App: React.FC = () => {
     // 2. Security Gate Enforcement: High risk operations (sending, deleting) MUST require explicit user confirmation
     if (task.security.requiresUserConfirmation) {
       setStage('ready')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
     } else if (autoPasteOnRelease) {
       handleExecute(task, true)
     } else {
       setStage('ready')
+      isStoppingRef.current = false
+      isRecordingRef.current = false
     }
   }
 

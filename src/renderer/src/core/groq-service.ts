@@ -42,28 +42,47 @@ export async function transcribeWithGroq(
     formData.append('language', options.language)
   }
 
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey.trim()}`
-      },
-      body: formData
-    })
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 12000)
 
-    if (!response.ok) {
-      const errBody = await response.text().catch(() => '')
-      console.warn(`[QEVRA Groq STT] Request failed on ${endpoint}: ${response.status} ${response.statusText}`, errBody)
-      return { text: '', error: `Groq Whisper error (${response.status}): ${response.statusText}` }
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey.trim()}`
+        },
+        body: formData,
+        signal: controller.signal
+      })
+      clearTimeout(timeoutId)
+
+      if (!response.ok) {
+        const errBody = await response.text().catch(() => '')
+        console.warn(`[QEVRA Groq STT] Request failed on ${endpoint}: ${response.status} ${response.statusText}`, errBody)
+        if (attempt === 1 && (response.status >= 500 || response.status === 429)) {
+          await new Promise((r) => setTimeout(r, 600))
+          continue
+        }
+        return { text: '', error: `Groq Whisper error (${response.status}): ${response.statusText}` }
+      }
+
+      const data = await response.json()
+      const text = (data.text || '').trim()
+      return { text }
+    } catch (err: any) {
+      clearTimeout(timeoutId)
+      if (attempt === 1 && (err?.name === 'AbortError' || err?.message?.includes('fetch'))) {
+        console.warn('[QEVRA Groq STT] Network glitch detected. Retrying transcription once...', err)
+        await new Promise((r) => setTimeout(r, 600))
+        continue
+      }
+      console.error('[QEVRA Groq STT] Network / fetch error:', err)
+      return { text: '', error: err?.message || 'Network error connecting to Groq STT' }
     }
-
-    const data = await response.json()
-    const text = (data.text || '').trim()
-    return { text }
-  } catch (err: any) {
-    console.error('[QEVRA Groq STT] Network / fetch error:', err)
-    return { text: '', error: err?.message || 'Network error connecting to Groq STT' }
   }
+
+  return { text: '', error: 'Transcription request failed after retry' }
 }
 
 /**
@@ -118,12 +137,10 @@ ${contextDetails || 'Active window: Desktop'}
    - STRIP SILENCE & TRAILING HALLUCINATIONS: Trailing silence in Whisper often produces hallucinated subtitle fragments such as "Thank you.", "Thank you. Thank you", "Thanks for watching", or muttered unfinished tails like "I'm going to go ahead and.". Strip these completely if they are not part of the primary dictated sentence.
    - Output ONLY the polished transcript text ready to be inserted directly at the user's cursor.${multilingualRule}`
 
-  // Try preferred/default model first, then fallback to other active Groq cloud models if 404
+  // Try preferred model first, then fallback to fast 8B model if 404
   const candidateModels = [
     model,
-    'openai/gpt-oss-20b',
-    'groq/compound-mini',
-    'qwen/qwen3.8-27b'
+    'llama-3.1-8b-instant'
   ].filter((m, idx, arr) => arr.indexOf(m) === idx)
 
   for (const candidate of candidateModels) {
@@ -155,8 +172,12 @@ ${contextDetails || 'Active window: Desktop'}
       } else {
         console.warn(`[QEVRA Groq LLM] Polishing request failed on ${candidate}: ${response.status}`)
       }
-    } catch (err) {
+    } catch (err: any) {
       console.warn(`[QEVRA Groq LLM] Network error with ${candidate}:`, err)
+      // If network itself is down, abort fallback loop immediately to prevent freezing UI
+      if (err?.name === 'TypeError' || err?.message?.includes('fetch')) {
+        break
+      }
     }
   }
 
