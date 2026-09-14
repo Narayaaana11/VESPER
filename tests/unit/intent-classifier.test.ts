@@ -164,4 +164,22 @@ describe('IntentClassifier - 12 Intent Taxonomy', () => {
     expect(res.intent).toBe('debug')
     expect(res.action).toBe('system_audit_and_verification')
   })
+
+  it('infers rich sections and technologies for e-commerce store requests', () => {
+    const res = classifyIntent('Create an online store for sneakers', defaultContext)
+    expect(res.intent).toBe('code')
+    expect(res.domain).toBe('coding')
+    expect(res.requirements.technologies).toContain('HTML5')
+    expect(res.requirements.sections.some((s) => s.includes('Product Grid'))).toBe(true)
+    expect(res.requirements.sections.some((s) => s.includes('Shopping Cart'))).toBe(true)
+  })
+
+  it('infers KPI metrics and charts for dashboard requests', () => {
+    const res = classifyIntent('Build an analytics dashboard for tracking user events', defaultContext)
+    expect(res.intent).toBe('code')
+    expect(res.domain).toBe('coding')
+    expect(res.requirements.technologies).toContain('React')
+    expect(res.requirements.sections.some((s) => s.includes('KPI Metric Cards'))).toBe(true)
+    expect(res.requirements.sections.some((s) => s.includes('Chart'))).toBe(true)
+  })
 })

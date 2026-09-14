@@ -258,6 +258,18 @@ describe('ApplicationAdapterRegistry - Routing & Output Formatting', () => {
     expect(res.formattedContent).toContain('Ensure 0 TypeScript compilation errors (tsc --noEmit)')
     expect(res.formattedContent).toContain('Verify all unit and integration test suites pass (137+ tests)')
   })
+
+  it('cleanMetaSpeech strips conversational preamble ("So we are working on some application. I want you to...")', () => {
+    const speech =
+      "So we are working on some application. I want you to verify if everything is okay. These are the logs currently in the terminal. I'm speaking this one so you can see it. I'm not satisfied with the output."
+    const cleaned = ApplicationAdapterRegistry.cleanMetaSpeech(speech)
+    expect(cleaned).toContain('verify if everything is okay')
+    expect(cleaned).not.toContain('So we are working on some application')
+    expect(cleaned).not.toContain('These are the logs currently in the terminal')
+    expect(cleaned).not.toContain("I'm speaking this one so you can see it")
+    expect(cleaned).not.toContain("I'm not satisfied with the output")
+  })
 })
+
 
 

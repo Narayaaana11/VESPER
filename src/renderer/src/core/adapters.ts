@@ -193,17 +193,30 @@ export class ApplicationAdapterRegistry {
 
   public static cleanMetaSpeech(speech: string): string {
     let text = speech
+      // Remove trailing prompt request phrases
       .replace(
-        /(i need a prompt for that so give me a prompt for that thing|so give me a prompt for that thing|give me a prompt for that thing|i need a prompt for that|i need a prompt for this|give me a prompt for that|give me a prompt for this|give me a prompt|generate a prompt for that|write a prompt for that|create a prompt for that|so give me a prompt|give me the prompt)/gi,
+        /(i need a prompt for that so give me a prompt for that thing|so give me a prompt for that thing|give me a prompt for that thing|i need a prompt for that|i need a prompt for this|give me a prompt for that|give me a prompt for this|give me a prompt|generate a prompt for that|write a prompt for that|create a prompt for that|so give me a prompt|give me the prompt|give me a prompt for it|give me a prompt please)/gi,
         ''
       )
       .trim()
 
+    // Remove spoken intro meta-commentary and conversational preambles
     text = text
+      .replace(/(\b|^)(so\s+)?i'm speaking this (one\s+)?so you can see it[.,]?\s*/gi, '')
+      .replace(/(\b|^)(so\s+)?these are the logs currently in the terminal[.,]?\s*/gi, '')
+      .replace(/(\b|^)(so\s+)?i'm not satisfied with the output[.,]?\s*/gi, '')
+      .replace(/^(so\s+)?we are working on (some|an|our) application[.,]?\s*(i want you to\s*)?/i, '')
       .replace(/^(so\s+)?here's a task(\s+for\s+you)?[:\s,-]*/i, '')
       .replace(/^(so\s+)?the end of the goal is to\s*/i, '')
       .replace(/^(so\s+)?the goal is to\s*/i, '')
       .replace(/^(so\s+)?based upon what we discussed[.:,;]?\s*/i, '')
+      .replace(/^(so\s+)?basically what (i want|i need|we want|we need) (is to|is)?\s*/i, '')
+      .replace(/^(so\s+)?what i'm trying to do is\s*/i, '')
+      .replace(/^(so\s+)?what we're trying to do is\s*/i, '')
+      .replace(/^(so\s+)?i want you to\s*/i, '')
+      .replace(/^(so\s+)?i need you to\s*/i, '')
+      .replace(/^(so\s+)?can you (please\s+)?(help me\s+)?(build|create|write|make|generate)\s*/i, '$4 ')
+      .replace(/^(so\s+)?could you (please\s+)?(help me\s+)?(build|create|write|make|generate)\s*/i, '$4 ')
       .replace(/^prompt:\s*/i, '')
       .replace(/^task:\s*/i, '')
       .replace(/[.,\s]+$/g, '')
@@ -224,10 +237,12 @@ export class ApplicationAdapterRegistry {
       req.sections.length > 0
         ? `\n\nCORE SECTIONS & MODULES:\n${req.sections.map((s) => `- ${s}`).join('\n')}`
         : ''
-    const constraints =
-      req.constraints.length > 0
-        ? `\n\nCONSTRAINTS:\n${req.constraints.map((c) => `- ${c}`).join('\n')}`
-        : ''
+    const constraintsList = [
+      'Clean semantic code structure with zero placeholder text',
+      'Fully responsive across desktop, tablet, and mobile devices',
+      ...(req.constraints || [])
+    ]
+    const constraints = `\n\nCONSTRAINTS:\n${constraintsList.map((c) => `- ${c}`).join('\n')}`
 
     return `TASK:
 ${cleaned}
@@ -256,7 +271,10 @@ DELIVERABLES:
       req.sections.length > 0
         ? `\n\nCORE SECTIONS & MODULES:\n${req.sections.map((s) => `- ${s}`).join('\n')}`
         : ''
-    const constraints = req.constraints.length > 0 ? `\n\nCONSTRAINTS:\n${req.constraints.map((c) => `- ${c}`).join('\n')}` : ''
+    const constraintsList = [
+      ...(req.constraints || [])
+    ]
+    const constraints = constraintsList.length > 0 ? `\n\nCONSTRAINTS:\n${constraintsList.map((c) => `- ${c}`).join('\n')}` : ''
 
     return `TASK:
 ${cleaned}
@@ -311,7 +329,6 @@ Active File: ${context.windowTitle || 'Unknown'}`
     req: ExtractedRequirements,
     context: SystemContext
   ): string {
-    const tone = req.tone || 'Professional'
     const core = speech.replace(/reply to this email saying|reply saying|tell him|tell her/gi, '').trim()
 
     return `Hi,\n\nThank you for reaching out. ${core}.\n\nBest regards,\n[Your Name]`

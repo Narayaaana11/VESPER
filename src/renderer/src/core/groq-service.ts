@@ -105,12 +105,15 @@ ${contextDetails || 'Active window: Desktop'}
 2. Based on the open window and context above, improve and clarify the user's spoken audio transcript:
    - Fix phonetic transcription inaccuracies and technical terms according to the open app/code/document.
    - Punctuate, capitalize, and format cleanly and naturally.
-   - Remove verbal filler words (um, uh, you know, like) unless intentional.
+   - Remove verbal filler words (um, uh, you know, like, I mean, kind of, sort of) unless intentional.
+   - Resolve real-time self-corrections gracefully (e.g. "create a blue button no wait a dark indigo button" -> "create a dark indigo button"; "meeting at three actually four PM" -> "meeting at 4:00 PM").
+   - Format numbers, currencies, dates, and times naturally (e.g. "$500", "October 24th", "10:30 AM").
+   - Format code identifiers and commands accurately if in a coding environment (e.g. "camelCase", "snake_case", "npm run dev", "git commit", "const", "async/await").
 3. CRITICAL RULES:
    - Preserve the EXACT intended meaning and spoken language context.
    - DO NOT answer the user or act as a conversational assistant.
    - DO NOT generate code, boilerplate, or explanations unless the user explicitly dictated it.
-   - DO NOT change what the user said or substitute words.
+   - DO NOT change what the user said or substitute words unnecessarily.
    - DO NOT add markdown quotes, backticks, or conversational preamble.
    - STRIP SILENCE & TRAILING HALLUCINATIONS: Trailing silence in Whisper often produces hallucinated subtitle fragments such as "Thank you.", "Thank you. Thank you", "Thanks for watching", or muttered unfinished tails like "I'm going to go ahead and.". Strip these completely if they are not part of the primary dictated sentence.
    - Output ONLY the polished transcript text ready to be inserted directly at the user's cursor.${multilingualRule}`
@@ -187,13 +190,13 @@ export async function polishWithOllama(
    - NEVER output non-Latin scripts (strictly NO Devanagari, Arabic script, Cyrillic, Chinese/Japanese characters). Every character in the output MUST be in standard English letters (A-Z, a-z), numbers, and standard punctuation.`
     : ''
 
-  const systemInstruction = `You are QEVRA's real-time speech dictation post-processor.
+  const systemInstruction = `You are QEVRA's real-time speech dictation post-processor, exactly like Wispr Flow.
 Your job:
 1. Observe the user's active screen context:
 ${contextDetails || 'Active window: Desktop'}
 
 2. Improve and clarify the spoken audio transcript based on this context.
-3. Clean filler words, fix phonetic errors, and format punctuation.
+3. Clean filler words, fix phonetic errors, resolve self-corrections, and format punctuation and code tokens cleanly.
 4. Output ONLY the polished transcript text. Do not answer or add conversational commentary.${multilingualRule}`
 
   try {

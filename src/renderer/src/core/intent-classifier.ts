@@ -342,6 +342,15 @@ export function classifyIntent(
   if (text.includes('restaurant') && technologies.length === 0) {
     technologies.push('HTML5', 'Modern CSS / Tailwind', 'JavaScript')
   }
+  if ((text.includes('ecommerce') || text.includes('e-commerce') || text.includes('online store') || text.includes('shop')) && technologies.length === 0) {
+    technologies.push('HTML5', 'Tailwind CSS / Modern CSS', 'JavaScript / React')
+  }
+  if ((text.includes('dashboard') || text.includes('analytics') || text.includes('admin panel')) && technologies.length === 0) {
+    technologies.push('React', 'TypeScript', 'Tailwind CSS / Modern CSS')
+  }
+  if ((text.includes('portfolio') || text.includes('personal website')) && technologies.length === 0) {
+    technologies.push('HTML5', 'Tailwind CSS / Modern CSS', 'TypeScript / React')
+  }
   if (isAuditOrVerification) {
     if (!technologies.includes('Vitest / Unit Tests')) technologies.push('Vitest / Unit Tests')
     if (!technologies.includes('TypeScript')) technologies.push('TypeScript')
@@ -358,6 +367,15 @@ export function classifyIntent(
   if (text.includes('minimal') || text.includes('clean')) styling.push('Minimal clean')
   if (text.includes('restaurant') && styling.length === 0) {
     styling.push('Dark luxury theme (warm charcoal, gold accents)', 'Micro-animations', 'Fully responsive layout')
+  }
+  if ((text.includes('ecommerce') || text.includes('e-commerce') || text.includes('online store')) && styling.length === 0) {
+    styling.push('Clean high-conversion e-commerce aesthetic', 'Product card micro-animations', 'Mobile responsive layout')
+  }
+  if ((text.includes('dashboard') || text.includes('analytics') || text.includes('admin panel')) && styling.length === 0) {
+    styling.push('Dark obsidian minimalist theme', 'Hairline borders', 'Responsive data density')
+  }
+  if ((text.includes('portfolio') || text.includes('personal website')) && styling.length === 0) {
+    styling.push('Editorial minimalism', 'Dark obsidian palette with subtle glow', 'Fluid typography')
   }
 
   const sections: string[] = []
@@ -380,6 +398,32 @@ export function classifyIntent(
     if (!sections.some((s) => s.includes('About') || s.includes('Story'))) sections.push('Chef / Culinary Story')
     if (!sections.some((s) => s.includes('Reviews') || s.includes('Testimonials'))) sections.push('Customer Testimonials & Reviews')
     if (!sections.some((s) => s.includes('Footer') || s.includes('Hours'))) sections.push('Location, Business Hours & Interactive Map')
+  }
+  if (text.includes('ecommerce') || text.includes('e-commerce') || text.includes('online store') || text.includes('shop')) {
+    if (!sections.some((s) => s.includes('Hero') || s.includes('Banner'))) sections.push('Hero Showcase Banner with Featured Drop')
+    if (!sections.some((s) => s.includes('Product') || s.includes('Grid'))) sections.push('Interactive Product Grid with Category Filter & Price Sorting')
+    if (!sections.some((s) => s.includes('Cart') || s.includes('Drawer'))) sections.push('Slide-Over Shopping Cart Drawer with Subtotal Calculation')
+    if (!sections.some((s) => s.includes('Reviews') || s.includes('Testimonials'))) sections.push('Customer Reviews & Star Ratings')
+    if (!sections.some((s) => s.includes('Footer'))) sections.push('Footer with Trust Badges & Newsletter Signup')
+  }
+  if (text.includes('dashboard') || text.includes('analytics') || text.includes('admin panel')) {
+    if (!sections.some((s) => s.includes('KPI') || s.includes('Stat'))) sections.push('KPI Metric Cards with Sparklines & Trend Percentages')
+    if (!sections.some((s) => s.includes('Chart') || s.includes('Graph'))) sections.push('Interactive Activity & Revenue Chart Visualization')
+    if (!sections.some((s) => s.includes('Table') || s.includes('Data'))) sections.push('Real-Time Data Table with Filter, Search & Status Badges')
+    if (!sections.some((s) => s.includes('Toolbar') || s.includes('Command'))) sections.push('Quick Action Command Toolbar & Filter Chips')
+  }
+  if (text.includes('portfolio') || text.includes('personal website') || text.includes('developer site')) {
+    if (!sections.some((s) => s.includes('Hero') || s.includes('Bio'))) sections.push('Hero Section with Bio & Availability Badge')
+    if (!sections.some((s) => s.includes('Projects') || s.includes('Case Studies'))) sections.push('Featured Projects & Case Studies with Live Demos')
+    if (!sections.some((s) => s.includes('Skills') || s.includes('Tech'))) sections.push('Interactive Skills & Tech Stack Grid')
+    if (!sections.some((s) => s.includes('Contact'))) sections.push('Interactive Contact / Booking Form with Social Links')
+  }
+  if ((text.includes('landing page') || text.includes('startup website')) && !text.includes('restaurant')) {
+    if (!sections.some((s) => s.includes('Hero'))) sections.push('High-Impact Hero with Value Proposition & Dual CTAs')
+    if (!sections.some((s) => s.includes('Proof') || s.includes('Logo'))) sections.push('Social Proof Logo Cloud / Client Trust Wall')
+    if (!sections.some((s) => s.includes('Features'))) sections.push('Core Feature Highlights with Visual Cards')
+    if (!sections.some((s) => s.includes('Pricing'))) sections.push('Transparent Pricing Tier Comparison Matrix')
+    if (!sections.some((s) => s.includes('FAQ'))) sections.push('FAQ Accordion & Final Call to Action')
   }
   if (isAuditOrVerification) {
     sections.push(
