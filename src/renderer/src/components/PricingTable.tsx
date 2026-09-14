@@ -16,8 +16,8 @@ export interface PricingPlan {
 
 const PLANS: PricingPlan[] = [
   {
-    id: 'starter',
-    name: 'Starter',
+    id: 'free',
+    name: 'Free',
     description: 'Essential ambient voice dictation and local context memory for solo developers.',
     monthlyPrice: 0,
     annualPrice: 0,
@@ -34,13 +34,13 @@ const PLANS: PricingPlan[] = [
   {
     id: 'pro',
     name: 'Pro',
-    badge: 'Most Popular',
+    badge: 'Popular',
     popular: true,
     description: 'High-speed Groq LPU processing, multi-app context chaining, and in-place edit mode.',
     monthlyPrice: 19,
     annualPrice: 15,
     features: [
-      'Everything in Starter, plus:',
+      'Everything in Free, plus:',
       'Sub-800ms ultra-low latency Groq LPU pipeline',
       'In-place Selection Transformer (Edit Mode)',
       'Multi-utterance context chaining & memory',
@@ -146,11 +146,11 @@ export default function Pricing() {
                   : 'bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 hover:bg-slate-900/80 shadow-lg'
               } backdrop-blur-xl`}
             >
-              {/* Most Popular Badge */}
+              {/* Popular Badge */}
               {isPopular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md shadow-cyan-500/30 flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-current" />
-                  <span>{plan.badge || 'Most Popular'}</span>
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 text-white text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-1.5 border border-cyan-300/30">
+                  <Star className="w-3 h-3 fill-current text-yellow-300" />
+                  <span>{plan.badge || 'Popular'}</span>
                 </div>
               )}
 

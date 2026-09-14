@@ -54,8 +54,10 @@ export class SelectionTransformer {
 
     // 1. If Groq API Key is available, use fast LPU LLM transformation
     if (apiKey && apiKey.trim()) {
-      try {
-        const systemPrompt = `You are QEVRA's precision in-place text transformation engine (Edit Mode).
+      const candidateModels = [model, 'llama-3.1-8b-instant'].filter((m, idx, arr) => arr.indexOf(m) === idx)
+      for (const candidate of candidateModels) {
+        try {
+          const systemPrompt = `You are QEVRA's precision in-place text transformation engine (Edit Mode).
 Your task is to transform the user's selected text according to their spoken instruction.
 CRITICAL RULES:
 1. Apply the user's edit or translation accurately.
@@ -63,7 +65,7 @@ CRITICAL RULES:
 3. DO NOT include any conversational filler, explanations, markdown quotes, or notes.
 4. Preserve the formatting and casing structure where appropriate.`
 
-        const userPrompt = `SELECTED TEXT:
+          const userPrompt = `SELECTED TEXT:
 """
 ${selection}
 """
@@ -73,37 +75,43 @@ ${speech.trim()}
 
 TRANSFORMED REPLACEMENT:`
 
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey.trim()}`
-          },
-          body: JSON.stringify({
-            model,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: userPrompt }
-            ],
-            temperature: 0.1,
-            max_tokens: 2048
+          const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${apiKey.trim()}`
+            },
+            body: JSON.stringify({
+              model: candidate,
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+              ],
+              temperature: 0.1,
+              max_tokens: 2048
+            })
           })
-        })
 
-        if (response.ok) {
-          const data = await response.json()
-          const transformed = data.choices?.[0]?.message?.content?.trim()
-          if (transformed) {
-            return {
-              isTransform: true,
-              originalText: selection,
-              transformedText: transformed,
-              explanation: `Transformed selection in ${context.activeApp}: "${speech.trim()}"`
+          if (response.ok) {
+            const data = await response.json()
+            const transformed = data.choices?.[0]?.message?.content?.trim()
+            if (transformed) {
+              return {
+                isTransform: true,
+                originalText: selection,
+                transformedText: transformed,
+                explanation: `Transformed selection in ${context.activeApp}: "${speech.trim()}"`
+              }
             }
+          } else if (response.status === 404 || response.status === 429) {
+            continue
+          }
+        } catch (err: any) {
+          console.warn(`[SelectionTransformer] Groq transform error with ${candidate}:`, err)
+          if (err?.name === 'TypeError' || err?.message?.includes('fetch')) {
+            break
           }
         }
-      } catch (err) {
-        console.warn('[SelectionTransformer] Groq transform error:', err)
       }
     }
 
@@ -130,9 +138,15 @@ TRANSFORMED REPLACEMENT:`
       }
     } else if (lower.includes('shorter') || lower.includes('concise')) {
       localTransformed = selection
-        .replace(/\b(repeatedly|very|really|basically|literally|actually)\b/gi, '')
+        .replace(/\b(repeatedly|very|really|basically|literally|actually|please|kindly|in order to)\b/gi, '')
+        .replace(/\band make it responsive\b/gi, 'and responsive')
         .replace(/\s+/g, ' ')
         .trim()
+      const sentences = localTransformed.split(/(?<=[.?!])\s+/).filter(Boolean)
+      const uniqueSentences = Array.from(new Set(sentences))
+      if (uniqueSentences.length < sentences.length) {
+        localTransformed = uniqueSentences.join(' ')
+      }
     }
 
     return {
