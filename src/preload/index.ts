@@ -33,6 +33,7 @@ export interface IElectronAPI {
   getScreenTrackingStatus: () => Promise<{ enabled: boolean; recentActivities: any[] }>
   toggleScreenTracking: (enable?: boolean) => Promise<{ enabled: boolean; recentActivities: any[] }>
   getRecentScreenActivities: (limit?: number) => Promise<any[]>
+  generateEmbedding: (text: string) => Promise<number[] | null>
 }
 
 const electronAPI: IElectronAPI = {
@@ -97,7 +98,8 @@ const electronAPI: IElectronAPI = {
   getDayReconstruction: (targetDateMs) => ipcRenderer.invoke('qevra:get-day-reconstruction', targetDateMs),
   getScreenTrackingStatus: () => ipcRenderer.invoke('qevra:get-screen-tracking-status'),
   toggleScreenTracking: (enable) => ipcRenderer.invoke('qevra:toggle-screen-tracking', enable),
-  getRecentScreenActivities: (limit) => ipcRenderer.invoke('qevra:get-recent-screen-activities', limit)
+  getRecentScreenActivities: (limit) => ipcRenderer.invoke('qevra:get-recent-screen-activities', limit),
+  generateEmbedding: (text) => ipcRenderer.invoke('qevra:generate-embedding', text)
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)

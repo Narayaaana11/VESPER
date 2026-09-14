@@ -85,6 +85,19 @@ export class LocalVectorRAG {
       return this.customEmbedder(clean)
     }
 
+    // In Electron renderer, delegate embedding generation to Main Process via IPC
+    // (Native file system access to resources/models/transformers-cache, 0 HTTP fetch overhead)
+    if (typeof window !== 'undefined' && (window as any).electronAPI?.generateEmbedding) {
+      try {
+        const ipcVector = await (window as any).electronAPI.generateEmbedding(clean)
+        if (ipcVector && Array.isArray(ipcVector)) {
+          return ipcVector
+        }
+      } catch (ipcErr) {
+        console.warn('[LocalVectorRAG] Electron IPC embedding fallback:', ipcErr)
+      }
+    }
+
     try {
       if (!this.extractor) {
         const ok = await this.init()

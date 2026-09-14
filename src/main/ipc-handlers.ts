@@ -343,4 +343,29 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       return { success: false, error: err.message }
     }
   })
+
+  // 7. Generate Dense Vector Embeddings locally in Main Process via Transformers.js
+  let mainExtractor: any = null
+  ipcMain.handle('qevra:generate-embedding', async (_, text: string) => {
+    try {
+      if (!text || !text.trim()) return null
+      if (!mainExtractor) {
+        const { pipeline, env } = await import('@xenova/transformers')
+        env.allowLocalModels = true
+        env.allowRemoteModels = false
+        env.cacheDir = path.join(process.cwd(), 'resources', 'models', 'transformers-cache')
+        mainExtractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+          quantized: true
+        })
+      }
+      const output = await mainExtractor(text.trim(), { pooling: 'mean', normalize: true })
+      if (output && output.data) {
+        return Array.from(output.data)
+      }
+      return null
+    } catch (err: any) {
+      console.warn('[QEVRA Main] Local vector embed error:', err)
+      return null
+    }
+  })
 }
