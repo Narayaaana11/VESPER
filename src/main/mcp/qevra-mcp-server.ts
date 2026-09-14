@@ -1,8 +1,9 @@
 import http from 'http'
 import readline from 'readline'
+import path from 'path'
 import { ContextStore } from '../context/context-store'
 import { ContextCollector } from '../context/context-collector'
-import { SearchUserContextOptions } from '../context/context-types'
+import { SearchUserContextOptions, DeviceContext } from '../context/context-types'
 
 export interface McpToolDefinition {
   name: string
@@ -226,6 +227,67 @@ Receipt: ${receipt.formatted}
   }
 
   /**
+   * Ingests rich IDE/Browser companion context (active file, cursor line, selection, git branch)
+   */
+  public async ingestExternalContext(payload: {
+    source?: string
+    file?: string
+    filePath?: string
+    cursor?: { line: number; col: number }
+    selection?: string
+    project?: string
+    activeApp?: string
+    url?: string
+  }): Promise<any> {
+    const activeApp =
+      payload.activeApp ||
+      (payload.source === 'vscode'
+        ? 'VS Code'
+        : payload.source === 'chrome'
+          ? 'Google Chrome'
+          : 'Editor')
+    const fileName = payload.file || (payload.filePath ? path.basename(payload.filePath) : '')
+    const title = fileName
+      ? `${fileName} - ${payload.project || 'Project'} - ${activeApp}`
+      : payload.url || `${activeApp} Workspace`
+
+    const deviceContext: DeviceContext = {
+      activeApp,
+      windowTitle: title,
+      category: payload.source === 'chrome' ? 'browser' : 'code',
+      projectWorkspace: payload.project,
+      activeFile: payload.filePath || payload.file,
+      clipboardContent: payload.selection,
+      confidence: 1.0,
+      timestamp: Date.now(),
+      sourceInfo: {
+        source: (payload.source as any) || 'ide_extension',
+        capturedAt: Date.now()
+      }
+    }
+
+    // Ingest into SQLite Context Store
+    this.store.insertEvent({
+      id: `evt_ext_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      type: 'CONTEXT_UPDATED',
+      timestamp: Date.now(),
+      context: deviceContext,
+      payload: {
+        cursor: payload.cursor,
+        selection: payload.selection,
+        filePath: payload.filePath,
+        url: payload.url
+      }
+    })
+
+    return {
+      activeApp: deviceContext.activeApp,
+      file: deviceContext.activeFile,
+      project: deviceContext.projectWorkspace
+    }
+  }
+
+  /**
    * Starts local HTTP server for SSE / HTTP MCP clients (Cursor, Web, Curl)
    */
   public startHttpServer(port = 32123): void {
@@ -250,6 +312,23 @@ Receipt: ${receipt.formatted}
         return
       }
 
+      if (req.url === '/api/context/feed' && req.method === 'POST') {
+        let body = ''
+        req.on('data', (chunk) => (body += chunk))
+        req.on('end', async () => {
+          try {
+            const payload = JSON.parse(body)
+            const result = await this.ingestExternalContext(payload)
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ success: true, ingested: result }))
+          } catch (err: any) {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ success: false, error: err?.message || 'Invalid JSON' }))
+          }
+        })
+        return
+      }
+
       if (req.url === '/mcp' && req.method === 'POST') {
         let body = ''
         req.on('data', (chunk) => (body += chunk))
@@ -268,7 +347,7 @@ Receipt: ${receipt.formatted}
       }
 
       res.writeHead(404, { 'Content-Type': 'text/plain' })
-      res.end('QEVRA MCP Server. Connect via POST /mcp or stdio.')
+      res.end('QEVRA MCP Server. Connect via POST /mcp, POST /api/context/feed or stdio.')
     })
 
     this.httpServer.listen(this.port, '127.0.0.1', () => {

@@ -91,35 +91,55 @@ export async function executeAction(
     // 3. Small delay to allow foreground window to keep/regain active caret
     await new Promise((resolve) => setTimeout(resolve, 60))
 
-    // 4. Primary: Native Windows SendInput binary (3.8x faster, sub-100ms)
-    // Fallback: PowerShell WScript.Shell
+    // 4. Primary: Platform-aware native keystroke injection
     let injected = false
-    try {
-      const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
-      const nativePaths = [
-        join(appPath, 'src/main/send-input.exe'),
-        join(appPath, 'out/main/send-input.exe'),
-        join(__dirname, 'send-input.exe'),
-        join(__dirname, '../send-input.exe'),
-        join(process.cwd(), 'src/main/send-input.exe')
-      ]
-      const nativeExe = nativePaths.find((p) => existsSync(p))
+    const platform = process.platform
 
-      if (nativeExe) {
-        const targetArgs = targetContext?.hwnd ? [targetContext.hwnd.toString()] : []
-        await execFileAsync(nativeExe, targetArgs, { timeout: 1500 })
+    if (platform === 'win32') {
+      try {
+        const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
+        const nativePaths = [
+          join(appPath, 'src/main/send-input.exe'),
+          join(appPath, 'out/main/send-input.exe'),
+          join(__dirname, 'send-input.exe'),
+          join(__dirname, '../send-input.exe'),
+          join(process.cwd(), 'src/main/send-input.exe')
+        ]
+        const nativeExe = nativePaths.find((p) => existsSync(p))
+
+        if (nativeExe) {
+          const targetArgs = targetContext?.hwnd ? [targetContext.hwnd.toString()] : []
+          await execFileAsync(nativeExe, targetArgs, { timeout: 1500 })
+          injected = true
+        }
+      } catch (err) {
+        console.warn('[QEVRA Native Input] Native injector warning, using PowerShell fallback:', err)
+      }
+
+      if (!injected) {
+        const psCommand = `powershell -NoProfile -Command "(New-Object -ComObject WScript.Shell).SendKeys('^v')"`
+        await execAsync(psCommand, { timeout: 3000 })
         injected = true
       }
-    } catch (err) {
-      console.warn('[QEVRA Native Input] Native injector warning, using PowerShell fallback:', err)
+    } else if (platform === 'darwin') {
+      // macOS AppleScript Command+V injection
+      try {
+        await execAsync(`osascript -e 'tell application "System Events" to keystroke "v" using command down'`, { timeout: 2000 })
+        injected = true
+      } catch (macErr) {
+        console.warn('[QEVRA Native Input] macOS osascript injection fallback notice:', macErr)
+      }
+    } else if (platform === 'linux') {
+      // Linux xdotool Ctrl+V injection
+      try {
+        await execAsync(`xdotool key --clearmodifiers ctrl+v`, { timeout: 2000 })
+        injected = true
+      } catch (linuxErr) {
+        console.warn('[QEVRA Native Input] Linux xdotool injection fallback notice:', linuxErr)
+      }
     }
 
-    if (!injected) {
-      const psCommand = `powershell -NoProfile -Command "(New-Object -ComObject WScript.Shell).SendKeys('^v')"`
-      await execAsync(psCommand, { timeout: 3000 })
-    }
-
-    console.log(`[QEVRA Main] [OK] Injected via ${injected ? 'native send-input.exe' : 'PowerShell'} into "${targetContext?.activeApp || 'active window'}" (${content.length} chars)`)
+    console.log(`[QEVRA Main] [OK] Injected via ${platform === 'win32' ? (injected ? 'native send-input.exe' : 'PowerShell') : platform} into "${targetContext?.activeApp || 'active window'}" (${content.length} chars)`)
 
     return {
       success: true,

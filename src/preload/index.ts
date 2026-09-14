@@ -34,6 +34,9 @@ export interface IElectronAPI {
   toggleScreenTracking: (enable?: boolean) => Promise<{ enabled: boolean; recentActivities: any[] }>
   getRecentScreenActivities: (limit?: number) => Promise<any[]>
   generateEmbedding: (text: string) => Promise<number[] | null>
+  openCheckout: (url: string) => Promise<any>
+  activateLicense: (payload: { licenseKey: string; tier: string }) => Promise<any>
+  getSubscription: () => Promise<any>
 }
 
 const electronAPI: IElectronAPI = {
@@ -99,7 +102,10 @@ const electronAPI: IElectronAPI = {
   getScreenTrackingStatus: () => ipcRenderer.invoke('qevra:get-screen-tracking-status'),
   toggleScreenTracking: (enable) => ipcRenderer.invoke('qevra:toggle-screen-tracking', enable),
   getRecentScreenActivities: (limit) => ipcRenderer.invoke('qevra:get-recent-screen-activities', limit),
-  generateEmbedding: (text) => ipcRenderer.invoke('qevra:generate-embedding', text)
+  generateEmbedding: (text) => ipcRenderer.invoke('qevra:generate-embedding', text),
+  openCheckout: (url) => ipcRenderer.invoke('qevra:open-checkout', url),
+  activateLicense: (payload) => ipcRenderer.invoke('qevra:activate-license', payload),
+  getSubscription: () => ipcRenderer.invoke('qevra:get-subscription')
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)

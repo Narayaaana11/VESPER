@@ -367,6 +367,36 @@ export class ContextStore {
     }
   }
 
+  public setUserPreference(key: string, value: string): void {
+    if (!this.db || !key) return
+    try {
+      this.db.run(
+        `INSERT OR REPLACE INTO user_preferences (key, value, updated_at) VALUES (?, ?, ?)`,
+        [key, value, Date.now()]
+      )
+      this.scheduleDiskSave()
+    } catch (err) {
+      console.warn('[QEVRA ContextStore] Error setting user preference:', err)
+    }
+  }
+
+  public getUserPreference(key: string): string | null {
+    if (!this.db || !key) return null
+    try {
+      const stmt = this.db.prepare(`SELECT value FROM user_preferences WHERE key = ?`)
+      stmt.bind([key])
+      let val: string | null = null
+      if (stmt.step()) {
+        const row = stmt.getAsObject()
+        val = row.value as string
+      }
+      stmt.free()
+      return val
+    } catch {
+      return null
+    }
+  }
+
   /**
    * Formats an evidence receipt complying with the Littlebird standards:
    * [DayOfWeek, Month Day, Year HH:MM | App | Title]

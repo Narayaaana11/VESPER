@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { Check, Sparkles, Zap, Shield, ArrowRight, Star } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Check, Sparkles, Zap, Shield, ArrowRight, Star, Key, CheckCircle, X, ExternalLink } from 'lucide-react'
+import { SubscriptionService, SubscriptionStatus } from '../core/subscription-service'
 
 export interface PricingPlan {
   id: string
   name: string
   badge?: string
+  popular?: boolean
   description: string
   monthlyPrice: number
   annualPrice: number
-  popular?: boolean
   features: string[]
   ctaText: string
   ctaVariant: 'primary' | 'secondary' | 'gradient'
@@ -72,20 +73,46 @@ const PLANS: PricingPlan[] = [
 
 export const PricingTable: React.FC<{ onSelectPlan?: (planId: string) => void }> = ({ onSelectPlan }) => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual')
-  const [copiedCode, setCopiedCode] = useState(false)
+  const [subscription, setSubscription] = useState<SubscriptionStatus>(SubscriptionService.getSubscription)
+  const [showLicenseModal, setShowLicenseModal] = useState(false)
+  const [licenseKeyInput, setLicenseKeyInput] = useState('')
+  const [licenseFeedback, setLicenseFeedback] = useState<{ success?: boolean; message?: string } | null>(null)
+  const [actionFeedback, setActionFeedback] = useState<string | null>(null)
 
-  const handleCopyComponentCode = () => {
-    const code = `// Google Stitch-Generated Responsive Pricing Table
-export default function Pricing() {
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      {/* Pricing cards */}
-    </div>
-  )
-}`
-    navigator.clipboard.writeText(code)
-    setCopiedCode(true)
-    setTimeout(() => setCopiedCode(false), 2000)
+  useEffect(() => {
+    setSubscription(SubscriptionService.getSubscription())
+  }, [])
+
+  const handlePlanClick = async (planId: string) => {
+    onSelectPlan?.(planId)
+
+    if (planId === 'free') {
+      const updated = SubscriptionService.resetToFree()
+      setSubscription(updated)
+      setActionFeedback('Switched to Free Tier.')
+      setTimeout(() => setActionFeedback(null), 3000)
+    } else if (planId === 'pro') {
+      setActionFeedback('Opening Stripe Checkout in browser...')
+      await SubscriptionService.openCheckout('pro', billingCycle)
+      setTimeout(() => setActionFeedback(null), 3000)
+    } else if (planId === 'enterprise') {
+      setActionFeedback('Opening Enterprise consultation...')
+      await SubscriptionService.openCheckout('enterprise')
+      setTimeout(() => setActionFeedback(null), 3000)
+    }
+  }
+
+  const handleActivateLicense = async () => {
+    const res = await SubscriptionService.activateLicense(licenseKeyInput)
+    setLicenseFeedback({ success: res.success, message: res.message })
+    if (res.success && res.status) {
+      setSubscription(res.status)
+      setTimeout(() => {
+        setShowLicenseModal(false)
+        setLicenseFeedback(null)
+        setLicenseKeyInput('')
+      }, 1500)
+    }
   }
 
   return (
@@ -203,21 +230,51 @@ export default function Pricing() {
 
               {/* Action Button */}
               <button
-                onClick={() => onSelectPlan?.(plan.id)}
+                onClick={() => handlePlanClick(plan.id)}
+                disabled={subscription.tier === plan.id}
                 className={`w-full py-2.5 px-4 rounded-xl text-xs md:text-sm font-semibold transition-all flex items-center justify-center gap-2 group ${
-                  plan.ctaVariant === 'gradient'
-                    ? 'bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white hover:brightness-110 shadow-lg shadow-cyan-500/20 active:scale-[0.98]'
-                    : plan.ctaVariant === 'primary'
-                      ? 'bg-slate-100 text-slate-900 hover:bg-white active:scale-[0.98]'
-                      : 'bg-slate-800 text-slate-200 hover:bg-slate-700 active:scale-[0.98]'
+                  subscription.tier === plan.id
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-default'
+                    : plan.ctaVariant === 'gradient'
+                      ? 'bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white hover:brightness-110 shadow-lg shadow-cyan-500/20 active:scale-[0.98]'
+                      : plan.ctaVariant === 'primary'
+                        ? 'bg-slate-100 text-slate-900 hover:bg-white active:scale-[0.98]'
+                        : 'bg-slate-800 text-slate-200 hover:bg-slate-700 active:scale-[0.98]'
                 }`}
               >
-                <span>{plan.ctaText}</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                {subscription.tier === plan.id ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <span>Current Active Plan</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{plan.ctaText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </>
+                )}
               </button>
             </div>
           )
         })}
+      </div>
+
+      {/* Action Notification Banner */}
+      {actionFeedback && (
+        <div className="mt-6 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium animate-fadeIn">
+          {actionFeedback}
+        </div>
+      )}
+
+      {/* License Key Activation Option */}
+      <div className="mt-6 text-center">
+        <button
+          onClick={() => setShowLicenseModal(true)}
+          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
+        >
+          <Key className="w-3.5 h-3.5" />
+          <span>Already have a license key? Activate Pro or Enterprise</span>
+        </button>
       </div>
 
       {/* Footer Meta Details */}
@@ -226,6 +283,74 @@ export default function Pricing() {
         <span>✓ Cancel anytime with 1-click</span>
         <span>✓ Local models are 100% offline & free forever</span>
       </div>
+
+      {/* License Key Activation Modal */}
+      {showLicenseModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button
+              onClick={() => {
+                setShowLicenseModal(false)
+                setLicenseFeedback(null)
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+                <Key className="w-4 h-4" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Activate QEVRA License</h3>
+            </div>
+
+            <p className="text-xs text-slate-400 mb-4">
+              Enter your subscription license key received via email or enterprise procurement.
+            </p>
+
+            <input
+              type="text"
+              placeholder="e.g. QEVRA-PRO-XXXX-XXXX"
+              value={licenseKeyInput}
+              onChange={(e) => setLicenseKeyInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleActivateLicense()}
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-500 mb-3"
+            />
+
+            {licenseFeedback && (
+              <div
+                className={`p-2.5 rounded-xl text-xs mb-3 flex items-center gap-2 ${
+                  licenseFeedback.success
+                    ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+                    : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
+                }`}
+              >
+                {licenseFeedback.success && <CheckCircle className="w-3.5 h-3.5 shrink-0" />}
+                <span>{licenseFeedback.message}</span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-2 mt-4">
+              <button
+                onClick={() => {
+                  setShowLicenseModal(false)
+                  setLicenseFeedback(null)
+                }}
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleActivateLicense}
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:brightness-110 shadow-md shadow-cyan-500/20"
+              >
+                Activate License
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, app, desktopCapturer } from 'electron'
+import { ipcMain, BrowserWindow, app, desktopCapturer, shell } from 'electron'
 import { getActiveWindowContext } from './context-detector'
 import { executeAction } from './action-executor'
 import { registerGlobalShortcuts } from './hotkey'
@@ -176,6 +176,35 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
   // 1l. Day reconstruction (Littlebird day-reconstructor routine parity)
   ipcMain.handle('qevra:get-day-reconstruction', async (_, targetDateMs) => {
     return ContextManager.getInstance().getDayReconstruction(targetDateMs)
+  })
+
+  // 1m. Subscription, Stripe checkout & license activation
+  ipcMain.handle('qevra:open-checkout', async (_, checkoutUrl: string) => {
+    if (checkoutUrl) {
+      await shell.openExternal(checkoutUrl)
+      return { success: true }
+    }
+    return { success: false, message: 'Invalid checkout URL' }
+  })
+
+  ipcMain.handle('qevra:activate-license', async (_, { licenseKey, tier }: { licenseKey: string; tier: string }) => {
+    try {
+      ContextStore.getInstance().setUserPreference('license_key', licenseKey)
+      ContextStore.getInstance().setUserPreference('subscription_tier', tier)
+      return { success: true, licenseKey, tier }
+    } catch (err: any) {
+      return { success: false, message: err?.message || 'Failed to save license key' }
+    }
+  })
+
+  ipcMain.handle('qevra:get-subscription', async () => {
+    try {
+      const key = ContextStore.getInstance().getUserPreference('license_key')
+      const tier = ContextStore.getInstance().getUserPreference('subscription_tier') || 'free'
+      return { tier, licenseKey: key || undefined, isActive: true }
+    } catch {
+      return { tier: 'free', isActive: true }
+    }
   })
 
   // 1m. Ambient screen tracking status & control (Screenpipe/Littlebird parity)

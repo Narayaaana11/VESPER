@@ -1,0 +1,59 @@
+appId: com.qevra.desktop
+productName: QEVRA
+copyright: Copyright © 2026 QEVRA Team
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - out/**/*
+  - node_modules/**/*
+  - package.json
+  - resources/models/**/*
+
+extraResources:
+  - from: src/main/detect-window.exe
+    to: out/main/detect-window.exe
+  - from: src/main/send-input.exe
+    to: out/main/send-input.exe
+  - from: node_modules/node-global-key-listener/bin/WinKeyServer.exe
+    to: out/bin/WinKeyServer.exe
+  - from: resources/models/silero_vad.onnx
+    to: resources/models/silero_vad.onnx
+  - from: resources/models/transformers-cache
+    to: resources/models/transformers-cache
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  executableName: QEVRA
+  artifactName: "${productName}-Setup-${version}.${ext}"
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: QEVRA Flow
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.productivity
+
+linux:
+  target:
+    - AppImage
+    - tar.gz
+  category: Utility

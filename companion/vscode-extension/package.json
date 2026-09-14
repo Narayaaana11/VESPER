@@ -1,0 +1,25 @@
+{
+  "name": "qevra-companion",
+  "displayName": "QEVRA Context Companion",
+  "description": "Zero-overhead companion extension streaming IDE cursor, active file, and AST context to QEVRA",
+  "version": "0.1.0",
+  "publisher": "qevra",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "qevra.syncContext",
+        "title": "QEVRA: Sync Active Editor Context"
+      }
+    ]
+  }
+}
