@@ -36,3 +36,7 @@ ehthumbs.db
 # IDE configuration
 .vscode/
 .idea/
+
+# Local Model Weights & Transformers Cache
+resources/models/transformers-cache/
+*.onnx
