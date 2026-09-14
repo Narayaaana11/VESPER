@@ -22,11 +22,13 @@ import {
   AlertCircle,
   ClipboardCheck,
   Activity,
-  MessageSquare
+  MessageSquare,
+  Sparkles
 } from 'lucide-react'
 import { AuditVerificationForm } from './AuditVerificationForm'
 import { ContextHub } from './ContextHub'
 import { ContextChat } from './ContextChat'
+import { PricingTable } from './PricingTable'
 import {
   DictationHistoryItem,
   VoiceSnippet,
@@ -56,7 +58,7 @@ interface WisprFlowDashboardProps {
   standalone?: boolean
 }
 
-type TabType = 'context' | 'chat' | 'history' | 'dictionary' | 'snippets' | 'style' | 'settings' | 'audit'
+type TabType = 'context' | 'chat' | 'pricing' | 'history' | 'dictionary' | 'snippets' | 'style' | 'settings' | 'audit'
 
 const DEFAULT_SETTINGS: AppSettings = {
   hotkey: 'CommandOrControl+Shift+Space',
@@ -371,6 +373,14 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
             >
               <MessageSquare size={15} />
               <span>AI Memory Chat</span>
+            </button>
+
+            <button
+              className={`wfd-nav-link ${currentTab === 'pricing' ? 'is-active' : ''}`}
+              onClick={() => setCurrentTab('pricing')}
+            >
+              <Sparkles size={15} />
+              <span>Stitch Studio</span>
             </button>
 
             <button
@@ -995,6 +1005,13 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* TAB: STITCH STUDIO / PRICING TABLE (Google Stitch Design Paradigm) */}
+          {currentTab === 'pricing' && (
+            <div className="w-full flex-1 overflow-y-auto bg-slate-950/80 rounded-2xl border border-slate-800/60 p-2">
+              <PricingTable onSelectPlan={(id) => console.log('Selected pricing plan:', id)} />
             </div>
           )}
 
