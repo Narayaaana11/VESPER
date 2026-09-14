@@ -25,10 +25,10 @@ export const SmartQAOverlay: React.FC<SmartQAOverlayProps> = ({ question, onSele
     <div className="wf-qa-card">
       <div className="wf-qa-top">
         <div className="wf-qa-question">
-          <Sparkles size={14} color="#8b5cf6" />
+          <Sparkles size={13} color="#818cf8" />
           <span>{question.question}</span>
         </div>
-        <div className="wf-qa-hint">Press 1-4 or click</div>
+        <div className="wf-qa-hint">Press 1-4</div>
       </div>
 
       <div className="wf-qa-grid">
@@ -42,7 +42,7 @@ export const SmartQAOverlay: React.FC<SmartQAOverlayProps> = ({ question, onSele
             <span>{opt.label}</span>
             {opt.isRecommended && (
               <span style={{ marginLeft: 'auto', fontSize: '9px', color: '#10b981' }}>
-                Suggested
+                Recommended
               </span>
             )}
           </button>

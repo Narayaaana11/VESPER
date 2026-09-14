@@ -41,8 +41,8 @@ export const AgentApprovalCard: React.FC<AgentApprovalCardProps> = ({
       {/* Header with App Badge & Context */}
       <div className="wf-approval-header">
         <div className="wf-approval-title">
-          <Sparkles size={14} color="var(--wf-accent-violet)" />
-          <span>Autonomous Agent Proposal</span>
+          <Sparkles size={13} color="#818cf8" />
+          <span>Screen Copilot Proposal</span>
           <span className="wf-target-app-pill">{proposal.targetApp}</span>
         </div>
         <div className="wf-approval-badge">{proposal.contextSummary}</div>
@@ -61,34 +61,23 @@ export const AgentApprovalCard: React.FC<AgentApprovalCardProps> = ({
             }
           }}
           rows={3}
-          placeholder="Proposed response (click to edit if needed)..."
+          placeholder="Review or edit drafted reply before sending..."
         />
       </div>
 
-      {/* Action Buttons: Approve vs Disapprove */}
+      {/* Footer Controls */}
       <div className="wf-approval-footer">
-        <span className="wf-approval-hint">
-          Press <strong>Enter</strong> to approve & send, or <strong>Esc</strong> to cancel.
-        </span>
-
+        <div className="wf-approval-hint">
+          Ctrl+Enter to Approve · Esc to Reject
+        </div>
         <div className="wf-approval-actions">
-          <button
-            className="wf-approval-btn wf-btn-reject"
-            onClick={onDisapprove}
-            title="Reject proposal and cancel"
-          >
-            <X size={14} />
-            <span>Disapprove</span>
+          <button className="wf-approval-btn wf-btn-reject" onClick={onDisapprove}>
+            <X size={12} />
+            <span>Discard</span>
           </button>
-
-          <button
-            className="wf-approval-btn wf-btn-approve"
-            onClick={() => onApprove(currentText)}
-            title="Approve and paste into active window"
-          >
-            <Check size={14} strokeWidth={3} />
-            <Send size={12} style={{ marginLeft: 2 }} />
-            <span>Approve & Send</span>
+          <button className="wf-approval-btn wf-btn-approve" onClick={() => onApprove(currentText)}>
+            <Send size={12} />
+            <span>Approve & Paste</span>
           </button>
         </div>
       </div>

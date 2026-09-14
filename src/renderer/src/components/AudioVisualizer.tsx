@@ -7,39 +7,35 @@ interface AudioVisualizerProps {
 }
 
 /**
- * AI Chat 8 inspired Audio Levels Waveform
- * Features rounded pill-shaped bars and dots that organically expand from the center
- * based on live voice levels (React Bits Pro aesthetic).
+ * Minimalist Monochromatic Waveform
+ * Features slender vertical capsules with smooth center-weighted height expansion.
  */
 export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
   isRecording,
   audioLevel,
-  barCount = 22
+  barCount = 18
 }) => {
-  // Symmetrical center-weighted distribution matching AI Chat 8 waveform
   const weights = useMemo(() => {
     return Array.from({ length: barCount }, (_, i) => {
       const center = (barCount - 1) / 2
       const dist = Math.abs(i - center) / center
-      const bell = Math.exp(-Math.pow(dist * 1.7, 2))
-      const rippleMod = 0.7 + 0.3 * Math.sin((i / barCount) * Math.PI * 3.5)
-      return Math.max(0.18, Math.min(1.0, bell * 0.75 + rippleMod * 0.25))
+      const bell = Math.exp(-Math.pow(dist * 1.8, 2))
+      return Math.max(0.2, Math.min(1.0, bell))
     })
   }, [barCount])
 
   return (
     <div className="reactbits-waveform-container" title="Audio Levels">
       {weights.map((w, idx) => {
-        let height = 5
-        let opacity = 0.35
+        let height = 4
+        let opacity = 0.25
 
         if (isRecording) {
-          const now = Date.now() / 140
-          const ripple = Math.sin(now + idx * 0.45) * 0.25 + 0.75
-          // Expands dynamically from circular dot (5px) to tall rounded capsule (up to 24px)
-          const dynamicHeight = 5 + audioLevel * 22 * w * ripple
-          height = Math.max(5, Math.min(24, Math.round(dynamicHeight)))
-          opacity = Math.max(0.4, Math.min(1.0, 0.45 + audioLevel * 0.55 * w + ripple * 0.1))
+          const now = Date.now() / 150
+          const ripple = Math.sin(now + idx * 0.4) * 0.2 + 0.8
+          const dynamicHeight = 4 + audioLevel * 18 * w * ripple
+          height = Math.max(4, Math.min(22, Math.round(dynamicHeight)))
+          opacity = Math.max(0.35, Math.min(0.95, 0.4 + audioLevel * 0.55 * w))
         }
 
         return (

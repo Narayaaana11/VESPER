@@ -893,10 +893,10 @@ export const App: React.FC = () => {
             <button
               className="wf-popover-item"
               style={{
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(99, 102, 241, 0.12) 100%)',
-                border: '1px solid rgba(139, 92, 246, 0.35)',
-                color: '#ffffff',
-                fontWeight: 600
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid var(--wf-border)',
+                color: 'var(--wf-text-primary)',
+                fontWeight: 500
               }}
               onClick={() => {
                 setShowMenu(false)
@@ -908,10 +908,10 @@ export const App: React.FC = () => {
               }}
             >
               <div className="wf-popover-item-left">
-                <LayoutDashboard size={14} color="#a78bfa" />
+                <LayoutDashboard size={13} style={{ color: 'var(--wf-accent-light)' }} />
                 <span>Open Flow Dashboard</span>
               </div>
-              <ArrowUpRight size={13} color="#a78bfa" />
+              <ArrowUpRight size={12} style={{ color: 'var(--wf-text-muted)' }} />
             </button>
 
             <div className="wf-popover-divider" />
@@ -931,7 +931,7 @@ export const App: React.FC = () => {
               <div className="wf-popover-item-left">
                 <span>{settings.dictationMode === 'direct' ? '🎙️ Direct Dictation' : '🤖 Smart Assistant'}</span>
               </div>
-              <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700 }}>✓ ACTIVE</span>
+              <span style={{ fontSize: '9px', color: 'var(--wf-success)', fontWeight: 600, letterSpacing: '0.04em' }}>ACTIVE</span>
             </button>
 
             <div className="wf-popover-divider" />
@@ -944,7 +944,7 @@ export const App: React.FC = () => {
               }}
             >
               <div className="wf-popover-item-left">
-                <Sparkles size={13} color="#a78bfa" />
+                <Sparkles size={13} style={{ color: 'var(--wf-accent-light)' }} />
                 <span>System Audit & Verification</span>
               </div>
             </button>
@@ -964,7 +964,7 @@ export const App: React.FC = () => {
 
             <button
               className="wf-popover-item"
-              style={{ color: '#f87171' }}
+              style={{ color: '#ef4444' }}
               onClick={() => {
                 setShowMenu(false)
                 window.electronAPI?.quitApp()
@@ -985,27 +985,27 @@ export const App: React.FC = () => {
               marginTop: 8,
               width: '100%',
               maxWidth: 380,
-              background: 'rgba(18, 19, 24, 0.96)',
-              border: '1px solid rgba(139, 92, 246, 0.35)',
-              borderRadius: 14,
+              background: 'rgba(13, 14, 20, 0.98)',
+              border: '1px solid var(--wf-border)',
+              borderRadius: 'var(--wf-radius-lg)',
               padding: '12px 14px',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.8)',
+              boxShadow: 'var(--wf-shadow-card)',
               backdropFilter: 'blur(24px)',
-              color: '#f4f4f5'
+              color: 'var(--wf-text-primary)'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '11px', color: '#a78bfa', fontWeight: 600 }}>
-                <Sparkles size={13} /> Ambient Answer
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '11px', color: 'var(--wf-accent-light)', fontWeight: 600 }}>
+                <Sparkles size={12} /> Ambient Answer
               </span>
               <button
                 onClick={() => setQueryResult(null)}
-                style={{ background: 'none', border: 'none', color: '#71717a', cursor: 'pointer', padding: 2 }}
+                style={{ background: 'none', border: 'none', color: 'var(--wf-text-muted)', cursor: 'pointer', padding: 2 }}
               >
-                <X size={13} />
+                <X size={12} />
               </button>
             </div>
-            <div style={{ fontSize: '12px', lineHeight: 1.45, color: '#e4e4e7', marginBottom: 10 }}>
+            <div style={{ fontSize: '12px', lineHeight: 1.5, color: 'var(--wf-text-secondary)', marginBottom: 10 }}>
               {queryResult.answer}
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
@@ -1015,12 +1015,10 @@ export const App: React.FC = () => {
                   setQueryResult(null)
                   if (overlayMode === 'compact') window.electronAPI?.hideHUD()
                 }}
+                className="wf-btn-primary"
                 style={{
-                  background: 'rgba(139, 92, 246, 0.25)',
-                  border: '1px solid rgba(139, 92, 246, 0.5)',
-                  color: '#c4b5fd',
-                  borderRadius: 6,
-                  padding: '4px 9px',
+                  borderRadius: 'var(--wf-radius-sm)',
+                  padding: '5px 10px',
                   fontSize: '11px',
                   fontWeight: 500,
                   cursor: 'pointer'
@@ -1034,12 +1032,10 @@ export const App: React.FC = () => {
                   setExecutionStatus('Copied!')
                   setTimeout(() => setExecutionStatus(null), 1000)
                 }}
+                className="wf-btn-ghost"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  color: '#d4d4d8',
-                  borderRadius: 6,
-                  padding: '4px 9px',
+                  borderRadius: 'var(--wf-radius-sm)',
+                  padding: '5px 10px',
                   fontSize: '11px',
                   cursor: 'pointer'
                 }}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sparkles, Code, MessageSquare, Globe, FileText, Monitor } from 'lucide-react'
+import { Code, MessageSquare, Globe, FileText, Monitor } from 'lucide-react'
 import { SystemContext } from '../types/task'
 
 interface ContextBadgeProps {
@@ -8,17 +8,19 @@ interface ContextBadgeProps {
 
 export const ContextBadge: React.FC<ContextBadgeProps> = ({ context }) => {
   const getIcon = () => {
+    const size = 11
+    const color = '#94a3b8'
     switch (context.detectedCategory) {
       case 'code':
-        return <Code size={11} color="#38bdf8" />
+        return <Code size={size} color={color} />
       case 'communication':
-        return <MessageSquare size={11} color="#a855f7" />
+        return <MessageSquare size={size} color={color} />
       case 'browser':
-        return <Globe size={11} color="#22c55e" />
+        return <Globe size={size} color={color} />
       case 'document':
-        return <FileText size={11} color="#f59e0b" />
+        return <FileText size={size} color={color} />
       default:
-        return <Monitor size={11} color="#94a3b8" />
+        return <Monitor size={size} color={color} />
     }
   }
 

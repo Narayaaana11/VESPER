@@ -360,18 +360,16 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
             <button
               className={`wfd-nav-link ${currentTab === 'context' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('context')}
-              style={{ color: currentTab === 'context' ? '#34d399' : undefined }}
             >
-              <Activity size={16} color={currentTab === 'context' ? '#34d399' : undefined} />
+              <Activity size={15} />
               <span>Context & Screen</span>
             </button>
 
             <button
               className={`wfd-nav-link ${currentTab === 'chat' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('chat')}
-              style={{ color: currentTab === 'chat' ? '#38bdf8' : undefined }}
             >
-              <MessageSquare size={16} color={currentTab === 'chat' ? '#38bdf8' : undefined} />
+              <MessageSquare size={15} />
               <span>AI Memory Chat</span>
             </button>
 
@@ -379,7 +377,7 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               className={`wfd-nav-link ${currentTab === 'history' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('history')}
             >
-              <Clock size={16} />
+              <Clock size={15} />
               <span>History</span>
               {history.length > 0 && <span className="wfd-nav-badge">{history.length}</span>}
             </button>
@@ -388,7 +386,7 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               className={`wfd-nav-link ${currentTab === 'dictionary' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('dictionary')}
             >
-              <BookOpen size={16} />
+              <BookOpen size={15} />
               <span>Dictionary</span>
               {vocabulary.length > 0 && <span className="wfd-nav-badge">{vocabulary.length}</span>}
             </button>
@@ -397,7 +395,7 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               className={`wfd-nav-link ${currentTab === 'snippets' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('snippets')}
             >
-              <Zap size={16} />
+              <Zap size={15} />
               <span>Snippets</span>
               {snippets.length > 0 && <span className="wfd-nav-badge">{snippets.length}</span>}
             </button>
@@ -406,7 +404,7 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               className={`wfd-nav-link ${currentTab === 'style' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('style')}
             >
-              <Sliders size={16} />
+              <Sliders size={15} />
               <span>Style</span>
             </button>
 
@@ -414,16 +412,15 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               className={`wfd-nav-link ${currentTab === 'settings' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('settings')}
             >
-              <SettingsIcon size={16} />
+              <SettingsIcon size={15} />
               <span>Settings</span>
             </button>
 
             <button
               className={`wfd-nav-link ${currentTab === 'audit' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('audit')}
-              style={{ color: currentTab === 'audit' ? '#a78bfa' : '#c4b5fd' }}
             >
-              <ClipboardCheck size={16} color="#a78bfa" />
+              <ClipboardCheck size={15} />
               <span>Audit & Verify</span>
             </button>
           </div>

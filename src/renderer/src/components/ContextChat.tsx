@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, Bot, User, Copy, Check, Clock, Layers, ArrowRight } from 'lucide-react'
+import { Send, Sparkles, Copy, Check, ArrowRight } from 'lucide-react'
 import { AppSettings } from '../types/task'
 
 interface ContextChatProps {
@@ -27,7 +27,7 @@ export const ContextChat: React.FC<ContextChatProps> = ({ settings, activeApp = 
     {
       id: 'welcome',
       role: 'assistant',
-      content: `Hello! I am your ambient context assistant. I have direct access to your local SQLite memory, screen activity, and active applications. You can ask me what you were doing, to summarize your work, or to find specific context from earlier today.`,
+      content: `Hello! I am your ambient context assistant. I have access to your local SQLite memory, screen activity, and active applications. You can ask me what you were doing, to summarize your work, or to retrieve specific context from earlier today.`,
       timestamp: Date.now()
     }
   ])
@@ -99,39 +99,64 @@ Rules:
 3. If no evidence exists for something, clearly state that you do not see records of it.
 4. Be direct, professional, and helpful.`
 
-      const apiKey = settings.apiKey
-      if (apiKey) {
-        const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              ...messages.map((m) => ({ role: m.role, content: m.content })),
-              { role: 'user', content: query }
-            ],
-            temperature: 0.3,
-            max_tokens: 600
+      const apiKey = settings.apiKey || ''
+      if (settings.aiProvider === 'ollama') {
+        try {
+          const res = await fetch(`${settings.ollamaEndpoint || 'http://localhost:11434'}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: settings.ollamaModel || 'llama3.2',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: query }
+              ],
+              stream: false
+            })
           })
-        })
-
-        if (resp.ok) {
-          const data = await resp.json()
-          replyContent = data.choices?.[0]?.message?.content || ''
-        } else {
-          const errData = await resp.json().catch(() => ({}))
-          replyContent = `Error querying AI provider: ${errData?.error?.message || resp.statusText}`
+          if (res.ok) {
+            const data = await res.json()
+            replyContent = data.message?.content || ''
+          }
+        } catch (e) {
+          console.warn('[Ollama ContextChat error]', e)
         }
-      } else {
-        replyContent = `Please configure your Groq API key in Settings to chat with ambient memory.`
+      }
+
+      if (!replyContent && apiKey) {
+        try {
+          const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: 'llama-3.3-70b-versatile',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: query }
+              ],
+              temperature: 0.2
+            })
+          })
+          if (res.ok) {
+            const data = await res.json()
+            replyContent = data.choices?.[0]?.message?.content || ''
+          }
+        } catch (e) {
+          console.warn('[Groq ContextChat error]', e)
+        }
+      }
+
+      if (!replyContent) {
+        replyContent = contextEvidence
+          ? `Based on your recent ambient memory records:\n\n${contextEvidence}\n\n(Add your Groq API key in Settings to synthesize conversational answers.)`
+          : `I checked your ambient memory for "${query}", but found no matching records in the local SQLite database.`
       }
 
       const assistantMsg: ChatMessage = {
-        id: `ast_${Date.now()}`,
+        id: `asst_${Date.now()}`,
         role: 'assistant',
         content: replyContent,
         timestamp: Date.now(),
@@ -144,7 +169,7 @@ Rules:
         {
           id: `err_${Date.now()}`,
           role: 'assistant',
-          content: `Failed to process query: ${err?.message || 'Unknown error'}`,
+          content: `Unable to query ambient memory: ${err?.message || 'Unknown error'}`,
           timestamp: Date.now()
         }
       ])
@@ -160,9 +185,9 @@ Rules:
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 520, padding: '20px 24px', color: '#f4f4f5' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 480, color: '#f8fafc' }}>
       {/* Messages Container */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14, paddingRight: 6 }}>
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingRight: 4 }}>
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -173,42 +198,37 @@ Rules:
               maxWidth: '82%'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-              {msg.role === 'user' ? (
-                <span style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 600 }}>You</span>
-              ) : (
-                <span style={{ fontSize: '11px', color: '#a78bfa', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <Sparkles size={12} /> QEVRA Memory
-                </span>
-              )}
-              <span style={{ fontSize: '10px', color: '#71717a' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+              <span style={{ fontSize: '10.5px', color: msg.role === 'user' ? '#94a3b8' : '#818cf8', fontWeight: 550 }}>
+                {msg.role === 'user' ? 'You' : 'QEVRA Memory'}
+              </span>
+              <span style={{ fontSize: '9.5px', color: '#64748b' }}>
                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
 
             <div
               style={{
-                background: msg.role === 'user' ? 'linear-gradient(135deg, #7c3aed 0%, #6366f1 100%)' : 'rgba(24, 25, 32, 0.9)',
-                border: msg.role === 'user' ? '1px solid rgba(167, 139, 250, 0.4)' : '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 12,
-                padding: '12px 16px',
-                fontSize: '13px',
+                background: msg.role === 'user' ? 'rgba(99, 102, 241, 0.14)' : 'rgba(255, 255, 255, 0.025)',
+                border: msg.role === 'user' ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: 8,
+                padding: '10px 14px',
+                fontSize: '12.5px',
                 lineHeight: 1.5,
-                color: '#f4f4f5',
-                whiteSpace: 'pre-wrap',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+                color: '#f8fafc',
+                whiteSpace: 'pre-wrap'
               }}
             >
               {msg.content}
 
               {msg.receipts && msg.receipts.length > 0 && (
-                <div style={{ marginTop: 10, paddingTop: 8, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                  <div style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 600, marginBottom: 4 }}>
-                    VERIFIED CONTEXT RECEIPTS:
+                <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                  <div style={{ fontSize: '9.5px', color: '#64748b', fontWeight: 600, marginBottom: 3 }}>
+                    RECEIPTS:
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     {msg.receipts.map((r, idx) => (
-                      <span key={idx} style={{ fontSize: '10px', color: '#38bdf8', fontFamily: 'monospace' }}>
+                      <span key={idx} style={{ fontSize: '9.5px', color: '#818cf8', fontFamily: 'var(--font-mono)' }}>
                         {r}
                       </span>
                     ))}
@@ -217,13 +237,13 @@ Rules:
               )}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', marginTop: 3 }}>
+            <div style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', marginTop: 2 }}>
               <button
                 onClick={() => handleCopy(msg.content, msg.id)}
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: copiedId === msg.id ? '#34d399' : '#71717a',
+                  color: copiedId === msg.id ? '#34d399' : '#64748b',
                   fontSize: '10px',
                   display: 'flex',
                   alignItems: 'center',
@@ -233,7 +253,7 @@ Rules:
                 }}
               >
                 {copiedId === msg.id ? <Check size={11} /> : <Copy size={11} />}
-                {copiedId === msg.id ? 'Copied' : 'Copy'}
+                <span>{copiedId === msg.id ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
           </div>
@@ -241,57 +261,47 @@ Rules:
 
         {isLoading && (
           <div style={{ alignSelf: 'flex-start', maxWidth: '80%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-              <span style={{ fontSize: '11px', color: '#a78bfa', fontWeight: 600 }}>QEVRA Memory</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
+              <span style={{ fontSize: '10.5px', color: '#818cf8', fontWeight: 550 }}>QEVRA Memory</span>
             </div>
             <div
               style={{
-                background: 'rgba(24, 25, 32, 0.9)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 12,
-                padding: '12px 16px',
-                fontSize: '13px',
-                color: '#a1a1aa',
+                background: 'rgba(255, 255, 255, 0.025)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: 8,
+                padding: '10px 14px',
+                fontSize: '12px',
+                color: '#94a3b8',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 8
+                gap: 6
               }}
             >
-              <Sparkles size={14} className="animate-spin" color="#a78bfa" />
-              Scanning ambient memory receipts and synthesizing answer...
+              <Sparkles size={13} color="#818cf8" />
+              Scanning ambient memory receipts...
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Suggestion Pills */}
-      <div style={{ display: 'flex', gap: 8, overflowX: 'auto', padding: '10px 0', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+      {/* Suggestion Chips */}
+      <div style={{ display: 'flex', gap: 6, overflowX: 'auto', padding: '8px 0', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
         {SUGGESTIONS.map((s, idx) => (
           <button
             key={idx}
             onClick={() => handleSend(s)}
-            style={{
-              whiteSpace: 'nowrap',
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: 20,
-              padding: '5px 12px',
-              fontSize: '11px',
-              color: '#d4d4d8',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
-            }}
+            className="wfd-chip"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}
           >
-            {s} <ArrowRight size={11} style={{ opacity: 0.6 }} />
+            <span>{s}</span>
+            <ArrowRight size={10} style={{ opacity: 0.5 }} />
           </button>
         ))}
       </div>
 
       {/* Input Field */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} style={{ display: 'flex', gap: 10, marginTop: 6 }}>
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} style={{ display: 'flex', gap: 8, marginTop: 4 }}>
         <input
           type="text"
           value={input}
@@ -300,31 +310,23 @@ Rules:
           disabled={isLoading}
           style={{
             flex: 1,
-            background: 'rgba(10, 11, 14, 0.9)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
-            borderRadius: 10,
-            padding: '11px 16px',
-            fontSize: '13px',
-            color: '#ffffff',
-            outline: 'none'
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: 7,
+            padding: '8px 12px',
+            fontSize: '12px',
+            color: '#f8fafc',
+            outline: 'none',
+            fontFamily: 'inherit'
           }}
         />
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          style={{
-            background: input.trim() ? 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)' : 'rgba(255, 255, 255, 0.08)',
-            border: 'none',
-            borderRadius: 10,
-            color: '#ffffff',
-            padding: '0 18px',
-            cursor: input.trim() ? 'pointer' : 'default',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+          className="wfd-btn-primary"
+          style={{ padding: '0 14px' }}
         >
-          <Send size={16} />
+          <Send size={13} />
         </button>
       </form>
     </div>

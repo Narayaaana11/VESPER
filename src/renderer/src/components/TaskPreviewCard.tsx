@@ -25,21 +25,21 @@ export const TaskPreviewCard: React.FC<TaskPreviewCardProps> = ({ task, onExecut
     <div className="wf-output-card">
       <div className="wf-output-header">
         <div className="wf-target-pill">
-          <Sparkles size={13} color="#06b6d4" />
-          <span>POLISHED FOR {task.targetRouting.adapter.replace('_', ' ').toUpperCase()}</span>
+          <Sparkles size={12} color="#818cf8" />
+          <span>READY FOR {task.targetRouting.adapter.replace('_', ' ').toUpperCase()}</span>
         </div>
         <button
           className="wf-btn-subtle"
-          style={{ padding: '2px 8px', fontSize: '10.5px' }}
+          style={{ padding: '2px 7px', fontSize: '10px' }}
           onClick={() => setShowJson(!showJson)}
         >
-          <Terminal size={11} />
-          <span>{showJson ? 'View Text' : 'View UTO'}</span>
+          <Terminal size={10} />
+          <span>{showJson ? 'Text' : 'UTO Schema'}</span>
         </button>
       </div>
 
       {showJson ? (
-        <pre className="wf-text-preview" style={{ color: '#a5d6ff' }}>
+        <pre className="wf-text-preview" style={{ color: '#cbd5e1' }}>
           {JSON.stringify(task, null, 2)}
         </pre>
       ) : (
@@ -49,17 +49,17 @@ export const TaskPreviewCard: React.FC<TaskPreviewCardProps> = ({ task, onExecut
       )}
 
       <div className="wf-output-actions">
-        <div style={{ fontSize: '11px', color: 'var(--wf-text-muted)' }}>
+        <div style={{ fontSize: '10.5px', color: 'var(--wf-text-subtle)' }}>
           {task.targetRouting.explanation}
         </div>
-        <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', gap: '5px' }}>
           <button className="wf-btn-subtle" onClick={handleCopy}>
-            {copied ? <Check size={13} color="#10b981" /> : <Copy size={13} />}
+            {copied ? <Check size={11} color="#10b981" /> : <Copy size={11} />}
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
           <button className="wf-btn-primary" onClick={handleInject}>
-            <Send size={13} />
-            <span>Insert</span>
+            <Send size={11} />
+            <span>Auto-Paste</span>
           </button>
         </div>
       </div>

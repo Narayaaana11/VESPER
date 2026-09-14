@@ -6,14 +6,7 @@ import {
   Layers,
   Copy,
   Check,
-  RefreshCw,
-  Eye,
-  Shield,
-  Clock,
-  Sparkles,
-  ExternalLink,
-  ChevronRight,
-  Database
+  RefreshCw
 } from 'lucide-react'
 
 interface ContextHubProps {
@@ -103,202 +96,162 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: '24px 28px', color: '#f4f4f5' }}>
-      {/* Top Banner: Ambient Status & Metrics */}
+    <div className="ch-root">
+      {/* Top Banner: Ambient Status & Controls */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'linear-gradient(135deg, rgba(30, 27, 46, 0.8) 0%, rgba(18, 19, 26, 0.9) 100%)',
-          border: '1px solid rgba(139, 92, 246, 0.3)',
-          borderRadius: 14,
-          padding: '16px 20px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+          background: 'rgba(255, 255, 255, 0.02)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          borderRadius: 10,
+          padding: '12px 16px'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div
             style={{
-              width: 42,
-              height: 42,
-              borderRadius: 10,
-              background: trackerEnabled ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-              border: `1px solid ${trackerEnabled ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`,
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              background: trackerEnabled ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.04)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: trackerEnabled ? '#34d399' : '#f87171'
+              color: trackerEnabled ? '#10b981' : '#64748b'
             }}
           >
-            <Activity size={22} />
+            <Activity size={17} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Ambient Screen & Context Engine</h2>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>
+                Ambient Screen & Context Engine
+              </span>
               <span
                 style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  padding: '2px 8px',
-                  borderRadius: 12,
-                  background: trackerEnabled ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                  color: trackerEnabled ? '#34d399' : '#f87171',
-                  border: `1px solid ${trackerEnabled ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  padding: '1px 6px',
+                  borderRadius: '9999px',
+                  background: trackerEnabled ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.05)',
+                  color: trackerEnabled ? '#34d399' : '#94a3b8'
                 }}
               >
-                {trackerEnabled ? 'LIVE RECORDING' : 'PAUSED'}
+                {trackerEnabled ? 'Active' : 'Paused'}
               </span>
             </div>
-            <p style={{ fontSize: '12px', color: '#a1a1aa', margin: '4px 0 0 0' }}>
-              Passively tracking active window titles, screen activity, and code workspaces with Littlebird evidence receipts.
-            </p>
+            <div style={{ fontSize: '11px', color: '#64748b', marginTop: 1 }}>
+              Passive window tracking, OCR receipts, and local context events.
+            </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button
             onClick={handleToggleTracker}
-            style={{
-              background: trackerEnabled ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-              border: `1px solid ${trackerEnabled ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)'}`,
-              color: trackerEnabled ? '#f87171' : '#34d399',
-              borderRadius: 8,
-              padding: '7px 14px',
-              fontSize: '12px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
+            className="wfd-btn-subtle"
+            style={{ fontSize: '11px', padding: '4px 10px' }}
           >
             {trackerEnabled ? 'Pause Tracker' : 'Resume Tracker'}
           </button>
           <button
             onClick={loadData}
             title="Refresh"
-            style={{
-              background: 'rgba(255, 255, 255, 0.06)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: 8,
-              color: '#d4d4d8',
-              padding: '7px 10px',
-              cursor: 'pointer'
-            }}
+            className="wfd-tb-btn"
           >
-            <RefreshCw size={15} />
+            <RefreshCw size={13} />
           </button>
         </div>
       </div>
 
-      {/* Stats Bar */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-        <div style={{ background: 'rgba(20, 21, 26, 0.7)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 10, padding: '12px 16px' }}>
-          <div style={{ fontSize: '11px', color: '#71717a', fontWeight: 600, textTransform: 'uppercase' }}>Active App</div>
-          <div style={{ fontSize: '15px', fontWeight: 700, marginTop: 4, color: '#e4e4e7' }}>{activeApp}</div>
+      {/* KPI Stats Grid */}
+      <div className="ch-kpi-grid">
+        <div className="ch-kpi-card">
+          <span className="ch-kpi-label">Active App</span>
+          <span className="ch-kpi-value" style={{ fontSize: '15px' }}>{activeApp}</span>
         </div>
-        <div style={{ background: 'rgba(20, 21, 26, 0.7)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 10, padding: '12px 16px' }}>
-          <div style={{ fontSize: '11px', color: '#71717a', fontWeight: 600, textTransform: 'uppercase' }}>Memory Events</div>
-          <div style={{ fontSize: '15px', fontWeight: 700, marginTop: 4, color: '#a78bfa' }}>{stats?.eventCount ?? activities.length} events</div>
+        <div className="ch-kpi-card">
+          <span className="ch-kpi-label">Context Events</span>
+          <span className="ch-kpi-value">{stats?.eventCount ?? activities.length}</span>
         </div>
-        <div style={{ background: 'rgba(20, 21, 26, 0.7)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 10, padding: '12px 16px' }}>
-          <div style={{ fontSize: '11px', color: '#71717a', fontWeight: 600, textTransform: 'uppercase' }}>Completed Tasks</div>
-          <div style={{ fontSize: '15px', fontWeight: 700, marginTop: 4, color: '#38bdf8' }}>{stats?.taskCount ?? 0} tasks</div>
-        </div>
-        <div style={{ background: 'rgba(20, 21, 26, 0.7)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 10, padding: '12px 16px' }}>
-          <div style={{ fontSize: '11px', color: '#71717a', fontWeight: 600, textTransform: 'uppercase' }}>Local SQLite DB</div>
-          <div style={{ fontSize: '15px', fontWeight: 700, marginTop: 4, color: '#34d399' }}>
+        <div className="ch-kpi-card">
+          <span className="ch-kpi-label">Local Memory DB</span>
+          <span className="ch-kpi-value">
             {stats?.dbSizeBytes ? `${(stats.dbSizeBytes / (1024 * 1024)).toFixed(2)} MB` : '100% Local'}
-          </div>
+          </span>
         </div>
       </div>
 
-      {/* Main Grid: Search & Day Reconstruction (Left) + Screen Activity Feed (Right) */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 20 }}>
+      {/* Main Grid: Search/Standup (Left) + Screen Activity Feed (Right) */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 14 }}>
         {/* Left Column: Search & Day Reconstructor */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Deep Ambient Search */}
-          <div style={{ background: 'rgba(20, 21, 26, 0.8)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 12, padding: '16px 18px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <Search size={16} color="#a78bfa" />
-              <h3 style={{ fontSize: '14px', fontWeight: 600, margin: 0 }}>Search Ambient Memory</h3>
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: 10,
+              padding: '14px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
+              <Search size={14} color="#818cf8" />
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Search Ambient Memory</span>
             </div>
-            <form onSubmit={handleSearch} style={{ display: 'flex', gap: 8 }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', gap: 6 }}>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="e.g. JWT token, App.tsx, standup notes, error 401..."
+                placeholder="Search past activities, files, or topics..."
                 style={{
                   flex: 1,
-                  background: 'rgba(10, 11, 14, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  borderRadius: 8,
-                  padding: '8px 12px',
-                  color: '#ffffff',
-                  fontSize: '13px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.07)',
+                  borderRadius: 6,
+                  padding: '6px 10px',
+                  color: '#f8fafc',
+                  fontSize: '11.5px',
                   outline: 'none'
                 }}
               />
               <button
                 type="submit"
                 disabled={isSearching}
-                style={{
-                  background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
-                  border: 'none',
-                  borderRadius: 8,
-                  color: '#ffffff',
-                  padding: '0 16px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
+                className="wfd-btn-primary"
+                style={{ fontSize: '11px', padding: '5px 12px' }}
               >
-                {isSearching ? 'Searching...' : 'Search'}
+                {isSearching ? '...' : 'Search'}
               </button>
             </form>
 
             {/* Search Results Display */}
             {searchResults && (
-              <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <div style={{ fontSize: '11px', color: '#a1a1aa', fontWeight: 600 }}>
+              <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ fontSize: '10.5px', color: '#64748b' }}>
                   Found {searchResults.results?.length || 0} matches ({searchResults.totalEventsScanned} scanned)
                 </div>
 
-                {searchResults.tableOfContents && (
-                  <pre
-                    style={{
-                      background: 'rgba(10, 11, 14, 0.9)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      borderRadius: 8,
-                      padding: 10,
-                      fontSize: '11px',
-                      color: '#c4b5fd',
-                      fontFamily: 'monospace',
-                      overflowX: 'auto',
-                      margin: 0
-                    }}
-                  >
-                    {searchResults.tableOfContents}
-                  </pre>
-                )}
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflowY: 'auto' }}>
                   {searchResults.results?.map((res: any, idx: number) => (
                     <div
                       key={idx}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: 8,
-                        padding: 10,
-                        fontSize: '12px'
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        borderRadius: 6,
+                        padding: '8px 10px',
+                        fontSize: '11.5px'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                        <span style={{ color: '#38bdf8', fontWeight: 600, fontSize: '11px' }}>{res.receipt}</span>
-                        <span style={{ color: '#fbbf24', fontSize: '10px' }}>Relevance: {'★'.repeat(res.relevanceScore)}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
+                        <span className="ch-receipt-pill">{res.receipt}</span>
+                        <span style={{ color: '#818cf8', fontSize: '10px' }}>Match</span>
                       </div>
-                      <div style={{ color: '#d4d4d8', lineHeight: 1.4 }}>{res.matchedSnippet}</div>
+                      <div style={{ color: '#cbd5e1', lineHeight: 1.4 }}>{res.matchedSnippet}</div>
                     </div>
                   ))}
                 </div>
@@ -307,64 +260,63 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
           </div>
 
           {/* Day Reconstruction / Standup Dev Log */}
-          <div style={{ background: 'rgba(20, 21, 26, 0.8)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 12, padding: '16px 18px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Calendar size={16} color="#34d399" />
-                <h3 style={{ fontSize: '14px', fontWeight: 600, margin: 0 }}>Day Reconstructor & Standup Dev Log</h3>
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: 10,
+              padding: '14px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Calendar size={14} color="#34d399" />
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Day Reconstructor</span>
               </div>
               <button
                 onClick={handleGenerateDayReconstruction}
                 disabled={isGeneratingReconstruction}
-                style={{
-                  background: 'rgba(52, 211, 153, 0.15)',
-                  border: '1px solid rgba(52, 211, 153, 0.35)',
-                  color: '#34d399',
-                  borderRadius: 6,
-                  padding: '5px 12px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
+                className="wfd-btn-subtle"
+                style={{ fontSize: '10.5px', padding: '3px 8px' }}
               >
-                {isGeneratingReconstruction ? 'Generating...' : 'Generate Today\'s Log'}
+                {isGeneratingReconstruction ? 'Synthesizing...' : 'Generate Log'}
               </button>
             </div>
 
             {dayReconstruction ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '11px', color: '#a1a1aa' }}>
-                    Coverage: {dayReconstruction.eventsAnalyzed} events across {dayReconstruction.uniqueAppsEngaged?.length || 0} apps
+                  <span style={{ fontSize: '10px', color: '#64748b' }}>
+                    Coverage: {dayReconstruction.eventsAnalyzed} events · {dayReconstruction.uniqueAppsEngaged?.length || 0} apps
                   </span>
                   <button
                     onClick={() => handleCopy(dayReconstruction.markdownSummary, 'day_log')}
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: copiedReceipt === 'day_log' ? '#34d399' : '#a1a1aa',
-                      fontSize: '11px',
+                      color: copiedReceipt === 'day_log' ? '#34d399' : '#94a3b8',
+                      fontSize: '10.5px',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 4,
                       cursor: 'pointer'
                     }}
                   >
-                    {copiedReceipt === 'day_log' ? <Check size={12} /> : <Copy size={12} />}
-                    {copiedReceipt === 'day_log' ? 'Copied' : 'Copy Markdown'}
+                    {copiedReceipt === 'day_log' ? <Check size={11} /> : <Copy size={11} />}
+                    <span>{copiedReceipt === 'day_log' ? 'Copied' : 'Copy'}</span>
                   </button>
                 </div>
                 <pre
                   style={{
-                    background: 'rgba(10, 11, 14, 0.95)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    borderRadius: 8,
-                    padding: 12,
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: 6,
+                    padding: '8px 10px',
                     fontSize: '11px',
-                    color: '#e4e4e7',
-                    fontFamily: 'monospace',
+                    color: '#cbd5e1',
+                    fontFamily: 'var(--font-mono)',
                     whiteSpace: 'pre-wrap',
-                    maxHeight: 220,
+                    maxHeight: 180,
                     overflowY: 'auto',
                     margin: 0
                   }}
@@ -373,9 +325,9 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                 </pre>
               </div>
             ) : (
-              <p style={{ fontSize: '12px', color: '#71717a', margin: 0 }}>
-                Click "Generate Today's Log" to automatically synthesize your active IDE files, window switches, and tasks into a clean developer standup report.
-              </p>
+              <div style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.4 }}>
+                Synthesizes today's screen snapshots, edited files, and window switches into an automated standup report.
+              </div>
             )}
           </div>
         </div>
@@ -383,26 +335,26 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
         {/* Right Column: Live Screen Activity Stream */}
         <div
           style={{
-            background: 'rgba(20, 21, 26, 0.8)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: 12,
-            padding: '16px 18px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            borderRadius: 10,
+            padding: '14px',
             display: 'flex',
             flexDirection: 'column'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Layers size={16} color="#38bdf8" />
-              <h3 style={{ fontSize: '14px', fontWeight: 600, margin: 0 }}>Live Ambient Stream</h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Layers size={14} color="#818cf8" />
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Activity Receipts</span>
             </div>
-            <span style={{ fontSize: '11px', color: '#71717a' }}>{activities.length} snapshots</span>
+            <span style={{ fontSize: '10px', color: '#64748b' }}>{activities.length} snapshots</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, overflowY: 'auto', maxHeight: 520, paddingRight: 4 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', maxHeight: 460, paddingRight: 2 }}>
             {activities.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px 10px', color: '#71717a', fontSize: '12px' }}>
-                <Activity size={24} style={{ opacity: 0.5, marginBottom: 8 }} />
+              <div style={{ textAlign: 'center', padding: '36px 10px', color: '#64748b', fontSize: '11.5px' }}>
+                <Activity size={20} style={{ opacity: 0.4, marginBottom: 6 }} />
                 <div>Recording initial screen activities...</div>
               </div>
             ) : (
@@ -411,23 +363,23 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                   key={act.id}
                   style={{
                     background: 'rgba(255, 255, 255, 0.02)',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                    borderRadius: 10,
-                    padding: 10,
+                    border: '1px solid rgba(255, 255, 255, 0.04)',
+                    borderRadius: 6,
+                    padding: '8px 10px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 6
+                    gap: 4
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span
                       style={{
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        padding: '1px 6px',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        padding: '1px 5px',
                         borderRadius: 4,
-                        background: 'rgba(139, 92, 246, 0.18)',
-                        color: '#c4b5fd'
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        color: '#cbd5e1'
                       }}
                     >
                       {act.activeApp}
@@ -438,23 +390,16 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                       style={{
                         background: 'none',
                         border: 'none',
-                        color: copiedReceipt === act.id ? '#34d399' : '#71717a',
+                        color: copiedReceipt === act.id ? '#34d399' : '#64748b',
                         cursor: 'pointer'
                       }}
                     >
-                      {copiedReceipt === act.id ? <Check size={12} /> : <Copy size={12} />}
+                      {copiedReceipt === act.id ? <Check size={11} /> : <Copy size={11} />}
                     </button>
                   </div>
 
-                  <div style={{ fontSize: '12px', fontWeight: 500, color: '#f4f4f5' }}>{act.activitySummary}</div>
-
-                  <div style={{ fontSize: '10px', color: '#71717a', fontFamily: 'monospace' }}>{act.receipt}</div>
-
-                  {act.thumbnailUrl && (
-                    <div style={{ marginTop: 4, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                      <img src={act.thumbnailUrl} alt="Screen Frame" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    </div>
-                  )}
+                  <div style={{ fontSize: '11.5px', color: '#f1f5f9' }}>{act.activitySummary}</div>
+                  <div className="ch-receipt-pill" style={{ width: 'fit-content' }}>{act.receipt}</div>
                 </div>
               ))
             )}
