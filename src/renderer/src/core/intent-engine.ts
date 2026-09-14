@@ -9,6 +9,7 @@ import { ContextChainer } from './context-chainer'
 import { AIFactory } from './ai/ai-factory'
 import { TaskPlanner } from './task-planner'
 import { ActionPlan } from './ai/ai-types'
+import { localVectorRAG } from './local-vector-rag'
 
 export interface ProcessSpeechResult {
   task: UniversalTaskObject
@@ -121,6 +122,22 @@ export async function processIntent(
         }
       }
 
+      // Hybrid local vector RAG search across indexed past tasks and user interactions
+      try {
+        const ragResults = await localVectorRAG.hybridSearch(speechToProcess, 3)
+        if (ragResults.length > 0) {
+          const ragEvidence = ragResults
+            .filter((r) => r.score >= 0.25)
+            .map((r) => `[Vector Memory (${r.matchType} match, score ${(r.score * 100).toFixed(0)}%)] ${r.document.text}`)
+            .join('\n')
+          if (ragEvidence) {
+            contextEvidence = contextEvidence ? `${contextEvidence}\n${ragEvidence}` : ragEvidence
+          }
+        }
+      } catch (ragErr) {
+        console.warn('[QEVRA] Local vector RAG query search warning:', ragErr)
+      }
+
       if (settings.apiKey) {
         const prompt = `You are QEVRA, an ambient desktop AI assistant. Answer the user's question concisely in 1-3 sentences.
 User Question: "${speechToProcess}"
@@ -203,6 +220,20 @@ If referencing context evidence, cite the app or time. Provide a direct, natural
 
   // 8. Generate safe Action Plan via TaskPlanner
   const actionPlan = TaskPlanner.plan(validation.task)
+
+  // 9. Asynchronously index task into local vector store for fast temporal context retrieval
+  localVectorRAG
+    .indexDocument({
+      id: validation.task.taskId,
+      text: speechToProcess,
+      category: validation.task.intent.category,
+      metadata: {
+        action: validation.task.intent.action,
+        app: context.activeApp,
+        windowTitle: context.windowTitle
+      }
+    })
+    .catch(() => {})
 
   return {
     task: validation.task,

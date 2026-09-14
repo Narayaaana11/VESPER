@@ -153,6 +153,8 @@ export const App: React.FC = () => {
 
   const isRecordingRef = useRef(false)
   const isStoppingRef = useRef(false)
+  const isPersistentModeRef = useRef(isPersistentMode)
+  isPersistentModeRef.current = isPersistentMode
 
   const stopListeningRef = useRef<(autoPasteOnRelease?: boolean) => Promise<void>>(null as any)
   const startListeningRef = useRef<() => Promise<void>>(null as any)
@@ -339,9 +341,18 @@ export const App: React.FC = () => {
     setExecutionStatus(null)
 
     // Start recording immediately without waiting for context refresh (0ms audio latency)
-    audioRecorderRef.current.start((vol) => {
-      setAudioLevel(vol)
-    })
+    audioRecorderRef.current.start(
+      (vol) => {
+        setAudioLevel(vol)
+      },
+      (speechDurationMs) => {
+        // Silero VAD hands-free cutoff: when user finishes speaking in toggle/persistent hands-free mode
+        if (stageRef.current === 'listening' && !isStoppingRef.current && isPersistentModeRef.current) {
+          console.log(`[QEVRA] Silero VAD hands-free cutoff detected (${speechDurationMs}ms speech). Finalizing...`)
+          stopListening(true)
+        }
+      }
+    )
 
     refreshContext().catch(() => {})
   }

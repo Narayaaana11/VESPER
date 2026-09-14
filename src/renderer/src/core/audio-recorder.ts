@@ -1,3 +1,5 @@
+import { SileroVAD, VADOptions } from './silero-vad'
+
 export interface RecordingSessionResult {
   blob: Blob | null
   mimeType: string
@@ -20,6 +22,9 @@ export class AudioRecorder {
   private audioChunks: Blob[] = []
   private activeMimeType = 'audio/webm'
 
+  private vad: SileroVAD = new SileroVAD()
+  private scriptProcessor: ScriptProcessorNode | null = null
+
   private startTimestamp = 0
   private stopTimestamp = 0
   private bufferResetConfirmed = false
@@ -27,7 +32,11 @@ export class AudioRecorder {
   public isRecording = false
   public isPaused = false
 
-  async start(onVolumeChange: (volume: number) => void): Promise<boolean> {
+  async start(
+    onVolumeChange: (volume: number) => void,
+    onSpeechEnd?: (totalSpeechDurationMs: number) => void,
+    vadOptions?: VADOptions
+  ): Promise<boolean> {
     try {
       // 1. If currently recording or dirty, ensure clean teardown first
       if (this.isRecording || this.mediaRecorder) {
@@ -88,7 +97,34 @@ export class AudioRecorder {
       // Emit slices every 100ms for continuous buffering
       this.mediaRecorder.start(100)
 
-      // 5. Volume visualizer polling loop
+      // 5. Connect Silero Voice Activity Detection (VAD) if onSpeechEnd is specified
+      if (onSpeechEnd) {
+        if (vadOptions) {
+          this.vad = new SileroVAD(vadOptions)
+        }
+        this.vad.init({
+          onSpeechEnd: (durationMs) => {
+            console.log(`[QEVRA Audio] VAD auto-cutoff triggered after ${durationMs}ms of speech`)
+            onSpeechEnd(durationMs)
+          }
+        })
+
+        try {
+          // 512 frame size at 16kHz is exactly 32ms frame chunk
+          this.scriptProcessor = this.audioContext.createScriptProcessor(512, 1, 1)
+          this.scriptProcessor.onaudioprocess = (e) => {
+            if (!this.isRecording || this.isPaused) return
+            const inputData = e.inputBuffer.getChannelData(0)
+            this.vad.processFrame(inputData)
+          }
+          source.connect(this.scriptProcessor)
+          this.scriptProcessor.connect(this.audioContext.destination)
+        } catch (vadErr) {
+          console.warn('[QEVRA Audio] VAD processor setup warning:', vadErr)
+        }
+      }
+
+      // 6. Volume visualizer polling loop
       const pollAudioLevel = (): void => {
         if (!this.isRecording || this.isPaused || !this.analyser || !this.dataArray) return
 
@@ -184,7 +220,16 @@ export class AudioRecorder {
       const byteSize = blob ? blob.size : 0
       const isInactive = !recorder || recorder.state === 'inactive'
 
-      // Clean up MediaStream and AudioContext
+      // Clean up MediaStream, AudioContext, and VAD processor
+      if (this.scriptProcessor) {
+        try {
+          this.scriptProcessor.disconnect()
+        } catch {}
+        this.scriptProcessor.onaudioprocess = null
+        this.scriptProcessor = null
+      }
+      this.vad.stop()
+
       if (this.mediaStream) {
         this.mediaStream.getTracks().forEach((t) => t.stop())
         this.mediaStream = null
@@ -255,6 +300,14 @@ export class AudioRecorder {
       cancelAnimationFrame(this.animFrameId)
       this.animFrameId = null
     }
+    if (this.scriptProcessor) {
+      try {
+        this.scriptProcessor.disconnect()
+      } catch {}
+      this.scriptProcessor.onaudioprocess = null
+      this.scriptProcessor = null
+    }
+    this.vad.stop()
     if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
       try {
         this.mediaRecorder.stop()
