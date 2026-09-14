@@ -552,21 +552,24 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
       <div className="wfd-pane-header">
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <h2>System Audit & Verification Form</h2>
+            <h2>System Audit & Verification</h2>
             <span
               style={{
-                fontSize: 11,
+                fontSize: 10,
+                fontFamily: 'var(--wf-font-mono)',
                 padding: '2px 8px',
-                borderRadius: 12,
-                background: passedCount === totalCount ? 'rgba(16, 185, 129, 0.2)' : 'rgba(139, 92, 246, 0.2)',
-                color: passedCount === totalCount ? '#10b981' : '#a78bfa',
-                fontWeight: 600
+                borderRadius: 'var(--wf-radius-sm)',
+                background: passedCount === totalCount ? 'rgba(16, 185, 129, 0.12)' : 'rgba(99, 102, 241, 0.12)',
+                color: passedCount === totalCount ? 'var(--wf-success)' : 'var(--wf-accent-light)',
+                border: passedCount === totalCount ? '1px solid rgba(16, 185, 129, 0.25)' : '1px solid rgba(99, 102, 241, 0.25)',
+                fontWeight: 600,
+                letterSpacing: '0.04em'
               }}
             >
-              {passedCount}/{totalCount} Passed
+              {passedCount}/{totalCount} PASSED
             </span>
           </div>
-          <p>Full end-to-end audit verifying real Windows context capture, SQLite persistence, and safe execution.</p>
+          <p>Full end-to-end verification of Windows context capture, SQLite persistence, and execution.</p>
         </div>
 
         <div style={{ display: 'flex', gap: 8 }}>
@@ -576,8 +579,8 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             disabled={isRunningAll}
             style={{ display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            {isRunningAll ? <RotateCcw size={14} className="animate-spin" /> : <Play size={14} />}
-            <span>{isRunningAll ? 'Running Audit...' : 'Run Full End-to-End Audit'}</span>
+            {isRunningAll ? <RotateCcw size={13} className="animate-spin" /> : <Play size={13} />}
+            <span>{isRunningAll ? 'Running Audit...' : 'Run Full Audit'}</span>
           </button>
         </div>
       </div>
@@ -587,53 +590,53 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 12,
-          marginBottom: 18
+          gap: 10,
+          marginBottom: 16
         }}
       >
-        <div className="wfd-card-stat" style={{ background: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#a1a1aa', fontSize: 11 }}>
-            <Database size={13} color="#8b5cf6" />
-            <span>SQLite Context Events</span>
+        <div className="wfd-card-stat" style={{ background: 'var(--wf-card-bg)', padding: '12px 14px', borderRadius: 'var(--wf-radius-md)', border: '1px solid var(--wf-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--wf-text-muted)', fontSize: 11 }}>
+            <Database size={13} />
+            <span>Context Events</span>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 700, marginTop: 4, color: '#fff' }}>
+          <div style={{ fontSize: 18, fontWeight: 600, marginTop: 4, color: 'var(--wf-text-primary)' }}>
             {dbStats.eventCount}
           </div>
         </div>
 
-        <div className="wfd-card-stat" style={{ background: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#a1a1aa', fontSize: 11 }}>
-            <Activity size={13} color="#06b6d4" />
+        <div className="wfd-card-stat" style={{ background: 'var(--wf-card-bg)', padding: '12px 14px', borderRadius: 'var(--wf-radius-md)', border: '1px solid var(--wf-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--wf-text-muted)', fontSize: 11 }}>
+            <Activity size={13} />
             <span>Recorded Tasks</span>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 700, marginTop: 4, color: '#fff' }}>
+          <div style={{ fontSize: 18, fontWeight: 600, marginTop: 4, color: 'var(--wf-text-primary)' }}>
             {dbStats.taskCount}
           </div>
         </div>
 
-        <div className="wfd-card-stat" style={{ background: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#a1a1aa', fontSize: 11 }}>
-            <Cpu size={13} color="#10b981" />
+        <div className="wfd-card-stat" style={{ background: 'var(--wf-card-bg)', padding: '12px 14px', borderRadius: 'var(--wf-radius-md)', border: '1px solid var(--wf-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--wf-text-muted)', fontSize: 11 }}>
+            <Cpu size={13} />
             <span>Input Latency</span>
           </div>
-          <div style={{ fontSize: 20, fontWeight: 700, marginTop: 4, color: '#10b981' }}>
-            ~96 ms
+          <div style={{ fontSize: 18, fontWeight: 600, marginTop: 4, color: 'var(--wf-success)', fontFamily: 'var(--wf-font-mono)' }}>
+            ~96ms
           </div>
         </div>
 
-        <div className="wfd-card-stat" style={{ background: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#a1a1aa', fontSize: 11 }}>
-            <ShieldCheck size={13} color="#f59e0b" />
-            <span>Active Target App</span>
+        <div className="wfd-card-stat" style={{ background: 'var(--wf-card-bg)', padding: '12px 14px', borderRadius: 'var(--wf-radius-md)', border: '1px solid var(--wf-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--wf-text-muted)', fontSize: 11 }}>
+            <ShieldCheck size={13} />
+            <span>Target Process</span>
           </div>
-          <div style={{ fontSize: 16, fontWeight: 700, marginTop: 6, color: '#fff', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 6, color: 'var(--wf-text-primary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
             {activeApp}
           </div>
         </div>
       </div>
 
       {/* Test Matrix List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
         {testSteps.map((step) => {
           const isPass = step.status === 'pass'
           const isFail = step.status === 'fail'
@@ -643,43 +646,43 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             <div
               key={step.id}
               style={{
-                background: 'rgba(255,255,255,0.02)',
+                background: 'var(--wf-card-bg)',
                 border: isPass
-                  ? '1px solid rgba(16, 185, 129, 0.3)'
+                  ? '1px solid rgba(16, 185, 129, 0.22)'
                   : isFail
-                    ? '1px solid rgba(244, 63, 94, 0.3)'
-                    : '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 8,
-                padding: '10px 14px',
+                    ? '1px solid rgba(239, 68, 68, 0.28)'
+                    : '1px solid var(--wf-border)',
+                borderRadius: 'var(--wf-radius-md)',
+                padding: '9px 12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 transition: 'all 0.15s ease'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 22, display: 'flex', justifyContent: 'center' }}>
-                  {isPass && <CheckCircle2 size={18} color="#10b981" />}
-                  {isFail && <AlertTriangle size={18} color="#f43f5e" />}
-                  {isRunning && <RotateCcw size={16} color="#a78bfa" className="animate-spin" />}
-                  {step.status === 'idle' && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#52525b' }} />}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 18, display: 'flex', justifyContent: 'center' }}>
+                  {isPass && <CheckCircle2 size={15} style={{ color: 'var(--wf-success)' }} />}
+                  {isFail && <AlertTriangle size={15} style={{ color: '#ef4444' }} />}
+                  {isRunning && <RotateCcw size={14} style={{ color: 'var(--wf-accent-light)' }} className="animate-spin" />}
+                  {step.status === 'idle' && <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--wf-text-subtle)' }} />}
                 </div>
 
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontWeight: 600, fontSize: 13, color: '#fff' }}>{step.name}</span>
-                    <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.06)', color: '#a1a1aa' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontWeight: 500, fontSize: 12.5, color: 'var(--wf-text-primary)' }}>{step.name}</span>
+                    <span style={{ fontSize: 9.5, padding: '1px 5px', borderRadius: 'var(--wf-radius-sm)', background: 'rgba(255,255,255,0.04)', color: 'var(--wf-text-muted)', fontFamily: 'var(--wf-font-mono)' }}>
                       {step.phase}
                     </span>
                     {step.durationMs !== undefined && (
-                      <span style={{ fontSize: 10, color: '#10b981', fontFamily: 'monospace' }}>
+                      <span style={{ fontSize: 10, color: 'var(--wf-success)', fontFamily: 'var(--wf-font-mono)' }}>
                         {step.durationMs}ms
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: 11, color: '#a1a1aa', marginTop: 2 }}>{step.details}</div>
+                  <div style={{ fontSize: 11, color: 'var(--wf-text-secondary)', marginTop: 1 }}>{step.details}</div>
                   {step.evidence && (
-                    <div style={{ fontSize: 10.5, color: '#a78bfa', marginTop: 2, fontFamily: 'monospace' }}>
+                    <div style={{ fontSize: 10.5, color: 'var(--wf-text-muted)', marginTop: 2, fontFamily: 'var(--wf-font-mono)' }}>
                       {step.evidence}
                     </div>
                   )}
@@ -690,7 +693,7 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
                 className="wfd-btn-subtle"
                 onClick={() => runTest(step.id)}
                 disabled={isRunning}
-                style={{ padding: '4px 10px', fontSize: 11 }}
+                style={{ padding: '3px 8px', fontSize: 10.5 }}
               >
                 {isRunning ? 'Testing...' : 'Run Test'}
               </button>
@@ -702,18 +705,18 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
       {/* Interactive Command Sandbox */}
       <div
         style={{
-          background: 'rgba(139, 92, 246, 0.05)',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
-          borderRadius: 8,
+          background: 'var(--wf-card-bg)',
+          border: '1px solid var(--wf-border)',
+          borderRadius: 'var(--wf-radius-md)',
           padding: 14
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-          <Sparkles size={14} color="#a78bfa" />
-          <span style={{ fontWeight: 600, fontSize: 12.5, color: '#fff' }}>Live Command Verification Sandbox</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+          <Sparkles size={13} style={{ color: 'var(--wf-accent-light)' }} />
+          <span style={{ fontWeight: 600, fontSize: 12, color: 'var(--wf-text-primary)' }}>Live Command Sandbox</span>
         </div>
-        <p style={{ fontSize: 11, color: '#a1a1aa', margin: '0 0 10px 0' }}>
-          Simulate speaking a natural voice command into the active foreground window to verify Universal Task Object (UTO) construction and Action Plan generation.
+        <p style={{ fontSize: 11, color: 'var(--wf-text-secondary)', margin: '0 0 10px 0' }}>
+          Simulate a voice or text command to inspect Universal Task Object (UTO) construction and Action Plan generation.
         </p>
 
         <div style={{ display: 'flex', gap: 8 }}>
@@ -723,11 +726,11 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             onChange={(e) => setInteractiveVoiceInput(e.target.value)}
             style={{
               flex: 1,
-              background: 'rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 6,
-              padding: '8px 12px',
-              color: '#fff',
+              background: 'var(--wf-surface-2)',
+              border: '1px solid var(--wf-border)',
+              borderRadius: 'var(--wf-radius-sm)',
+              padding: '7px 11px',
+              color: 'var(--wf-text-primary)',
               fontSize: 12
             }}
             placeholder="Type or test voice speech..."
@@ -736,7 +739,7 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             className="wfd-btn-primary"
             onClick={handleProcessManualCommand}
             disabled={isProcessingManual}
-            style={{ padding: '8px 14px', whiteSpace: 'nowrap' }}
+            style={{ padding: '7px 12px', fontSize: 11, whiteSpace: 'nowrap' }}
           >
             {isProcessingManual ? 'Evaluating...' : 'Test Full Loop'}
           </button>
@@ -745,51 +748,51 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
         {interactiveResult && (
           <div
             style={{
-              marginTop: 12,
-              background: 'rgba(0,0,0,0.4)',
-              borderRadius: 6,
+              marginTop: 10,
+              background: 'var(--wf-surface-2)',
+              borderRadius: 'var(--wf-radius-sm)',
               padding: 10,
-              border: '1px solid rgba(255,255,255,0.06)',
-              fontFamily: 'monospace',
+              border: '1px solid var(--wf-border)',
+              fontFamily: 'var(--wf-font-mono)',
               fontSize: 11,
-              color: '#e4e4e7',
+              color: 'var(--wf-text-secondary)',
               maxHeight: 180,
               overflowY: 'auto'
             }}
           >
-            <div><strong>Task ID:</strong> {interactiveResult.task?.taskId}</div>
-            <div><strong>Domain:</strong> {interactiveResult.task?.intent?.domain} | <strong>Adapter:</strong> {interactiveResult.task?.targetRouting?.adapter}</div>
-            <div><strong>Chained to Previous:</strong> {interactiveResult.isChained ? 'YES (Context preserved)' : 'NO (Fresh Task)'}</div>
-            <div><strong>Requirements:</strong> {interactiveResult.task?.specifications?.requirements?.join(', ')}</div>
-            <div><strong>Action Plan:</strong> {interactiveResult.actionPlan?.steps?.length} steps generated</div>
-            <div style={{ marginTop: 6, color: '#10b981' }}><strong>Optimized Prompt:</strong></div>
-            <div style={{ color: '#a1a1aa' }}>"{interactiveResult.task?.targetRouting?.optimizedPrompt}"</div>
+            <div><strong style={{ color: 'var(--wf-text-primary)' }}>Task ID:</strong> {interactiveResult.task?.taskId}</div>
+            <div><strong style={{ color: 'var(--wf-text-primary)' }}>Domain:</strong> {interactiveResult.task?.intent?.domain} | <strong style={{ color: 'var(--wf-text-primary)' }}>Adapter:</strong> {interactiveResult.task?.targetRouting?.adapter}</div>
+            <div><strong style={{ color: 'var(--wf-text-primary)' }}>Chained to Previous:</strong> {interactiveResult.isChained ? 'YES (Context preserved)' : 'NO (Fresh Task)'}</div>
+            <div><strong style={{ color: 'var(--wf-text-primary)' }}>Requirements:</strong> {interactiveResult.task?.specifications?.requirements?.join(', ')}</div>
+            <div><strong style={{ color: 'var(--wf-text-primary)' }}>Action Plan:</strong> {interactiveResult.actionPlan?.steps?.length} steps generated</div>
+            <div style={{ marginTop: 6, color: 'var(--wf-accent-light)' }}><strong>Optimized Prompt:</strong></div>
+            <div style={{ color: 'var(--wf-text-primary)' }}>"{interactiveResult.task?.targetRouting?.optimizedPrompt}"</div>
           </div>
         )}
       </div>
 
-      {/* Littlebird Ambient Memory & Day Reconstructor (Open-Source Ecosystem) */}
+      {/* Littlebird Ambient Memory & Day Reconstructor */}
       <div
         style={{
-          background: 'rgba(16, 185, 129, 0.04)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
-          borderRadius: 8,
+          background: 'var(--wf-card-bg)',
+          border: '1px solid var(--wf-border)',
+          borderRadius: 'var(--wf-radius-md)',
           padding: 14,
           marginTop: 12
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Activity size={15} color="#10b981" />
-            <span style={{ fontWeight: 600, fontSize: 13, color: '#10b981' }}>
-              Littlebird Open-Source Ambient Memory & MCP Server
+            <Activity size={13} style={{ color: 'var(--wf-success)' }} />
+            <span style={{ fontWeight: 600, fontSize: 12, color: 'var(--wf-text-primary)' }}>
+              Littlebird Ambient Memory & MCP Server
             </span>
           </div>
-          <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 12, background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', fontWeight: 600 }}>
-            MCP LIVE: http://127.0.0.1:32123/mcp
+          <span style={{ fontSize: 9.5, padding: '2px 7px', borderRadius: 'var(--wf-radius-sm)', background: 'rgba(255,255,255,0.04)', color: 'var(--wf-text-muted)', fontFamily: 'var(--wf-font-mono)' }}>
+            MCP LIVE: 127.0.0.1:32123
           </span>
         </div>
-        <p style={{ fontSize: 11, color: '#a1a1aa', margin: '0 0 12px 0' }}>
+        <p style={{ fontSize: 11, color: 'var(--wf-text-secondary)', margin: '0 0 10px 0' }}>
           Query your local computer timeline using Littlebird evidence receipts <code>[Timestamp | App | Window Title]</code> or generate an automatic day reconstruction dev log.
         </p>
 
@@ -805,11 +808,11 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             placeholder="Search ambient memory (e.g., 'token refresh', 'Cursor', 'restaurant landing')..."
             style={{
               flex: 1,
-              background: 'rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 6,
-              padding: '7px 12px',
-              color: '#fff',
+              background: 'var(--wf-surface-2)',
+              border: '1px solid var(--wf-border)',
+              borderRadius: 'var(--wf-radius-sm)',
+              padding: '7px 11px',
+              color: 'var(--wf-text-primary)',
               fontSize: 12
             }}
           />
@@ -817,7 +820,7 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             className="wfd-btn-subtle"
             onClick={handleSearchLittlebird}
             disabled={isSearchingLb}
-            style={{ padding: '7px 12px', fontSize: 11.5, whiteSpace: 'nowrap' }}
+            style={{ padding: '6px 10px', fontSize: 11, whiteSpace: 'nowrap' }}
           >
             {isSearchingLb ? 'Recalling...' : 'search_user_context'}
           </button>
@@ -825,7 +828,7 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
             className="wfd-btn-primary"
             onClick={handleRunDayReconstruction}
             disabled={isReconstructing}
-            style={{ padding: '7px 14px', fontSize: 11.5, whiteSpace: 'nowrap', background: '#059669', borderColor: '#10b981' }}
+            style={{ padding: '6px 12px', fontSize: 11, whiteSpace: 'nowrap' }}
           >
             {isReconstructing ? 'Reconstructing...' : 'Reconstruct Day'}
           </button>
@@ -833,18 +836,18 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
 
         {/* Search Results Display */}
         {littlebirdResults && (
-          <div style={{ marginTop: 10, background: 'rgba(0,0,0,0.35)', borderRadius: 6, padding: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ fontSize: 11.5, fontWeight: 600, color: '#10b981', marginBottom: 6 }}>
+          <div style={{ marginTop: 8, background: 'var(--wf-surface-2)', borderRadius: 'var(--wf-radius-sm)', padding: 10, border: '1px solid var(--wf-border)' }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--wf-text-primary)', marginBottom: 6 }}>
               Table of Contents ({littlebirdResults.entries?.length ?? 0} matches with Littlebird receipts):
             </div>
             <div style={{ maxHeight: 140, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
               {littlebirdResults.tableOfContents?.map((toc: string, i: number) => (
-                <div key={i} style={{ fontSize: 10.5, fontFamily: 'monospace', color: '#e4e4e7', background: 'rgba(255,255,255,0.03)', padding: '3px 6px', borderRadius: 4 }}>
+                <div key={i} style={{ fontSize: 10.5, fontFamily: 'var(--wf-font-mono)', color: 'var(--wf-text-secondary)', background: 'rgba(255,255,255,0.02)', padding: '3px 6px', borderRadius: 'var(--wf-radius-sm)', border: '1px solid var(--wf-border)' }}>
                   {toc}
                 </div>
               ))}
               {(!littlebirdResults.entries || littlebirdResults.entries.length === 0) && (
-                <div style={{ fontSize: 11, color: '#71717a' }}>No timeline evidence found matching your query.</div>
+                <div style={{ fontSize: 11, color: 'var(--wf-text-muted)' }}>No timeline evidence found matching your query.</div>
               )}
             </div>
           </div>
@@ -852,14 +855,14 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
 
         {/* Day Reconstruction Display */}
         {dayReconResult && (
-          <div style={{ marginTop: 10, background: 'rgba(0,0,0,0.35)', borderRadius: 6, padding: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: '#a78bfa', marginBottom: 4 }}>
+          <div style={{ marginTop: 8, background: 'var(--wf-surface-2)', borderRadius: 'var(--wf-radius-sm)', padding: 10, border: '1px solid var(--wf-border)' }}>
+            <div style={{ fontSize: 11.5, fontWeight: 600, color: 'var(--wf-text-primary)', marginBottom: 4 }}>
               Day Reconstruction Log: {dayReconResult.date}
             </div>
-            <div style={{ fontSize: 11, color: '#10b981', marginBottom: 6 }}>
+            <div style={{ fontSize: 11, color: 'var(--wf-success)', marginBottom: 6 }}>
               {dayReconResult.summary}
             </div>
-            <pre style={{ margin: 0, fontSize: 10.5, fontFamily: 'monospace', color: '#d4d4d8', background: 'rgba(0,0,0,0.3)', padding: 8, borderRadius: 4, maxHeight: 180, overflowY: 'auto' }}>
+            <pre style={{ margin: 0, fontSize: 10.5, fontFamily: 'var(--wf-font-mono)', color: 'var(--wf-text-secondary)', background: 'var(--wf-card-bg)', padding: 8, borderRadius: 'var(--wf-radius-sm)', maxHeight: 180, overflowY: 'auto', border: '1px solid var(--wf-border)' }}>
               {dayReconResult.changelogBlock}
             </pre>
           </div>
