@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Sparkles } from 'lucide-react'
+import { HelpCircle } from 'lucide-react'
 import { DisambiguationQuestion } from '../types/task'
 
 interface SmartQAOverlayProps {
@@ -25,10 +25,10 @@ export const SmartQAOverlay: React.FC<SmartQAOverlayProps> = ({ question, onSele
     <div className="wf-qa-card">
       <div className="wf-qa-top">
         <div className="wf-qa-question">
-          <Sparkles size={13} color="#818cf8" />
+          <HelpCircle size={12} strokeWidth={1.75} style={{ color: 'var(--wf-text-muted)' }} />
           <span>{question.question}</span>
         </div>
-        <div className="wf-qa-hint">Press 1-4</div>
+        <div className="wf-qa-hint">1-4 to select</div>
       </div>
 
       <div className="wf-qa-grid">
@@ -38,10 +38,17 @@ export const SmartQAOverlay: React.FC<SmartQAOverlayProps> = ({ question, onSele
             className="wf-qa-btn"
             onClick={() => onSelectOption(opt.key, opt.value)}
           >
-            <span className="wf-key-badge">[{opt.key}]</span>
+            <span className="wf-key-badge">{opt.key}</span>
             <span>{opt.label}</span>
             {opt.isRecommended && (
-              <span style={{ marginLeft: 'auto', fontSize: '9px', color: '#10b981' }}>
+              <span
+                style={{
+                  marginLeft: 'auto',
+                  fontSize: '9.5px',
+                  color: 'var(--wf-success)',
+                  fontFamily: 'var(--font-mono)'
+                }}
+              >
                 Recommended
               </span>
             )}

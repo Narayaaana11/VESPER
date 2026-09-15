@@ -9,23 +9,25 @@ interface ContextBadgeProps {
 export const ContextBadge: React.FC<ContextBadgeProps> = ({ context }) => {
   const getIcon = () => {
     const size = 11
-    const color = '#94a3b8'
     switch (context.detectedCategory) {
       case 'code':
-        return <Code size={size} color={color} />
+        return <Code size={size} strokeWidth={1.75} />
       case 'communication':
-        return <MessageSquare size={size} color={color} />
+        return <MessageSquare size={size} strokeWidth={1.75} />
       case 'browser':
-        return <Globe size={size} color={color} />
+        return <Globe size={size} strokeWidth={1.75} />
       case 'document':
-        return <FileText size={size} color={color} />
+        return <FileText size={size} strokeWidth={1.75} />
       default:
-        return <Monitor size={size} color={color} />
+        return <Monitor size={size} strokeWidth={1.75} />
     }
   }
 
   return (
-    <div className="wf-context-pill" title={`Active: ${context.activeApp} - ${context.windowTitle}`}>
+    <div
+      className="wf-context-pill"
+      title={`Target Process: ${context.activeApp || 'Desktop'} — ${context.windowTitle || ''}`}
+    >
       {getIcon()}
       <span>{context.activeApp || 'Desktop'}</span>
     </div>

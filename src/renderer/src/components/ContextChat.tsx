@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, Copy, Check, ArrowRight } from 'lucide-react'
+import { Send, Copy, Check, ArrowRight, Activity, Terminal } from 'lucide-react'
 import { AppSettings } from '../types/task'
 
 interface ContextChatProps {
@@ -27,7 +27,7 @@ export const ContextChat: React.FC<ContextChatProps> = ({ settings, activeApp = 
     {
       id: 'welcome',
       role: 'assistant',
-      content: `Hello! I am your ambient context assistant. I have access to your local SQLite memory, screen activity, and active applications. You can ask me what you were doing, to summarize your work, or to retrieve specific context from earlier today.`,
+      content: `Ambient context assistant initialized. Direct access to local SQLite memory, screen activity, and active window processes.`,
       timestamp: Date.now()
     }
   ])
@@ -97,34 +97,34 @@ Rules:
 1. Always base factual statements about the user's past actions on the provided context evidence.
 2. Whenever you state an action the user took, cite the Littlebird receipt [Timestamp | App | Window Title] or the reference tag <#n>.
 3. If no evidence exists for something, clearly state that you do not see records of it.
-4. Be direct, professional, and helpful.`
+4. Be direct, concise, professional, and factual. Do not apologize or add conversational filler.`
 
-      const apiKey = settings.apiKey || ''
       if (settings.aiProvider === 'ollama') {
-        try {
-          const res = await fetch(`${settings.ollamaEndpoint || 'http://localhost:11434'}/api/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: settings.ollamaModel || 'llama3.2',
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: query }
-              ],
-              stream: false
-            })
+        const endpoint = settings.ollamaEndpoint || 'http://localhost:11434'
+        const model = settings.ollamaModel || 'llama3.2'
+        const res = await fetch(`${endpoint}/api/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: query }
+            ],
+            stream: false
           })
-          if (res.ok) {
-            const data = await res.json()
-            replyContent = data.message?.content || ''
-          }
-        } catch (e) {
-          console.warn('[Ollama ContextChat error]', e)
+        })
+        if (res.ok) {
+          const json = await res.json()
+          replyContent = json.message?.content || 'No response from local Ollama.'
+        } else {
+          replyContent = `Ollama error: ${res.statusText}. Verify Ollama is running on ${endpoint}.`
         }
-      }
-
-      if (!replyContent && apiKey) {
-        try {
+      } else {
+        const apiKey = settings.apiKey?.trim()
+        if (!apiKey) {
+          replyContent = `Local RAG memory search completed (${receipts.length} receipts found), but Groq API key is not configured for LLM summarization. Please enter a Groq API key in Settings or switch to Ollama for 100% offline generation.\n\nMatching Receipts:\n${receipts.map((r) => `• ${r}`).join('\n')}`
+        } else {
           const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -137,22 +137,18 @@ Rules:
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: query }
               ],
-              temperature: 0.2
+              temperature: 0.1,
+              max_tokens: 600
             })
           })
           if (res.ok) {
-            const data = await res.json()
-            replyContent = data.choices?.[0]?.message?.content || ''
+            const json = await res.json()
+            replyContent = json.choices?.[0]?.message?.content || 'No answer generated.'
+          } else {
+            const err = await res.json().catch(() => ({}))
+            replyContent = `Groq API Error: ${err.error?.message || res.statusText}`
           }
-        } catch (e) {
-          console.warn('[Groq ContextChat error]', e)
         }
-      }
-
-      if (!replyContent) {
-        replyContent = contextEvidence
-          ? `Based on your recent ambient memory records:\n\n${contextEvidence}\n\n(Add your Groq API key in Settings to synthesize conversational answers.)`
-          : `I checked your ambient memory for "${query}", but found no matching records in the local SQLite database.`
       }
 
       const assistantMsg: ChatMessage = {
@@ -160,19 +156,18 @@ Rules:
         role: 'assistant',
         content: replyContent,
         timestamp: Date.now(),
-        receipts: receipts.slice(0, 3)
+        receipts: receipts.length > 0 ? receipts : undefined
       }
       setMessages((prev) => [...prev, assistantMsg])
     } catch (err: any) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `err_${Date.now()}`,
-          role: 'assistant',
-          content: `Unable to query ambient memory: ${err?.message || 'Unknown error'}`,
-          timestamp: Date.now()
-        }
-      ])
+      console.warn('[QEVRA ContextChat] Error:', err)
+      const errorMsg: ChatMessage = {
+        id: `asst_${Date.now()}`,
+        role: 'assistant',
+        content: `Error retrieving memory: ${err.message || String(err)}`,
+        timestamp: Date.now()
+      }
+      setMessages((prev) => [...prev, errorMsg])
     } finally {
       setIsLoading(false)
     }
@@ -185,9 +180,30 @@ Rules:
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 480, color: '#f8fafc' }}>
-      {/* Messages Container */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingRight: 4 }}>
+    <div className="wfd-tab-pane" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div className="wfd-pane-header">
+        <div>
+          <h2>Ambient Context Terminal</h2>
+          <p>Query your local SQLite memory, screen activity, and active application events.</p>
+        </div>
+      </div>
+
+      {/* Messages Feed */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          padding: '12px 14px',
+          background: 'rgba(255, 255, 255, 0.015)',
+          border: '1px solid var(--wf-border)',
+          borderRadius: 'var(--wf-radius-md)',
+          minHeight: 380,
+          maxHeight: 460
+        }}
+      >
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -195,40 +211,40 @@ Rules:
               display: 'flex',
               flexDirection: 'column',
               alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '82%'
+              maxWidth: '84%'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-              <span style={{ fontSize: '10.5px', color: msg.role === 'user' ? '#94a3b8' : '#818cf8', fontWeight: 550 }}>
-                {msg.role === 'user' ? 'You' : 'QEVRA Memory'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+              <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--wf-text-muted)', fontWeight: 550 }}>
+                {msg.role === 'user' ? 'YOU' : 'MEMORY'}
               </span>
-              <span style={{ fontSize: '9.5px', color: '#64748b' }}>
+              <span style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', color: 'var(--wf-text-muted)' }}>
                 {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
 
             <div
               style={{
-                background: msg.role === 'user' ? 'rgba(99, 102, 241, 0.14)' : 'rgba(255, 255, 255, 0.025)',
-                border: msg.role === 'user' ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(255, 255, 255, 0.05)',
-                borderRadius: 8,
-                padding: '10px 14px',
-                fontSize: '12.5px',
+                background: msg.role === 'user' ? '#18181b' : 'rgba(255, 255, 255, 0.025)',
+                border: msg.role === 'user' ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid var(--wf-border)',
+                borderRadius: 'var(--wf-radius-sm)',
+                padding: '9px 12px',
+                fontSize: '12px',
                 lineHeight: 1.5,
-                color: '#f8fafc',
+                color: 'var(--wf-text-primary)',
                 whiteSpace: 'pre-wrap'
               }}
             >
               {msg.content}
 
               {msg.receipts && msg.receipts.length > 0 && (
-                <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                  <div style={{ fontSize: '9.5px', color: '#64748b', fontWeight: 600, marginBottom: 3 }}>
-                    RECEIPTS:
+                <div style={{ marginTop: 8, paddingTop: 6, borderTop: '1px solid var(--wf-border)' }}>
+                  <div style={{ fontSize: '9px', fontFamily: 'var(--font-mono)', color: 'var(--wf-text-muted)', fontWeight: 600, marginBottom: 3 }}>
+                    EVIDENCE RECEIPTS:
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     {msg.receipts.map((r, idx) => (
-                      <span key={idx} style={{ fontSize: '9.5px', color: '#818cf8', fontFamily: 'var(--font-mono)' }}>
+                      <span key={idx} style={{ fontSize: '9.5px', color: 'var(--wf-text-secondary)', fontFamily: 'var(--font-mono)' }}>
                         {r}
                       </span>
                     ))}
@@ -243,8 +259,8 @@ Rules:
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: copiedId === msg.id ? '#34d399' : '#64748b',
-                  fontSize: '10px',
+                  color: copiedId === msg.id ? 'var(--wf-success)' : 'var(--wf-text-muted)',
+                  fontSize: '9.5px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 3,
@@ -252,7 +268,7 @@ Rules:
                   padding: 2
                 }}
               >
-                {copiedId === msg.id ? <Check size={11} /> : <Copy size={11} />}
+                {copiedId === msg.id ? <Check size={10} /> : <Copy size={10} />}
                 <span>{copiedId === msg.id ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
@@ -261,24 +277,24 @@ Rules:
 
         {isLoading && (
           <div style={{ alignSelf: 'flex-start', maxWidth: '80%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
-              <span style={{ fontSize: '10.5px', color: '#818cf8', fontWeight: 550 }}>QEVRA Memory</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
+              <span style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', color: 'var(--wf-text-muted)', fontWeight: 550 }}>MEMORY</span>
             </div>
             <div
               style={{
                 background: 'rgba(255, 255, 255, 0.025)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                borderRadius: 8,
-                padding: '10px 14px',
-                fontSize: '12px',
-                color: '#94a3b8',
+                border: '1px solid var(--wf-border)',
+                borderRadius: 'var(--wf-radius-sm)',
+                padding: '9px 12px',
+                fontSize: '11.5px',
+                color: 'var(--wf-text-secondary)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 6
               }}
             >
-              <Sparkles size={13} color="#818cf8" />
-              Scanning ambient memory receipts...
+              <Activity size={12} className="animate-pulse" style={{ color: 'var(--wf-text-muted)' }} />
+              <span>Scanning local memory receipts...</span>
             </div>
           </div>
         )}
@@ -286,7 +302,7 @@ Rules:
       </div>
 
       {/* Suggestion Chips */}
-      <div style={{ display: 'flex', gap: 6, overflowX: 'auto', padding: '8px 0', borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
+      <div style={{ display: 'flex', gap: 5, overflowX: 'auto', padding: '6px 0' }}>
         {SUGGESTIONS.map((s, idx) => (
           <button
             key={idx}
@@ -295,27 +311,27 @@ Rules:
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}
           >
             <span>{s}</span>
-            <ArrowRight size={10} style={{ opacity: 0.5 }} />
+            <ArrowRight size={9} style={{ opacity: 0.5 }} />
           </button>
         ))}
       </div>
 
       {/* Input Field */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} style={{ display: 'flex', gap: 6, marginTop: 2 }}>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask anything about your screen, work history, or code..."
+          placeholder="Ask about screen history, edited files, or active window..."
           disabled={isLoading}
           style={{
             flex: 1,
             background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: 7,
-            padding: '8px 12px',
-            fontSize: '12px',
-            color: '#f8fafc',
+            border: '1px solid var(--wf-border)',
+            borderRadius: 'var(--wf-radius-sm)',
+            padding: '7px 11px',
+            fontSize: '11.5px',
+            color: 'var(--wf-text-primary)',
             outline: 'none',
             fontFamily: 'inherit'
           }}
@@ -324,9 +340,9 @@ Rules:
           type="submit"
           disabled={isLoading || !input.trim()}
           className="wfd-btn-primary"
-          style={{ padding: '0 14px' }}
+          style={{ padding: '0 12px' }}
         >
-          <Send size={13} />
+          <Send size={12} />
         </button>
       </form>
     </div>

@@ -24,6 +24,7 @@ export class AudioRecorder {
 
   private vad: SileroVAD = new SileroVAD()
   private scriptProcessor: ScriptProcessorNode | null = null
+  private warmStream: MediaStream | null = null
 
   private startTimestamp = 0
   private stopTimestamp = 0
@@ -31,6 +32,31 @@ export class AudioRecorder {
 
   public isRecording = false
   public isPaused = false
+
+  /**
+   * Pre-warm microphone hardware stream so recording starts in <5ms with 0 lag
+   */
+  async prewarm(): Promise<boolean> {
+    try {
+      if (this.warmStream && this.warmStream.active && this.warmStream.getAudioTracks().some((t) => t.readyState === 'live')) {
+        return true
+      }
+      this.warmStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          sampleRate: 16000,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      })
+      console.log('[QEVRA Audio] Hardware audio stream pre-warmed for 0ms start latency')
+      return true
+    } catch (e) {
+      console.warn('[QEVRA Audio] Audio pre-warm notice:', e)
+      return false
+    }
+  }
 
   async start(
     onVolumeChange: (volume: number) => void,
@@ -50,16 +76,21 @@ export class AudioRecorder {
       this.startTimestamp = Date.now()
       this.stopTimestamp = 0
 
-      // 3. Request 16kHz mono audio optimized for Whisper STT
-      this.mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          channelCount: 1,
-          sampleRate: 16000,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      })
+      // 3. Request 16kHz mono audio optimized for Whisper STT (zero-latency pre-warmed stream)
+      if (this.warmStream && this.warmStream.active && this.warmStream.getAudioTracks().some((t) => t.readyState === 'live')) {
+        this.mediaStream = this.warmStream
+      } else {
+        this.mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            channelCount: 1,
+            sampleRate: 16000,
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        })
+        this.warmStream = this.mediaStream
+      }
 
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       const source = this.audioContext.createMediaStreamSource(this.mediaStream)
@@ -230,10 +261,12 @@ export class AudioRecorder {
       }
       this.vad.stop()
 
-      if (this.mediaStream) {
+      // Preserve warmStream so subsequent push-to-talk starts in <5ms without hardware latency
+      if (this.mediaStream && this.mediaStream !== this.warmStream) {
         this.mediaStream.getTracks().forEach((t) => t.stop())
-        this.mediaStream = null
       }
+      this.mediaStream = null
+
       if (this.audioContext && this.audioContext.state !== 'closed') {
         this.audioContext.close().catch(() => {})
         this.audioContext = null

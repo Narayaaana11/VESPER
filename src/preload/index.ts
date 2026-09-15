@@ -37,6 +37,26 @@ export interface IElectronAPI {
   openCheckout: (url: string) => Promise<any>
   activateLicense: (payload: { licenseKey: string; tier: string }) => Promise<any>
   getSubscription: () => Promise<any>
+  getStartupSetting: () => Promise<boolean>
+  setStartupSetting: (enabled: boolean) => Promise<boolean>
+  checkSystemResources: () => Promise<any>
+  downloadResources: () => Promise<any>
+  onDownloadProgress: (callback: (data: any) => void) => () => void
+  getSystemDiagnostics: () => Promise<any>
+  toggleAutostart: (enable?: boolean) => Promise<any>
+  onKeyDiagnosticEvent: (callback: (data: any) => void) => () => void
+  getSystemSpecs: () => Promise<{
+    totalRamGb: number
+    freeRamGb: number
+    cpuModel: string
+    cpuCores: number
+    gpuName: string
+    tier: 'high' | 'mid' | 'low'
+    recommendedModel: string
+    description: string
+    isLocalEligible: boolean
+  }>
+  verifyGroqKey: (apiKey: string) => Promise<{ valid: boolean; error?: string; modelCount?: number }>
 }
 
 const electronAPI: IElectronAPI = {
@@ -103,10 +123,31 @@ const electronAPI: IElectronAPI = {
   toggleScreenTracking: (enable) => ipcRenderer.invoke('qevra:toggle-screen-tracking', enable),
   getRecentScreenActivities: (limit) => ipcRenderer.invoke('qevra:get-recent-screen-activities', limit),
   generateEmbedding: (text) => ipcRenderer.invoke('qevra:generate-embedding', text),
-  openCheckout: (url) => ipcRenderer.invoke('qevra:open-checkout', url),
-  activateLicense: (payload) => ipcRenderer.invoke('qevra:activate-license', payload),
-  getSubscription: () => ipcRenderer.invoke('qevra:get-subscription')
+  openCheckout: (url: string) => ipcRenderer.invoke('qevra:open-checkout', url),
+  activateLicense: (payload: { licenseKey: string; tier: string }) => ipcRenderer.invoke('qevra:activate-license', payload),
+  getSubscription: () => ipcRenderer.invoke('qevra:get-subscription'),
+  getStartupSetting: () => ipcRenderer.invoke('qevra:get-startup-setting'),
+  setStartupSetting: (enabled: boolean) => ipcRenderer.invoke('qevra:set-startup-setting', enabled),
+  checkSystemResources: () => ipcRenderer.invoke('qevra:check-system-resources'),
+  downloadResources: () => ipcRenderer.invoke('qevra:download-resources'),
+  onDownloadProgress: (callback: (data: any) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('qevra:download-progress', handler)
+    return () => {
+      ipcRenderer.removeListener('qevra:download-progress', handler)
+    }
+  },
+  getSystemDiagnostics: () => ipcRenderer.invoke('qevra:get-system-diagnostics'),
+  toggleAutostart: (enable?: boolean) => ipcRenderer.invoke('qevra:toggle-autostart', enable),
+  onKeyDiagnosticEvent: (callback: (data: any) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('qevra:key-diagnostic-event', handler)
+    return () => {
+      ipcRenderer.removeListener('qevra:key-diagnostic-event', handler)
+    }
+  },
+  getSystemSpecs: () => ipcRenderer.invoke('qevra:get-system-specs'),
+  verifyGroqKey: (apiKey: string) => ipcRenderer.invoke('qevra:verify-groq-key', apiKey)
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)
-

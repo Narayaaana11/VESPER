@@ -99,8 +99,8 @@ describe('QEVRA Commercial Release & Companion API', () => {
     it('supports browser context feed with URL and domain categorization', async () => {
       const result = await mcpServer.ingestExternalContext({
         source: 'chrome',
-        url: 'https://github.com/Narayaaana11/QEVRA',
-        selection: 'QEVRA Repository'
+        url: 'https://internal.qevra.dev/workspace',
+        selection: 'QEVRA Workspace'
       })
 
       expect(result.activeApp).toBe('Google Chrome')

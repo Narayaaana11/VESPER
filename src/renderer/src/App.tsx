@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Mic, Square, Settings, X, Sparkles, Check, Pause, Play, MoreHorizontal, ArrowUpRight, Maximize2, Minimize2, LayoutDashboard } from 'lucide-react'
+import { Mic, Square, Settings, X, Check, Pause, Play, MoreHorizontal, ArrowUpRight, Maximize2, Minimize2, LayoutDashboard, Activity, Terminal } from 'lucide-react'
 import { SystemContext, DisambiguationQuestion, UniversalTaskObject, AppSettings } from './types/task'
 import { AudioRecorder } from './core/audio-recorder'
 import { validateWhisperTranscript, validatePolishedOutput } from './core/transcription-validator'
@@ -49,6 +49,12 @@ declare global {
       getDayReconstruction?: (targetDateMs?: number) => Promise<any>
       captureScreen?: () => Promise<string | null>
       setHoldKey: (key: string) => void
+      getSystemSpecs?: () => Promise<any>
+      verifyGroqKey?: (apiKey: string) => Promise<{ valid: boolean; error?: string; modelCount?: number }>
+      checkSystemResources?: () => Promise<any>
+      downloadResources?: () => Promise<any>
+      setStartupSetting?: (enabled: boolean) => Promise<boolean>
+      onDownloadProgress?: (callback: (data: any) => void) => () => void
     }
   }
 }
@@ -71,7 +77,7 @@ const getInitialSettings = (): AppSettings => {
   const envMode = ((import.meta as any).env?.VITE_DICTATION_MODE as any) || 'direct'
   const defaults: AppSettings = {
     hotkey: 'CommandOrControl+Shift+Space',
-    holdKey: 'RIGHT ALT',
+    holdKey: 'ANY ALT',
     aiProvider: 'groq',
     whisperModel: 'whisper-large-v3',
     whisperLanguage: 'auto',
@@ -103,10 +109,10 @@ const getInitialSettings = (): AppSettings => {
 }
 
 const SAMPLE_PRESETS: Array<{ label: string; text: string }> = [
-  { label: '🍕 Restaurant Page', text: 'Create a website for a restaurant landing page. I need a prompt for that.' },
-  { label: '⚡ Auth API', text: 'Fix the bug with the token refresh failing on 401 authorization requests.' },
-  { label: '🎣 Custom Hook', text: 'Refit component to use React custom hook and clean up state management.' },
-  { label: '📱 Responsive & CSV', text: 'Make it responsive for mobile screens and add export to CSV button.' }
+  { label: 'Web Architecture', text: 'Create a website for a restaurant landing page. I need a prompt for that.' },
+  { label: 'Auth Token Refresh', text: 'Fix the bug with the token refresh failing on 401 authorization requests.' },
+  { label: 'React Custom Hook', text: 'Refit component to use React custom hook and clean up state management.' },
+  { label: 'Responsive Layout', text: 'Make it responsive for mobile screens and add export to CSV button.' }
 ]
 
 export const App: React.FC = () => {
@@ -259,7 +265,13 @@ export const App: React.FC = () => {
           apiKey: validKey
         }
         setSettings(merged)
+        if (merged.holdKey) {
+          window.electronAPI?.setHoldKey(merged.holdKey)
+        }
       }).catch(console.warn)
+
+      // Pre-warm audio capture channel for instant <5ms response time on key hold / click
+      audioRecorderRef.current.prewarm().catch(() => {})
 
       // 1. Toggle hotkey listener (Ctrl+Shift+Space)
       const unsubHotkey = window.electronAPI.onHotkeyTriggered(() => {
@@ -935,7 +947,7 @@ export const App: React.FC = () => {
             </div>
           ) : stage === 'analyzing' || executionStatus ? (
             <div className="wf-compact-status">
-              <Sparkles size={12} color="var(--wf-accent-violet)" />
+              <Activity size={12} style={{ color: 'var(--wf-text-muted)' }} />
               <span>{executionStatus || 'Polishing...'}</span>
             </div>
           ) : (
@@ -965,7 +977,7 @@ export const App: React.FC = () => {
           <div className="wf-popover-menu">
             <div className="wf-popover-header">
               <span>QEVRA Flow</span>
-              <span style={{ fontSize: '9px', color: '#a1a1aa' }}>{context.activeApp}</span>
+              <span style={{ fontSize: '9px', color: 'var(--wf-text-muted)', fontFamily: 'var(--font-mono)' }}>{context.activeApp}</span>
             </div>
 
             {/* 1. Open Wispr Flow Full Dashboard */}
@@ -987,7 +999,7 @@ export const App: React.FC = () => {
               }}
             >
               <div className="wf-popover-item-left">
-                <LayoutDashboard size={13} style={{ color: 'var(--wf-accent-light)' }} />
+                <LayoutDashboard size={13} style={{ color: 'var(--wf-text-secondary)' }} />
                 <span>Open Flow Dashboard</span>
               </div>
               <ArrowUpRight size={12} style={{ color: 'var(--wf-text-muted)' }} />
@@ -1008,7 +1020,7 @@ export const App: React.FC = () => {
               }}
             >
               <div className="wf-popover-item-left">
-                <span>{settings.dictationMode === 'direct' ? '🎙️ Direct Dictation' : '🤖 Smart Assistant'}</span>
+                <span>{settings.dictationMode === 'direct' ? 'Direct Dictation' : 'Smart Assistant'}</span>
               </div>
               <span style={{ fontSize: '9px', color: 'var(--wf-success)', fontWeight: 600, letterSpacing: '0.04em' }}>ACTIVE</span>
             </button>
@@ -1023,7 +1035,7 @@ export const App: React.FC = () => {
               }}
             >
               <div className="wf-popover-item-left">
-                <Sparkles size={13} style={{ color: 'var(--wf-accent-light)' }} />
+                <Activity size={13} style={{ color: 'var(--wf-text-muted)' }} />
                 <span>System Audit & Verification</span>
               </div>
             </button>
@@ -1043,7 +1055,7 @@ export const App: React.FC = () => {
 
             <button
               className="wf-popover-item"
-              style={{ color: '#ef4444' }}
+              style={{ color: '#fda4af' }}
               onClick={() => {
                 setShowMenu(false)
                 window.electronAPI?.quitApp()
@@ -1064,9 +1076,9 @@ export const App: React.FC = () => {
               marginTop: 8,
               width: '100%',
               maxWidth: 380,
-              background: 'rgba(13, 14, 20, 0.98)',
+              background: 'rgba(12, 14, 19, 0.98)',
               border: '1px solid var(--wf-border)',
-              borderRadius: 'var(--wf-radius-lg)',
+              borderRadius: 'var(--wf-radius-md)',
               padding: '12px 14px',
               boxShadow: 'var(--wf-shadow-card)',
               backdropFilter: 'blur(24px)',
@@ -1074,8 +1086,8 @@ export const App: React.FC = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '11px', color: 'var(--wf-accent-light)', fontWeight: 600 }}>
-                <Sparkles size={12} /> Ambient Answer
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '11px', color: 'var(--wf-text-primary)', fontWeight: 600 }}>
+                <Terminal size={12} style={{ color: 'var(--wf-text-muted)' }} /> Ambient Recall
               </span>
               <button
                 onClick={() => setQueryResult(null)}
@@ -1186,9 +1198,9 @@ export const App: React.FC = () => {
       <div className="wf-capsule-bar">
         {/* Left: Brand Dot & Context App Pill */}
         <div className="wf-left">
-          <div className="wf-brand-mark" title="QEVRA Flow AI Layer">
+          <div className="wf-brand-mark" title="QEVRA Flow">
             <div className="wf-logo-glow">
-              <Sparkles size={12} color="#fff" />
+              <span style={{ fontSize: '10px', fontWeight: 700 }}>Q</span>
             </div>
             <span>Flow</span>
           </div>
@@ -1211,17 +1223,17 @@ export const App: React.FC = () => {
               </div>
             </>
           ) : stage === 'analyzing' ? (
-            <div className="wf-live-speech" style={{ color: 'var(--wf-accent-violet)' }}>
-              <Sparkles size={12} style={{ marginRight: 6 }} />
+            <div className="wf-live-speech" style={{ color: 'var(--wf-text-secondary)' }}>
+              <Activity size={12} style={{ marginRight: 6, color: 'var(--wf-text-muted)' }} />
               <span>{executionStatus || 'Polishing & preparing input...'}</span>
             </div>
           ) : stage === 'approving' ? (
-            <div className="wf-live-speech" style={{ color: 'var(--wf-accent-violet)' }}>
-              <Sparkles size={12} style={{ marginRight: 6 }} />
+            <div className="wf-live-speech" style={{ color: 'var(--wf-text-secondary)' }}>
+              <Activity size={12} style={{ marginRight: 6, color: 'var(--wf-text-muted)' }} />
               <span>Agent Proposal Ready • Review Below</span>
             </div>
           ) : executionStatus ? (
-            <div className="wf-live-speech" style={{ color: 'var(--wf-accent-emerald)' }}>
+            <div className="wf-live-speech" style={{ color: 'var(--wf-success)' }}>
               <Check size={12} style={{ marginRight: 6 }} />
               <span>{executionStatus}</span>
             </div>

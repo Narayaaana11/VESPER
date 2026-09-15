@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Check, X, Sparkles, Send } from 'lucide-react'
+import { X, Send, Eye } from 'lucide-react'
 import { ScreenAgentResult } from '../core/screen-agent'
 
 interface AgentApprovalCardProps {
@@ -41,8 +41,8 @@ export const AgentApprovalCard: React.FC<AgentApprovalCardProps> = ({
       {/* Header with App Badge & Context */}
       <div className="wf-approval-header">
         <div className="wf-approval-title">
-          <Sparkles size={13} color="#818cf8" />
-          <span>Screen Copilot Proposal</span>
+          <Eye size={12} strokeWidth={1.75} style={{ color: 'var(--wf-text-muted)' }} />
+          <span>Screen Agent Verification</span>
           <span className="wf-target-app-pill">{proposal.targetApp}</span>
         </div>
         <div className="wf-approval-badge">{proposal.contextSummary}</div>
@@ -61,22 +61,22 @@ export const AgentApprovalCard: React.FC<AgentApprovalCardProps> = ({
             }
           }}
           rows={3}
-          placeholder="Review or edit drafted reply before sending..."
+          placeholder="Review or edit drafted reply..."
         />
       </div>
 
       {/* Footer Controls */}
       <div className="wf-approval-footer">
         <div className="wf-approval-hint">
-          Ctrl+Enter to Approve · Esc to Reject
+          Ctrl+Enter to approve · Esc to reject
         </div>
         <div className="wf-approval-actions">
           <button className="wf-approval-btn wf-btn-reject" onClick={onDisapprove}>
-            <X size={12} />
-            <span>Discard</span>
+            <X size={11} />
+            <span>Reject</span>
           </button>
           <button className="wf-approval-btn wf-btn-approve" onClick={() => onApprove(currentText)}>
-            <Send size={12} />
+            <Send size={11} />
             <span>Approve & Paste</span>
           </button>
         </div>

@@ -9,26 +9,40 @@ files:
   - out/**/*
   - node_modules/**/*
   - package.json
-  - resources/models/**/*
+
+asar: true
+asarUnpack:
+  - "**/*.exe"
+  - "**/*.node"
+  - "node_modules/node-global-key-listener/**"
 
 extraResources:
   - from: src/main/detect-window.exe
     to: out/main/detect-window.exe
+  - from: src/main/detect-window.exe
+    to: detect-window.exe
   - from: src/main/send-input.exe
     to: out/main/send-input.exe
+  - from: src/main/send-input.exe
+    to: send-input.exe
   - from: node_modules/node-global-key-listener/bin/WinKeyServer.exe
     to: out/bin/WinKeyServer.exe
+  - from: node_modules/node-global-key-listener/bin/WinKeyServer.exe
+    to: bin/WinKeyServer.exe
   - from: resources/models/silero_vad.onnx
     to: resources/models/silero_vad.onnx
   - from: resources/models/transformers-cache
     to: resources/models/transformers-cache
+  - from: resources/icon.ico
+    to: resources/icon.ico
+  - from: resources/icon.png
+    to: resources/icon.png
 
 win:
+  icon: resources/icon.ico
+  publisherName: QEVRA
   target:
     - target: nsis
-      arch:
-        - x64
-    - target: portable
       arch:
         - x64
   executableName: QEVRA
@@ -37,12 +51,18 @@ win:
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
-  perMachine: false
+  perMachine: true
+  allowElevation: true
   createDesktopShortcut: always
   createStartMenuShortcut: true
   shortcutName: QEVRA Flow
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
   runAfterFinish: true
   deleteAppDataOnUninstall: false
+  uninstallDisplayName: "${productName} Flow"
+  include: resources/installer.nsh
 
 mac:
   target:

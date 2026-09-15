@@ -23,12 +23,17 @@ import {
   ClipboardCheck,
   Activity,
   MessageSquare,
-  Sparkles
+  CreditCard,
+  Power,
+  Download,
+  Cpu
 } from 'lucide-react'
 import { AuditVerificationForm } from './AuditVerificationForm'
 import { ContextHub } from './ContextHub'
 import { ContextChat } from './ContextChat'
 import { PricingTable } from './PricingTable'
+import { OnboardingModal } from './OnboardingModal'
+import { SpotlightCard, ShinyText, DecryptedText, CountUp, StarBorder, Magnet } from './reactbits'
 import {
   DictationHistoryItem,
   VoiceSnippet,
@@ -123,6 +128,21 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
   const [draftApiKey, setDraftApiKey] = useState(effectiveSettings.apiKey || '')
   const [showApiKey, setShowApiKey] = useState(false)
   const [saveFeedback, setSaveFeedback] = useState<string | null>(null)
+
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
+    try {
+      return !localStorage.getItem('qevra_onboarded')
+    } catch {
+      return false
+    }
+  })
+  const [startupEnabled, setStartupEnabled] = useState(true)
+
+  useEffect(() => {
+    window.electronAPI?.getStartupSetting?.().then((res: boolean) => {
+      if (typeof res === 'boolean') setStartupEnabled(res)
+    })
+  }, [])
 
   // Cross-window sync listener: when dictation completes in capsule, update history in real-time
   useEffect(() => {
@@ -282,6 +302,19 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
     return ['All', ...Array.from(set)]
   }, [history])
 
+  const stats = useMemo(() => {
+    const words = history.reduce(
+      (sum, h) => sum + (h.wordCount || (h.polishedText ? h.polishedText.split(/\s+/).filter(Boolean).length : 0)),
+      0
+    )
+    const minutesSaved = Math.round(words / 35)
+    return {
+      words,
+      sessions: history.length,
+      minutesSaved
+    }
+  }, [history])
+
   return (
     <div className={`wfd-root ${standalone ? 'is-standalone-window' : ''}`}>
       {/* Top Application Title Bar */}
@@ -291,18 +324,24 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
             <div className="wfd-tb-logo-icon">
               <Mic size={14} />
             </div>
-            <span className="wfd-tb-title">QEVRA Flow</span>
+            <span className="wfd-tb-title">
+              <ShinyText text="QEVRA Flow" speed={3} color="#f4f4f5" shineColor="#38bdf8" />
+            </span>
           </div>
 
           <div className="wfd-tb-status">
             <span className="wfd-tb-dot" />
             <span>Ready</span>
-            <span className="wfd-tb-model">{effectiveSettings.whisperModel || 'whisper-large-v3'}</span>
+            <span className="wfd-tb-model">
+              <DecryptedText text={effectiveSettings.whisperModel || 'whisper-large-v3'} speed={25} />
+            </span>
           </div>
 
           <div className="wfd-tb-key-badge" title="Press & hold this key anywhere in Windows to dictate">
             <Key size={11} />
-            <span>{effectiveSettings.holdKey || 'RIGHT ALT'}</span>
+            <span>
+              <DecryptedText text={effectiveSettings.holdKey || 'ANY ALT'} speed={25} />
+            </span>
           </div>
         </div>
 
@@ -372,15 +411,15 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
               onClick={() => setCurrentTab('chat')}
             >
               <MessageSquare size={15} />
-              <span>AI Memory Chat</span>
+              <span>Context Terminal</span>
             </button>
 
             <button
               className={`wfd-nav-link ${currentTab === 'pricing' ? 'is-active' : ''}`}
               onClick={() => setCurrentTab('pricing')}
             >
-              <Sparkles size={15} />
-              <span>Stitch Studio</span>
+              <CreditCard size={15} />
+              <span>Plans & Pricing</span>
             </button>
 
             <button
@@ -440,14 +479,105 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
             <div className="wfd-hint-card">
               <div className="wfd-hint-title">Voice Dictation</div>
               <div className="wfd-hint-body">
-                Hold <code>{effectiveSettings.holdKey || 'RIGHT ALT'}</code> anywhere on your desktop to dictate into any app.
+                Hold <code>{effectiveSettings.holdKey || 'ANY ALT'}</code> anywhere on Windows to dictate into any app.
               </div>
+              <button
+                onClick={() => setShowOnboarding(true)}
+                style={{
+                  marginTop: 8,
+                  width: '100%',
+                  padding: '6px 10px',
+                  borderRadius: 6,
+                  background: 'rgba(56, 189, 248, 0.08)',
+                  border: '1px solid rgba(56, 189, 248, 0.25)',
+                  color: '#38bdf8',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6
+                }}
+              >
+                <Zap size={12} />
+                <span>Run Setup Wizard</span>
+              </button>
             </div>
           </div>
         </aside>
 
         {/* Right Tab Content View */}
         <main className="wfd-tab-content">
+          {/* Top React Bits Telemetry Strip */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, padding: '14px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', background: 'rgba(0, 0, 0, 0.2)' }}>
+            <SpotlightCard
+              spotlightColor="rgba(56, 189, 248, 0.15)"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 10,
+                padding: '10px 14px'
+              }}
+            >
+              <div style={{ fontSize: 10, color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Words Dictated</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#f4f4f5', marginTop: 2 }}>
+                <CountUp to={stats.words} duration={1.2} />
+              </div>
+              <div style={{ fontSize: 10, color: '#38bdf8', marginTop: 2 }}>Instant speech-to-text</div>
+            </SpotlightCard>
+
+            <SpotlightCard
+              spotlightColor="rgba(16, 185, 129, 0.15)"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 10,
+                padding: '10px 14px'
+              }}
+            >
+              <div style={{ fontSize: 10, color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Time Saved</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#10b981', marginTop: 2 }}>
+                <CountUp to={stats.minutesSaved} duration={1.2} /> min
+              </div>
+              <div style={{ fontSize: 10, color: '#71717a', marginTop: 2 }}>Vs mechanical typing</div>
+            </SpotlightCard>
+
+            <SpotlightCard
+              spotlightColor="rgba(168, 85, 247, 0.15)"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 10,
+                padding: '10px 14px'
+              }}
+            >
+              <div style={{ fontSize: 10, color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Voice Pipeline</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#f4f4f5', marginTop: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <DecryptedText text={effectiveSettings.whisperModel || 'whisper-large-v3'} speed={25} />
+              </div>
+              <div style={{ fontSize: 10, color: '#a855f7', marginTop: 2 }}>Groq Cloud Accelerated</div>
+            </SpotlightCard>
+
+            <SpotlightCard
+              spotlightColor="rgba(245, 158, 11, 0.15)"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 10,
+                padding: '10px 14px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 10, color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>HotKey (Win32)</span>
+                <button onClick={() => setShowOnboarding(true)} style={{ background: 'transparent', border: 'none', color: '#38bdf8', fontSize: 10, cursor: 'pointer', padding: 0 }}>Setup &rarr;</button>
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', marginTop: 4 }}>
+                <DecryptedText text={effectiveSettings.holdKey || 'ANY ALT'} speed={25} />
+              </div>
+              <div style={{ fontSize: 10, color: '#71717a', marginTop: 2 }}>Hold to talk anywhere</div>
+            </SpotlightCard>
+          </div>
           {/* TAB 0A: AMBIENT CONTEXT & SCREEN MEMORY */}
           {currentTab === 'context' && (
             <ContextHub activeApp={activeApp} />
@@ -1004,13 +1134,73 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {/* System Startup (Auto-Start on Boot) */}
+                <div className="wfd-setting-group">
+                  <div className="wfd-sg-header">
+                    <Power size={17} color="#10b981" />
+                    <div>
+                      <h4>System Startup</h4>
+                      <p>Automatically launch QEVRA in background when Windows turns on.</p>
+                    </div>
+                  </div>
+
+                  <div className="wfd-sg-body">
+                    <div className="wfd-toggle-item">
+                      <div>
+                        <div className="wfd-ti-title">Launch at Windows Startup</div>
+                        <div className="wfd-ti-desc">
+                          Starts QEVRA silently in the system tray on boot so your hotkey is immediately available with 0 lag.
+                        </div>
+                      </div>
+                      <label className="wfd-switch">
+                        <input
+                          type="checkbox"
+                          checked={startupEnabled}
+                          onChange={(e) => {
+                            setStartupEnabled(e.target.checked)
+                            window.electronAPI?.setStartupSetting?.(e.target.checked)
+                          }}
+                        />
+                        <span className="wfd-slider" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Local Neural Engines & Models */}
+                <div className="wfd-setting-group">
+                  <div className="wfd-sg-header">
+                    <Cpu size={17} color="#38bdf8" />
+                    <div>
+                      <h4>Local AI Engines &amp; Neural Models</h4>
+                      <p>Silero Neural VAD, Local Vector RAG, and Win32 low-level injection hook status.</p>
+                    </div>
+                  </div>
+
+                  <div className="wfd-sg-body">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0' }}>
+                      <div style={{ fontSize: 12, color: 'var(--wfd-text-muted)' }}>
+                        Verify local ONNX model weights and input hook binaries.
+                      </div>
+                      <button
+                        className="wfd-btn-primary"
+                        onClick={() => setShowOnboarding(true)}
+                        style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', fontSize: 11 }}
+                      >
+                        <Download size={13} />
+                        <span>Check &amp; Download Engines</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB: STITCH STUDIO / PRICING TABLE (Google Stitch Design Paradigm) */}
+          {/* TAB: PLANS & PRICING */}
           {currentTab === 'pricing' && (
-            <div className="w-full flex-1 overflow-y-auto bg-slate-950/80 rounded-2xl border border-slate-800/60 p-2">
+            <div className="wfd-tab-pane">
               <PricingTable onSelectPlan={(id) => console.log('Selected pricing plan:', id)} />
             </div>
           )}
@@ -1024,6 +1214,13 @@ export const WisprFlowDashboard: React.FC<WisprFlowDashboardProps> = ({
           )}
         </main>
       </div>
+
+      {showOnboarding && (
+        <OnboardingModal
+          onComplete={() => setShowOnboarding(false)}
+          onClose={() => setShowOnboarding(false)}
+        />
+      )}
     </div>
   )
 }

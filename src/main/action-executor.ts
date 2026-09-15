@@ -1,8 +1,7 @@
 import { clipboard, app } from 'electron'
 import { exec, execFile } from 'child_process'
 import { promisify } from 'util'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { resolveBinary } from './binary-resolver'
 import { DeviceContext } from './context/context-types'
 import { ContextRevalidator } from './context/context-revalidator'
 import { ContextManager } from './context/context-manager'
@@ -97,15 +96,7 @@ export async function executeAction(
 
     if (platform === 'win32') {
       try {
-        const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
-        const nativePaths = [
-          join(appPath, 'src/main/send-input.exe'),
-          join(appPath, 'out/main/send-input.exe'),
-          join(__dirname, 'send-input.exe'),
-          join(__dirname, '../send-input.exe'),
-          join(process.cwd(), 'src/main/send-input.exe')
-        ]
-        const nativeExe = nativePaths.find((p) => existsSync(p))
+        const nativeExe = resolveBinary('send-input.exe')
 
         if (nativeExe) {
           const targetArgs = targetContext?.hwnd ? [targetContext.hwnd.toString()] : []

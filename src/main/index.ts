@@ -15,12 +15,31 @@ if (process.platform === 'win32') {
 
 import { app, shell, BrowserWindow, ipcMain, Tray, Menu, nativeImage } from 'electron'
 import { join } from 'path'
+import { existsSync } from 'fs'
 import { registerGlobalShortcuts, unregisterAllShortcuts } from './hotkey'
 import { registerIpcHandlers } from './ipc-handlers'
 import { HoldToTalkManager } from './hold-to-talk'
 
 import { ContextManager } from './context/context-manager'
 import { QevraMcpServer } from './mcp/qevra-mcp-server'
+
+function getAppIcon(): Electron.NativeImage | undefined {
+  try {
+    const resPath = typeof process !== 'undefined' && process.resourcesPath ? process.resourcesPath : ''
+    const iconCandidates = [
+      join(process.cwd(), 'resources', 'icon.ico'),
+      join(__dirname, '../../resources/icon.ico'),
+      ...(resPath ? [join(resPath, 'resources', 'icon.ico'), join(resPath, 'icon.ico')] : []),
+      join(process.cwd(), 'resources', 'icon.png'),
+      join(__dirname, '../../resources/icon.png')
+    ]
+    const found = iconCandidates.find((p) => existsSync(p))
+    if (found) {
+      return nativeImage.createFromPath(found)
+    }
+  } catch {}
+  return undefined
+}
 
 // Enforce single-instance lock so clicking app in Windows search / desktop focuses existing dashboard
 const gotTheLock = app.requestSingleInstanceLock()
@@ -73,6 +92,7 @@ function createDashboardWindow(): void {
     transparent: false,
     backgroundColor: '#0a0b0e',
     title: 'QEVRA Flow',
+    icon: getAppIcon(),
     skipTaskbar: false,
     hasShadow: true,
     webPreferences: {
@@ -86,8 +106,13 @@ function createDashboardWindow(): void {
   dashboardWindow.center()
 
   dashboardWindow.on('ready-to-show', () => {
-    dashboardWindow?.show()
-    dashboardWindow?.focus()
+    const isStartupHidden = process.argv.includes('--hidden') || app.getLoginItemSettings().wasOpenedAtLogin
+    if (!isStartupHidden) {
+      dashboardWindow?.show()
+      dashboardWindow?.focus()
+    } else {
+      console.log('[QEVRA] Started in background via Windows startup. Hotkey & tray ready.')
+    }
   })
 
   dashboardWindow.on('close', (e) => {
@@ -178,12 +203,13 @@ function createCapsuleWindow(): void {
 
 function createTray(): void {
   try {
-    const icon = nativeImage.createFromBuffer(
+    const fallbackIcon = nativeImage.createFromBuffer(
       Buffer.from(
         'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAHBJREFUOE+1k9ENwCAIQ91/007hCprtHw0xUUu15uMCT48DkHJEkk5EPNq+1n1E7gDk5Zwb1jrvfZwzA3C910RkDdBaA6VUpJSklJ35hHvvE5b3z8A5F2utMMbknJExRj8g/1G+i8zM1Vo7/5vIB2HlTzHkPjUfAAAAAElFTkSuQmCC',
         'base64'
       )
     )
+    const icon = getAppIcon() || fallbackIcon
 
     tray = new Tray(icon)
     tray.setToolTip('QEVRA Flow — Voice Dictation & Hub')
@@ -229,6 +255,21 @@ app.whenReady().then(() => {
     console.warn('[QEVRA MCP] Startup warning:', err)
   }
 
+  // Configure Windows auto-start on boot
+  try {
+    const login = app.getLoginItemSettings()
+    if (app.isPackaged && !login.openAtLogin) {
+      app.setLoginItemSettings({
+        openAtLogin: true,
+        path: process.execPath,
+        args: ['--hidden']
+      })
+      console.log('[QEVRA] Windows auto-start at login successfully registered.')
+    }
+  } catch (err) {
+    console.warn('[QEVRA] Login item registration error:', err)
+  }
+
   // 1. Create Dashboard Window (Primary UI when user launches application)
   createDashboardWindow()
 
@@ -245,7 +286,16 @@ app.whenReady().then(() => {
 
   // 5. Register Global Hold-to-Talk Listener attached to Capsule
   if (capsuleWindow) {
-    holdToTalkManager = new HoldToTalkManager(capsuleWindow, 'RIGHT ALT')
+    let initialKey = 'ANY ALT'
+    try {
+      const settingsFile = join(app.getPath('userData'), 'qevra-settings.json')
+      if (existsSync(settingsFile)) {
+        const raw = require('fs').readFileSync(settingsFile, 'utf-8')
+        const parsed = JSON.parse(raw)
+        if (parsed.holdKey) initialKey = parsed.holdKey
+      }
+    } catch {}
+    holdToTalkManager = new HoldToTalkManager(capsuleWindow, initialKey)
   }
 
   // 6. Global hotkeys for toggle

@@ -1,8 +1,7 @@
 import { execFile } from 'child_process'
 import { promisify } from 'util'
 import { clipboard, app } from 'electron'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { resolveBinary } from './binary-resolver'
 
 const execFileAsync = promisify(execFile)
 
@@ -34,15 +33,7 @@ export async function getActiveWindowContext(): Promise<SystemContext> {
   }
 
   try {
-    const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
-    const exePaths = [
-      join(appPath, 'src/main/detect-window.exe'),
-      join(appPath, 'out/main/detect-window.exe'),
-      join(__dirname, 'detect-window.exe'),
-      join(process.cwd(), 'src/main/detect-window.exe')
-    ]
-
-    const exePath = exePaths.find((p) => existsSync(p))
+    const exePath = resolveBinary('detect-window.exe')
 
     if (exePath) {
       const { stdout } = await execFileAsync(exePath, [], { timeout: 1000 })

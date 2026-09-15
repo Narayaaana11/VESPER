@@ -12,8 +12,7 @@ import {
   Eye,
   Terminal,
   Activity,
-  ChevronRight,
-  Sparkles
+  ChevronRight
 } from 'lucide-react'
 import { AppSettings, SystemContext } from '../types/task'
 import { processIntent } from '../core/intent-engine'
@@ -712,7 +711,7 @@ export const AuditVerificationForm: React.FC<AuditVerificationFormProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-          <Sparkles size={13} style={{ color: 'var(--wf-accent-light)' }} />
+          <Terminal size={12} style={{ color: 'var(--wf-text-muted)' }} />
           <span style={{ fontWeight: 600, fontSize: 12, color: 'var(--wf-text-primary)' }}>Live Command Sandbox</span>
         </div>
         <p style={{ fontSize: 11, color: 'var(--wf-text-secondary)', margin: '0 0 10px 0' }}>

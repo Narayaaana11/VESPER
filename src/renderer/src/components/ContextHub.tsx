@@ -104,55 +104,56 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
           alignItems: 'center',
           justifyContent: 'space-between',
           background: 'rgba(255, 255, 255, 0.02)',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-          borderRadius: 10,
-          padding: '12px 16px'
+          border: '1px solid var(--wf-border)',
+          borderRadius: 'var(--wf-radius-md)',
+          padding: '12px 14px'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: 8,
+              width: 28,
+              height: 28,
+              borderRadius: 'var(--wf-radius-sm)',
               background: trackerEnabled ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.04)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: trackerEnabled ? '#10b981' : '#64748b'
+              color: trackerEnabled ? 'var(--wf-success)' : 'var(--wf-text-muted)'
             }}
           >
-            <Activity size={17} />
+            <Activity size={15} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--wf-text-primary)' }}>
                 Ambient Screen & Context Engine
               </span>
               <span
                 style={{
-                  fontSize: '10px',
+                  fontSize: '9.5px',
+                  fontFamily: 'var(--font-mono)',
                   fontWeight: 500,
-                  padding: '1px 6px',
-                  borderRadius: '9999px',
+                  padding: '1px 5px',
+                  borderRadius: '3px',
                   background: trackerEnabled ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.05)',
-                  color: trackerEnabled ? '#34d399' : '#94a3b8'
+                  color: trackerEnabled ? 'var(--wf-success)' : 'var(--wf-text-muted)'
                 }}
               >
-                {trackerEnabled ? 'Active' : 'Paused'}
+                {trackerEnabled ? 'ACTIVE' : 'PAUSED'}
               </span>
             </div>
-            <div style={{ fontSize: '11px', color: '#64748b', marginTop: 1 }}>
-              Passive window tracking, OCR receipts, and local context events.
+            <div style={{ fontSize: '10.5px', color: 'var(--wf-text-muted)', marginTop: 1 }}>
+              Passive window tracking, OCR receipts, and local SQLite memory events.
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <button
             onClick={handleToggleTracker}
             className="wfd-btn-subtle"
-            style={{ fontSize: '11px', padding: '4px 10px' }}
+            style={{ fontSize: '10.5px', padding: '3px 8px' }}
           >
             {trackerEnabled ? 'Pause Tracker' : 'Resume Tracker'}
           </button>
@@ -161,7 +162,7 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
             title="Refresh"
             className="wfd-tb-btn"
           >
-            <RefreshCw size={13} />
+            <RefreshCw size={12} />
           </button>
         </div>
       </div>
@@ -170,7 +171,7 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
       <div className="ch-kpi-grid">
         <div className="ch-kpi-card">
           <span className="ch-kpi-label">Active App</span>
-          <span className="ch-kpi-value" style={{ fontSize: '15px' }}>{activeApp}</span>
+          <span className="ch-kpi-value" style={{ fontSize: '14px' }}>{activeApp}</span>
         </div>
         <div className="ch-kpi-card">
           <span className="ch-kpi-label">Context Events</span>
@@ -185,21 +186,23 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
       </div>
 
       {/* Main Grid: Search/Standup (Left) + Screen Activity Feed (Right) */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 12 }}>
         {/* Left Column: Search & Day Reconstructor */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* Deep Ambient Search */}
           <div
             style={{
               background: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              borderRadius: 10,
-              padding: '14px'
+              border: '1px solid var(--wf-border)',
+              borderRadius: 'var(--wf-radius-md)',
+              padding: '12px'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-              <Search size={14} color="#818cf8" />
-              <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Search Ambient Memory</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <Search size={13} style={{ color: 'var(--wf-text-muted)' }} />
+              <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--wf-text-primary)' }}>
+                Search Ambient Memory
+              </span>
             </div>
             <form onSubmit={handleSearch} style={{ display: 'flex', gap: 6 }}>
               <input
@@ -210,11 +213,11 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                 style={{
                   flex: 1,
                   background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                  borderRadius: 6,
-                  padding: '6px 10px',
-                  color: '#f8fafc',
-                  fontSize: '11.5px',
+                  border: '1px solid var(--wf-border)',
+                  borderRadius: 'var(--wf-radius-sm)',
+                  padding: '5px 8px',
+                  color: 'var(--wf-text-primary)',
+                  fontSize: '11px',
                   outline: 'none'
                 }}
               />
@@ -222,7 +225,7 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                 type="submit"
                 disabled={isSearching}
                 className="wfd-btn-primary"
-                style={{ fontSize: '11px', padding: '5px 12px' }}
+                style={{ fontSize: '11px', padding: '4px 10px' }}
               >
                 {isSearching ? '...' : 'Search'}
               </button>
@@ -230,28 +233,28 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
 
             {/* Search Results Display */}
             {searchResults && (
-              <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div style={{ fontSize: '10.5px', color: '#64748b' }}>
+              <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div style={{ fontSize: '10px', color: 'var(--wf-text-muted)', fontFamily: 'var(--font-mono)' }}>
                   Found {searchResults.results?.length || 0} matches ({searchResults.totalEventsScanned} scanned)
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 220, overflowY: 'auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5, maxHeight: 200, overflowY: 'auto' }}>
                   {searchResults.results?.map((res: any, idx: number) => (
                     <div
                       key={idx}
                       style={{
                         background: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid rgba(255, 255, 255, 0.05)',
-                        borderRadius: 6,
-                        padding: '8px 10px',
-                        fontSize: '11.5px'
+                        border: '1px solid var(--wf-border)',
+                        borderRadius: 'var(--wf-radius-sm)',
+                        padding: '7px 9px',
+                        fontSize: '11px'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
                         <span className="ch-receipt-pill">{res.receipt}</span>
-                        <span style={{ color: '#818cf8', fontSize: '10px' }}>Match</span>
+                        <span style={{ color: 'var(--wf-text-muted)', fontSize: '9.5px', fontFamily: 'var(--font-mono)' }}>Match</span>
                       </div>
-                      <div style={{ color: '#cbd5e1', lineHeight: 1.4 }}>{res.matchedSnippet}</div>
+                      <div style={{ color: 'var(--wf-text-secondary)', lineHeight: 1.4 }}>{res.matchedSnippet}</div>
                     </div>
                   ))}
                 </div>
@@ -263,39 +266,41 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
           <div
             style={{
               background: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              borderRadius: 10,
-              padding: '14px'
+              border: '1px solid var(--wf-border)',
+              borderRadius: 'var(--wf-radius-md)',
+              padding: '12px'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Calendar size={14} color="#34d399" />
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Day Reconstructor</span>
+                <Calendar size={13} style={{ color: 'var(--wf-text-muted)' }} />
+                <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--wf-text-primary)' }}>
+                  Day Reconstructor
+                </span>
               </div>
               <button
                 onClick={handleGenerateDayReconstruction}
                 disabled={isGeneratingReconstruction}
                 className="wfd-btn-subtle"
-                style={{ fontSize: '10.5px', padding: '3px 8px' }}
+                style={{ fontSize: '10px', padding: '2px 7px' }}
               >
                 {isGeneratingReconstruction ? 'Synthesizing...' : 'Generate Log'}
               </button>
             </div>
 
             {dayReconstruction ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '10px', color: '#64748b' }}>
-                    Coverage: {dayReconstruction.eventsAnalyzed} events · {dayReconstruction.uniqueAppsEngaged?.length || 0} apps
+                  <span style={{ fontSize: '9.5px', color: 'var(--wf-text-muted)', fontFamily: 'var(--font-mono)' }}>
+                    {dayReconstruction.eventsAnalyzed} events · {dayReconstruction.uniqueAppsEngaged?.length || 0} apps
                   </span>
                   <button
                     onClick={() => handleCopy(dayReconstruction.markdownSummary, 'day_log')}
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: copiedReceipt === 'day_log' ? '#34d399' : '#94a3b8',
-                      fontSize: '10.5px',
+                      color: copiedReceipt === 'day_log' ? 'var(--wf-success)' : 'var(--wf-text-muted)',
+                      fontSize: '10px',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 4,
@@ -308,15 +313,15 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                 </div>
                 <pre
                   style={{
-                    background: 'rgba(0, 0, 0, 0.3)',
-                    border: '1px solid rgba(255, 255, 255, 0.05)',
-                    borderRadius: 6,
+                    background: 'rgba(0, 0, 0, 0.35)',
+                    border: '1px solid var(--wf-border)',
+                    borderRadius: 'var(--wf-radius-sm)',
                     padding: '8px 10px',
-                    fontSize: '11px',
-                    color: '#cbd5e1',
+                    fontSize: '10.5px',
+                    color: 'var(--wf-text-secondary)',
                     fontFamily: 'var(--font-mono)',
                     whiteSpace: 'pre-wrap',
-                    maxHeight: 180,
+                    maxHeight: 160,
                     overflowY: 'auto',
                     margin: 0
                   }}
@@ -325,8 +330,8 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                 </pre>
               </div>
             ) : (
-              <div style={{ fontSize: '11px', color: '#64748b', lineHeight: 1.4 }}>
-                Synthesizes today's screen snapshots, edited files, and window switches into an automated standup report.
+              <div style={{ fontSize: '10.5px', color: 'var(--wf-text-muted)', lineHeight: 1.4 }}>
+                Synthesizes today's screen snapshots, edited files, and window switches into an automated standup dev log.
               </div>
             )}
           </div>
@@ -336,25 +341,29 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
         <div
           style={{
             background: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
-            borderRadius: 10,
-            padding: '14px',
+            border: '1px solid var(--wf-border)',
+            borderRadius: 'var(--wf-radius-md)',
+            padding: '12px',
             display: 'flex',
             flexDirection: 'column'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Layers size={14} color="#818cf8" />
-              <span style={{ fontSize: '12px', fontWeight: 600, color: '#f8fafc' }}>Activity Receipts</span>
+              <Layers size={13} style={{ color: 'var(--wf-text-muted)' }} />
+              <span style={{ fontSize: '11.5px', fontWeight: 600, color: 'var(--wf-text-primary)' }}>
+                Activity Receipts
+              </span>
             </div>
-            <span style={{ fontSize: '10px', color: '#64748b' }}>{activities.length} snapshots</span>
+            <span style={{ fontSize: '9.5px', color: 'var(--wf-text-muted)', fontFamily: 'var(--font-mono)' }}>
+              {activities.length} snapshots
+            </span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, overflowY: 'auto', maxHeight: 460, paddingRight: 2 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5, overflowY: 'auto', maxHeight: 420, paddingRight: 2 }}>
             {activities.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '36px 10px', color: '#64748b', fontSize: '11.5px' }}>
-                <Activity size={20} style={{ opacity: 0.4, marginBottom: 6 }} />
+              <div style={{ textAlign: 'center', padding: '36px 10px', color: 'var(--wf-text-muted)', fontSize: '11px' }}>
+                <Activity size={18} style={{ opacity: 0.3, marginBottom: 6 }} />
                 <div>Recording initial screen activities...</div>
               </div>
             ) : (
@@ -363,23 +372,24 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                   key={act.id}
                   style={{
                     background: 'rgba(255, 255, 255, 0.02)',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
-                    borderRadius: 6,
-                    padding: '8px 10px',
+                    border: '1px solid var(--wf-border)',
+                    borderRadius: 'var(--wf-radius-sm)',
+                    padding: '7px 9px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 4
+                    gap: 3
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span
                       style={{
-                        fontSize: '10px',
+                        fontSize: '9.5px',
+                        fontFamily: 'var(--font-mono)',
                         fontWeight: 500,
                         padding: '1px 5px',
-                        borderRadius: 4,
+                        borderRadius: 3,
                         background: 'rgba(255, 255, 255, 0.04)',
-                        color: '#cbd5e1'
+                        color: 'var(--wf-text-secondary)'
                       }}
                     >
                       {act.activeApp}
@@ -390,7 +400,7 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                       style={{
                         background: 'none',
                         border: 'none',
-                        color: copiedReceipt === act.id ? '#34d399' : '#64748b',
+                        color: copiedReceipt === act.id ? 'var(--wf-success)' : 'var(--wf-text-muted)',
                         cursor: 'pointer'
                       }}
                     >
@@ -398,7 +408,7 @@ export const ContextHub: React.FC<ContextHubProps> = ({ activeApp = 'Desktop' })
                     </button>
                   </div>
 
-                  <div style={{ fontSize: '11.5px', color: '#f1f5f9' }}>{act.activitySummary}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--wf-text-primary)' }}>{act.activitySummary}</div>
                   <div className="ch-receipt-pill" style={{ width: 'fit-content' }}>{act.receipt}</div>
                 </div>
               ))

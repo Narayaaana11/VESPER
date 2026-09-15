@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Send, Copy, Check, Terminal, Sparkles } from 'lucide-react'
+import { Send, Copy, Check, Terminal, Cpu } from 'lucide-react'
 import { UniversalTaskObject } from '../types/task'
 
 interface TaskPreviewCardProps {
@@ -14,7 +14,7 @@ export const TaskPreviewCard: React.FC<TaskPreviewCardProps> = ({ task, onExecut
   const handleCopy = () => {
     onExecute(task, false)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopied(false), 1800)
   }
 
   const handleInject = () => {
@@ -25,21 +25,21 @@ export const TaskPreviewCard: React.FC<TaskPreviewCardProps> = ({ task, onExecut
     <div className="wf-output-card">
       <div className="wf-output-header">
         <div className="wf-target-pill">
-          <Sparkles size={12} color="#818cf8" />
-          <span>READY FOR {task.targetRouting.adapter.replace('_', ' ').toUpperCase()}</span>
+          <Cpu size={11} strokeWidth={1.75} />
+          <span>ROUTING // {task.targetRouting.adapter.replace('_', ' ').toUpperCase()}</span>
         </div>
         <button
           className="wf-btn-subtle"
-          style={{ padding: '2px 7px', fontSize: '10px' }}
+          style={{ padding: '2px 7px', fontSize: '10px', height: '22px' }}
           onClick={() => setShowJson(!showJson)}
         >
           <Terminal size={10} />
-          <span>{showJson ? 'Text' : 'UTO Schema'}</span>
+          <span>{showJson ? 'Plain' : 'Schema'}</span>
         </button>
       </div>
 
       {showJson ? (
-        <pre className="wf-text-preview" style={{ color: '#cbd5e1' }}>
+        <pre className="wf-text-preview" style={{ color: '#d4d4d8' }}>
           {JSON.stringify(task, null, 2)}
         </pre>
       ) : (
@@ -49,12 +49,12 @@ export const TaskPreviewCard: React.FC<TaskPreviewCardProps> = ({ task, onExecut
       )}
 
       <div className="wf-output-actions">
-        <div style={{ fontSize: '10.5px', color: 'var(--wf-text-subtle)' }}>
+        <div style={{ fontSize: '10px', color: 'var(--wf-text-muted)', fontFamily: 'var(--font-mono)' }}>
           {task.targetRouting.explanation}
         </div>
         <div style={{ display: 'flex', gap: '5px' }}>
           <button className="wf-btn-subtle" onClick={handleCopy}>
-            {copied ? <Check size={11} color="#10b981" /> : <Copy size={11} />}
+            {copied ? <Check size={11} color="var(--wf-success)" /> : <Copy size={11} />}
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
           <button className="wf-btn-primary" onClick={handleInject}>

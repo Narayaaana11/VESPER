@@ -4,6 +4,8 @@ node_modules/
 # Build outputs
 dist/
 out/
+Release/
+*.exe
 
 # Environment and secrets
 .env
@@ -40,3 +42,7 @@ ehthumbs.db
 # Local Model Weights & Transformers Cache
 resources/models/transformers-cache/
 *.onnx
+
+# Landing page repo (tracked in its own git repo)
+Landing/
+

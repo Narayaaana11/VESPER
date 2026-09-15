@@ -1,43 +1,15 @@
 import { GlobalKeyboardListener, IGlobalKeyEvent } from 'node-global-key-listener'
-import { BrowserWindow, app } from 'electron'
-import path from 'path'
-import fs from 'fs'
+import { BrowserWindow } from 'electron'
+import { resolveBinary } from './binary-resolver'
 
-export type PushToTalkKey = 'RIGHT ALT' | 'LEFT ALT' | 'RIGHT CTRL' | 'LEFT CTRL' | 'CAPS LOCK' | 'FN' | 'F8'
-
-function resolveWinKeyServer(): string | undefined {
-  if (process.platform !== 'win32') return undefined
-
-  try {
-    // 1. node_modules in workspace
-    const p1 = path.join(process.cwd(), 'node_modules', 'node-global-key-listener', 'bin', 'WinKeyServer.exe')
-    if (fs.existsSync(p1)) return p1
-
-    // 2. resolve from module
-    const modDir = path.dirname(require.resolve('node-global-key-listener'))
-    const p2 = path.join(modDir, '..', 'bin', 'WinKeyServer.exe')
-    if (fs.existsSync(p2)) return p2
-
-    // 3. app path
-    if (app) {
-      const p3 = path.join(app.getAppPath(), 'node_modules', 'node-global-key-listener', 'bin', 'WinKeyServer.exe')
-      if (fs.existsSync(p3)) return p3
-    }
-
-    // 4. out/bin
-    const p4 = path.join(__dirname, '..', '..', 'bin', 'WinKeyServer.exe')
-    if (fs.existsSync(p4)) return p4
-  } catch (err) {
-    console.warn('[QEVRA] resolveWinKeyServer error:', err)
-  }
-  return undefined
-}
+export type PushToTalkKey = 'ANY ALT' | 'RIGHT ALT' | 'LEFT ALT' | 'RIGHT CTRL' | 'LEFT CTRL' | 'CAPS LOCK' | 'FN' | 'F8'
 
 export class HoldToTalkManager {
   private listener: GlobalKeyboardListener | null = null
   private isHolding = false
-  private targetKey = 'RIGHT ALT'
+  private targetKey = 'ANY ALT'
   private mainWindow: BrowserWindow | null = null
+  public isListenerReady = false
 
   private lastReleaseTimestamp = 0
   private pressTimestamp = 0
@@ -48,14 +20,19 @@ export class HoldToTalkManager {
   private readonly DOUBLE_TAP_THRESHOLD_MS = 380
   private readonly HOLD_MIN_DURATION_MS = 180
 
-  constructor(mainWindow: BrowserWindow, key = 'RIGHT ALT') {
+  constructor(mainWindow: BrowserWindow, key = 'ANY ALT') {
     this.mainWindow = mainWindow
     this.targetKey = key.toUpperCase()
     this.initListener()
   }
 
   public setTargetKey(newKey: string): void {
-    this.targetKey = newKey.toUpperCase()
+    this.targetKey = (newKey || 'ANY ALT').toUpperCase()
+    console.log(`[QEVRA] Target Push-to-Talk key updated to: ${this.targetKey}`)
+  }
+
+  public getTargetKey(): string {
+    return this.targetKey
   }
 
   private isKeyMatch(e: IGlobalKeyEvent): boolean {
@@ -63,17 +40,27 @@ export class HoldToTalkManager {
     const target = this.targetKey.toUpperCase().trim()
     const vKey = e.vKey
 
+    // 0. ANY ALT mode (default & recommended): matches any Alt press (Left Alt, Right Alt, AltGr)
+    if (target === 'ANY ALT' || target === 'ALT') {
+      if (vKey === 165 || vKey === 164 || vKey === 18) return true
+      if (keyName.includes('ALT') || keyName.includes('MENU')) return true
+    }
+
     // 1. Direct virtual key code checks (Win32 API standard)
     // 0xA5 = 165 (VK_RMENU / Right Alt), 0x12 = 18 (VK_MENU / Alt)
     if (target === 'RIGHT ALT' || target === 'FN') {
-      if (vKey === 165 || vKey === 18) return true
+      if (vKey === 165) return true
+      if (vKey === 18 && (keyName.includes('RIGHT') || keyName.includes('RALT') || keyName.includes('GR'))) return true
     }
     // 0xA4 = 164 (VK_LMENU / Left Alt)
-    if (target === 'LEFT ALT' && (vKey === 164 || vKey === 18)) return true
+    if (target === 'LEFT ALT') {
+      if (vKey === 164) return true
+      if (vKey === 18 && (keyName.includes('LEFT') || keyName.includes('LALT'))) return true
+    }
     // 0xA3 = 163 (VK_RCONTROL / Right Ctrl)
-    if (target === 'RIGHT CTRL' && (vKey === 163 || vKey === 17)) return true
+    if (target === 'RIGHT CTRL' && (vKey === 163 || (vKey === 17 && keyName.includes('RIGHT')))) return true
     // 0xA2 = 162 (VK_LCONTROL / Left Ctrl)
-    if (target === 'LEFT CTRL' && (vKey === 162 || vKey === 17)) return true
+    if (target === 'LEFT CTRL' && (vKey === 162 || (vKey === 17 && keyName.includes('LEFT')))) return true
     // 0x14 = 20 (VK_CAPITAL / Caps Lock)
     if (target === 'CAPS LOCK' && vKey === 20) return true
     // 0x77 = 119 (VK_F8)
@@ -82,23 +69,51 @@ export class HoldToTalkManager {
     // 2. Direct string name match
     if (keyName === target) return true
     if (keyName === 'RALT' || keyName === 'RIGHT ALT' || keyName === 'ALT GR') {
-      if (target === 'RIGHT ALT' || target === 'FN') return true
+      if (target === 'RIGHT ALT' || target === 'FN' || target === 'ANY ALT') return true
+    }
+    if (keyName === 'LALT' || keyName === 'LEFT ALT') {
+      if (target === 'LEFT ALT' || target === 'ANY ALT') return true
     }
     if (keyName.includes('FN') || keyName.includes('FUNCTION')) return true
 
     return false
   }
 
+  private broadcast(channel: string, ...args: any[]): void {
+    try {
+      for (const win of BrowserWindow.getAllWindows()) {
+        if (!win.isDestroyed()) {
+          win.webContents.send(channel, ...args)
+        }
+      }
+    } catch {}
+  }
+
   private initListener(): void {
     try {
-      const serverPath = resolveWinKeyServer()
-      console.log(`[QEVRA] Initializing GlobalKeyboardListener with serverPath: ${serverPath}`)
+      const serverPath = resolveBinary('WinKeyServer.exe')
+      console.log(`[QEVRA] Initializing GlobalKeyboardListener with serverPath: "${serverPath}"`)
 
       this.listener = new GlobalKeyboardListener({
-        windows: serverPath ? { serverPath } : {}
+        windows: {
+          serverPath: serverPath || undefined,
+          onError: (errorCode) => {
+            console.warn(`[QEVRA WinKeyServer] Exited with code: ${errorCode}`)
+          },
+          onInfo: (info) => {
+            console.log(`[QEVRA WinKeyServer Info]: ${info}`)
+          }
+        }
       })
 
-      this.listener.addListener((e: IGlobalKeyEvent) => {
+      const attachPromise = this.listener.addListener((e: IGlobalKeyEvent) => {
+        // Broadcast key events to all windows for live system diagnostic indicator
+        this.broadcast('qevra:key-diagnostic-event', {
+          name: e.name,
+          state: e.state,
+          vKey: e.vKey
+        })
+
         if (this.isKeyMatch(e)) {
           if (e.state === 'DOWN' && !this.isHolding) {
             this.isHolding = true
@@ -109,8 +124,23 @@ export class HoldToTalkManager {
           }
         }
       })
-      console.log(`[QEVRA] Hold/Double-tap listening on key: ${this.targetKey}`)
+
+      if (attachPromise && typeof attachPromise.then === 'function') {
+        attachPromise
+          .then(() => {
+            this.isListenerReady = true
+            console.log(`[QEVRA] GlobalKeyboardListener hooked successfully. Active key: ${this.targetKey}`)
+          })
+          .catch((err) => {
+            this.isListenerReady = false
+            console.error('[QEVRA] GlobalKeyboardListener hook attachment error:', err)
+          })
+      } else {
+        this.isListenerReady = true
+        console.log(`[QEVRA] Hold/Double-tap listening on key: ${this.targetKey}`)
+      }
     } catch (err) {
+      this.isListenerReady = false
       console.warn('[QEVRA] GlobalKeyboardListener init error:', err)
     }
   }
@@ -180,43 +210,41 @@ export class HoldToTalkManager {
   }
 
   private triggerHoldStart(): void {
-    if (!this.mainWindow || this.mainWindow.isDestroyed()) return
-
     console.log('[QEVRA Main] [REC] Hold-to-Talk recording STARTED (Key down)')
-    // Show window WITHOUT stealing focus so user's cursor remains in the target input
-    this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
-    this.mainWindow.showInactive()
-    this.mainWindow.moveTop()
-    this.mainWindow.webContents.send('qevra:hold-start')
+    // Show capsule window WITHOUT stealing focus so user's cursor remains in the target input
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
+      this.mainWindow.showInactive()
+      this.mainWindow.moveTop()
+    }
+    this.broadcast('qevra:hold-start')
   }
 
   private triggerHoldEnd(): void {
-    if (!this.mainWindow || this.mainWindow.isDestroyed()) return
-
     console.log('[QEVRA Main] [STOP] Hold-to-Talk recording STOPPED (Key released -> Processing speech)')
-    this.mainWindow.webContents.send('qevra:hold-end')
+    this.broadcast('qevra:hold-end')
   }
 
   private triggerSingleTap(): void {
-    if (!this.mainWindow || this.mainWindow.isDestroyed()) return
-
     console.log('[QEVRA Main] [TAP] Single-tap detected')
-    this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
-    this.mainWindow.showInactive()
-    this.mainWindow.moveTop()
-    this.mainWindow.webContents.send('qevra:single-tap')
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
+      this.mainWindow.showInactive()
+      this.mainWindow.moveTop()
+    }
+    this.broadcast('qevra:single-tap')
   }
 
   private triggerDoubleTapMode(): void {
-    if (!this.mainWindow || this.mainWindow.isDestroyed()) return
-
     console.log('[QEVRA Main] [DOUBLE-TAP] Double-tap persistent mode activated')
     // Double-tap opens persistent overlay with Record, Pause, Stop, Cancel controls
-    this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
-    this.mainWindow.show()
-    this.mainWindow.moveTop()
-    this.mainWindow.focus()
-    this.mainWindow.webContents.send('qevra:double-tap-persistent-mode')
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.setAlwaysOnTop(true, 'screen-saver')
+      this.mainWindow.show()
+      this.mainWindow.moveTop()
+      this.mainWindow.focus()
+    }
+    this.broadcast('qevra:double-tap-persistent-mode')
   }
 
   public destroy(): void {
