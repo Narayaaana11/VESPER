@@ -472,7 +472,8 @@ C:\Users\gowri\Videos\QEVRA
 │   │   ├── mcp-runner.ts              # Standalone stdio MCP runner
 │   │   ├── mcp/qevra-mcp-server.ts    # Ambient computer context Littlebird MCP server
 │   │   ├── send-input.exe             # High-speed native keystroke injector
-│   │   └── WinKeyServer.exe           # Low-level Windows global keyboard server
+│   │   ├── WinKeyServer.cs            # Native Win32 C# low-level keyboard hook server source
+│   │   └── WinKeyServer.exe           # Zero-dependency 64-bit Windows keyboard server
 │   ├── preload
 │   │   └── index.ts                   # Context-isolated safe bridge (electronAPI)
 │   └── renderer
@@ -570,4 +571,33 @@ QEVRA includes a dual-mode Model Context Protocol (MCP) server providing real-ti
 - **Tools Exposed:**
   1. `search_user_context`: Hybrid semantic & keyword recall over user desktop timeline, active windows, and speech with verifiable Littlebird receipts.
   2. `get_day_reconstruction`: Rebuilds ambient context into dev logs, application usage minutes, files edited, and ready-to-paste changelogs.
-  3. `get_active_screen_context`: Real-time active foreground window, application, category, and workspace path.
+  3. `get_active_screen_context`: Real-time active foreground window, application, category, and workspace path.
+
+### 13.4 Native Standalone Windows Keyboard Hook Server (`WinKeyServer.cs`)
+- **Diagnosis of Prior Flaw:** Third-party npm package `node-global-key-listener` packaged an outdated 32-bit `WinKeyServer.exe` compiled with MinGW, which had an unbundled dependency on `libgcc_s_dw2-1.dll`. When spawned on Windows systems without this MinGW DLL, Windows exited with `"The system cannot execute the specified program"`, producing silent Node `spawn UNKNOWN` (errno -4094) errors and preventing global keyboard hooks from attaching.
+- **Native C# Architecture:** Replaced with `src/main/WinKeyServer.cs`, compiled using Windows' built-in .NET 64-bit compiler (`C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe`).
+- **Hook Mechanics:**
+  - Installs a global `WH_KEYBOARD_LL` (id: 13) hook via Win32 `SetWindowsHookEx`.
+  - Captures `WM_KEYDOWN` (0x0100), `WM_SYSKEYDOWN` (0x0104), `WM_KEYUP` (0x0101), and `WM_SYSKEYUP` (0x0105). Capturing `WM_SYSKEY*` is essential for catching single Alt modifier key presses (`VK_RMENU` / 165, `VK_LMENU` / 164, and `VK_MENU` / 18).
+  - Emits normalized stdout lines (`1,{DOWN|UP},{vKey},{scanCode},0,0,{eventId}`) directly consumed by `HoldToTalkManager`.
+  - **Zero External Dependencies:** Statically linked against standard Windows system runtimes with a file footprint of only 6.6 KB.
+  - Automatically distributed to `src/main/WinKeyServer.exe`, `resources/bin/WinKeyServer.exe`, `out/bin/WinKeyServer.exe`, and `node_modules/node-global-key-listener/bin/WinKeyServer.exe`.
+
+### 13.5 Floating Capsule UI Lifecycle & Visibility
+- **Instant Display on Ready:** In `src/main/index.ts`, `capsuleWindow.on('ready-to-show')` executes `capsuleWindow.showInactive()` and `capsuleWindow.setAlwaysOnTop(true, 'screen-saver')`. The floating pill appears immediately at the top center of the screen (`y = 45`) without stealing focus from the active foreground window.
+- **Adaptive Resizing:** The capsule dynamically resizes via IPC (`qevra:resize-window`):
+  - **Idle Capsule:** 140px × 58px.
+  - **Active Listening:** 240px × 58px (or 280px in persistent mode) with animated 20-bar audio waveform.
+  - **Analyzing / Status:** 270px–360px × 58px.
+  - **Settings / Disambiguation / Proposal:** 580px × 240px–430px.
+  - **Dashboard Mode:** 1040px × 680px.
+
+### 13.6 Windows Environment & PowerShell Execution Policy
+- If running bare `npm` triggers a Windows Execution Policy error (`File ... npm.ps1 cannot be loaded because running scripts is disabled`), execute:
+  ```powershell
+  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+  ```
+  Or alternatively use the Windows Command batch wrapper:
+  ```powershell
+  npm.cmd run dev
+  ```

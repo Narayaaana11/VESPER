@@ -99,3 +99,22 @@ npm run mcp
 | **`F8`** | Global Shortcut | Quick toggle hotkey |
 | **`1` / `2` / `3` / `4`** | Smart Q&A | Quick keyboard selection during disambiguation |
 | **`Esc`** | Cancel / Hide | Minimizes HUD to background |
+
+---
+
+## 🛠️ Windows Native Engine & Architecture
+
+### Standalone Low-Level Keyboard Server (`WinKeyServer.cs`)
+- **Zero-Dependency Native Hook:** Built with standard Windows Win32 API (`user32.dll` and `kernel32.dll`) using Windows' built-in .NET 64-bit compiler (`csc.exe`).
+- **Eliminated DLL Crashes:** Bypasses third-party MinGW dependencies (`libgcc_s_dw2-1.dll`), preventing `spawn UNKNOWN` / `-4094` errors.
+- **Accurate Alt Detection:** Intercepts `WM_SYSKEYDOWN` and `WM_SYSKEYUP` events to capture single Alt key presses (`VK_RMENU` 165, `VK_LMENU` 164, and `VK_MENU` 18).
+
+### PowerShell Execution Policy (Troubleshooting)
+If running `npm run dev` yields an execution policy error on Windows (`npm.ps1 cannot be loaded`), enable script execution for your user account:
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+Or run directly via the Command batch file:
+```powershell
+npm.cmd run dev
+```
