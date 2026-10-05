@@ -80,7 +80,7 @@ const getInitialSettings = (): AppSettings => {
     hotkey: 'CommandOrControl+Shift+Space',
     holdKey: 'ANY ALT',
     aiProvider: initialKey ? 'groq' : 'local',
-    whisperModel: 'whisper-large-v3',
+    whisperModel: 'whisper-large-v3-turbo',
     whisperLanguage: 'auto',
     dictationMode: envMode,
     aiPolishing: true,
@@ -467,11 +467,13 @@ export const App: React.FC = () => {
       }
     }
 
-    // 1. If no API key is configured, prompt clearly and open Settings
-    if (!apiKey) {
-      console.warn('[QEVRA] Groq API key is missing. Opening settings.')
+    const isLocalMode = settings.aiProvider === 'local' || settings.aiProvider === 'ollama' || !apiKey
+
+    // 1. If no API key is configured AND local transcribe is not available in Electron API
+    if (!apiKey && !isLocalMode && !window.electronAPI?.transcribeLocal) {
+      console.warn('[QEVRA] Groq API key is missing and local compute bridge unavailable. Opening settings.')
       setStage('idle')
-      setExecutionStatus('⚠️ Groq API key required for speech.')
+      setExecutionStatus('⚠️ Groq API key or local model required.')
       setShowSettings(true)
       setTimeout(() => setExecutionStatus(null), 4000)
       return
@@ -489,10 +491,10 @@ export const App: React.FC = () => {
       return
     }
 
-    // 3. Transcribe with Intelligent Dispatcher (Groq Cloud Whisper with Local Whisper ONNX failover)
-    const isLocalMode = settings.aiProvider === 'local' || settings.aiProvider === 'ollama' || !apiKey
-    setExecutionStatus(isLocalMode ? 'Transcribing with Local Whisper (ONNX)...' : 'Transcribing with Whisper-large-v3...')
-    console.log(`[QEVRA] Transcribing audio (${audioBlob.size} bytes, ${recResult.durationMs}ms, mode: ${isLocalMode ? 'local' : 'groq'})...`)
+    // 3. Transcribe with Intelligent Dispatcher (Whisper Turbo v3 / Local Whisper ONNX)
+    const whisperLabel = settings.whisperModel === 'whisper-large-v3-turbo' ? 'Whisper Turbo v3' : (settings.whisperModel || 'Whisper Turbo v3')
+    setExecutionStatus(isLocalMode ? `Transcribing with Local ${whisperLabel}...` : `Transcribing with Cloud ${whisperLabel}...`)
+    console.log(`[QEVRA] Transcribing audio (${audioBlob.size} bytes, ${recResult.durationMs}ms, mode: ${isLocalMode ? 'local' : 'groq'}, model: ${whisperLabel})...`)
 
     // Compile dynamic Whisper context prompt from custom vocabulary + domain priming + active window
     let dynamicPrompt = ''
@@ -511,7 +513,7 @@ export const App: React.FC = () => {
       audioBlob,
       apiKey,
       {
-        model: settings.whisperModel || 'whisper-large-v3',
+        model: settings.whisperModel || 'whisper-large-v3-turbo',
         language: settings.whisperLanguage || 'auto',
         prompt: dynamicPrompt || undefined,
         translateToEnglish: settings.englishLettersOnly !== false,
@@ -560,7 +562,7 @@ export const App: React.FC = () => {
 
     // 5. Screen & Context-Aware AI Polishing
     if (settings.aiPolishing !== false) {
-      setExecutionStatus(isLocalMode ? 'Polishing with Local Rule Engine...' : 'Polishing with screen context...')
+      setExecutionStatus(isLocalMode ? 'Rephrasing & polishing with Local AI / Rules...' : 'Rephrasing & polishing with LLM...')
       console.log(`[QEVRA] Polishing with context [App: ${context.activeApp || 'Desktop'}, Title: ${context.windowTitle || 'Unknown'}, Provider: ${settings.aiProvider}]...`)
 
       let polished: string | null = null

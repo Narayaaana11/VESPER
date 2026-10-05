@@ -75,17 +75,17 @@ npm run mcp
 
 ## ⚙️ Configuration & Modes
 
-### Option A: 100% Offline / Local Compute (Default without API Key)
-1. Open QEVRA and click **⚙️ Settings** on the floating capsule.
-2. Select **Inference Engine:** `Built-in Local (Deterministic)` or `Ollama (Local Llama 3.2)`.
-3. No API key needed! All audio transcription and polishing run completely on device.
+### Option A: 100% Offline / Local Compute (Zero Cloud Dependency)
+1. Open QEVRA — automatically activates `Local Whisper (ONNX)` and local compute if no API key is set.
+2. Voice is captured via **Right Alt**, transcribed via on-device Whisper, and rephrased via local deterministic rules or Ollama (`llama3.2`).
+3. Formats tailored prompts for Cursor Composer, Antigravity, VS Code, Slack, Gmail, or Terminal and types them directly.
 
-### Option B: Cloud-Accelerated Mode (Groq)
+### Option B: Cloud-Accelerated Mode (Whisper Turbo v3 + Llama 3.3)
 1. Open QEVRA and click **⚙️ Settings**.
-2. Select **Inference Engine:** `Groq Cloud (Whisper-large-v3 + Llama 3.3)`.
-3. Paste your free Groq API key (starts with `gsk_` from [groq.com](https://console.groq.com)).
-4. Choose **Dictation Mode:** `Direct Dictation (Wispr Flow Style)`.
-5. Click **Save Settings**. (If internet disconnects, QEVRA automatically fails over to Local Whisper).
+2. Select **Inference Engine:** `Groq Cloud (Whisper Turbo v3 + Llama 3.3)`.
+3. Paste your Groq API key (starts with `gsk_` from [groq.com](https://console.groq.com)).
+4. Choose **Whisper Model:** `whisper-large-v3-turbo` for ultra-fast ~250 wps speech-to-text.
+5. If offline or if the cloud API is unreachable, QEVRA automatically fails over to the local on-device Whisper engine without interrupting your workflow.
 
 ---
 

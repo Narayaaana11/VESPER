@@ -275,16 +275,17 @@ export async function decodeAudioBlobToSamples(
  * Transcribes audio 100% locally via Transformers.js Whisper (ONNX) in Main process
  */
 export async function transcribeLocally(
-  audioBlob: Blob
-): Promise<{ text: string; error?: string }> {
+  audioBlob: Blob,
+  modelName?: string
+): Promise<{ text: string; model?: string; error?: string }> {
   try {
     if (typeof window !== 'undefined' && (window as any).electronAPI?.transcribeLocal) {
       const samples = await decodeAudioBlobToSamples(audioBlob, 16000)
       if (!samples || samples.length === 0) {
         return { text: '', error: 'Audio buffer is empty' }
       }
-      const res = await (window as any).electronAPI.transcribeLocal(samples)
-      return { text: (res?.text || '').trim(), error: res?.error }
+      const res = await (window as any).electronAPI.transcribeLocal(samples, modelName)
+      return { text: (res?.text || '').trim(), model: res?.model, error: res?.error }
     }
     return { text: '', error: 'Local transcription bridge not available' }
   } catch (err: any) {
@@ -377,7 +378,7 @@ export async function transcribeAudio(
   audioBlob: Blob,
   apiKey: string,
   options: GroqTranscriptionOptions & { preferLocal?: boolean } = {}
-): Promise<{ text: string; provider: 'groq' | 'local'; error?: string }> {
+): Promise<{ text: string; provider: 'groq' | 'local'; model?: string; error?: string }> {
   const hasGroqKey = Boolean(apiKey && apiKey.trim())
   const shouldTryGroq = hasGroqKey && !options.preferLocal
 
@@ -390,9 +391,9 @@ export async function transcribeAudio(
   }
 
   // Fallback to Local Compute STT (zero network, zero API key)
-  const localRes = await transcribeLocally(audioBlob)
+  const localRes = await transcribeLocally(audioBlob, options.model)
   if (localRes.text && localRes.text.trim()) {
-    return { text: localRes.text.trim(), provider: 'local' }
+    return { text: localRes.text.trim(), provider: 'local', model: localRes.model }
   }
 
   return {

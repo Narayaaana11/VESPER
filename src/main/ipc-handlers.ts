@@ -412,15 +412,20 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
 
   // 7b. Transcribe Audio locally in Main Process via Transformers.js (Whisper ONNX)
   let mainTranscriber: any = null
-  ipcMain.handle('qevra:transcribe-local', async (_, audioSamples: Float32Array | number[]) => {
+  let activeLocalModel = ''
+  ipcMain.handle('qevra:transcribe-local', async (_, audioSamples: Float32Array | number[], requestedModel?: string) => {
     try {
       if (!audioSamples || audioSamples.length === 0) return { text: '' }
       const samples = audioSamples instanceof Float32Array ? audioSamples : new Float32Array(audioSamples)
 
-      if (!mainTranscriber) {
+      const targetModel = requestedModel && requestedModel.includes('turbo')
+        ? 'onnx-community/whisper-large-v3-turbo'
+        : 'Xenova/whisper-tiny.en'
+
+      if (!mainTranscriber || activeLocalModel !== targetModel) {
         const { pipeline, env } = await import('@xenova/transformers')
         env.allowLocalModels = true
-        env.allowRemoteModels = false
+        env.allowRemoteModels = true
         const resPath = typeof process !== 'undefined' && process.resourcesPath ? process.resourcesPath : ''
         const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
         const cacheCandidates = [
@@ -435,12 +440,24 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
         ]
         const resolvedCacheDir = cacheCandidates.find((p) => fs.existsSync(p)) || cacheCandidates[0]
         env.cacheDir = resolvedCacheDir
-        mainTranscriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en', {
-          quantized: true
-        })
+
+        try {
+          mainTranscriber = await pipeline('automatic-speech-recognition', targetModel, {
+            quantized: true,
+            cache_dir: resolvedCacheDir
+          })
+          activeLocalModel = targetModel
+        } catch (modelErr) {
+          console.warn(`[QEVRA Main] Target local model ${targetModel} not cached, using local Xenova/whisper-tiny.en:`, modelErr)
+          mainTranscriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en', {
+            quantized: true,
+            cache_dir: resolvedCacheDir
+          })
+          activeLocalModel = 'Xenova/whisper-tiny.en'
+        }
       }
       const output = await mainTranscriber(samples)
-      return { text: (output?.text || '').trim() }
+      return { text: (output?.text || '').trim(), model: activeLocalModel }
     } catch (err: any) {
       console.warn('[QEVRA Main] Local whisper STT error:', err)
       return { text: '', error: err?.message || 'Local STT error' }

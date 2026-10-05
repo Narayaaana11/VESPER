@@ -522,26 +522,27 @@ C:\Users\gowri\Videos\QEVRA
 ### 13.1 100% On-Device Compute Architecture (Zero Cloud Dependency)
 QEVRA functions as a completely autonomous, local-first computing platform when no cloud API keys are provided or when the user is working completely offline:
 
-1. **Intelligent STT Dispatcher (`transcribeAudio` in `src/renderer/src/core/groq-service.ts`):**
-   - **Default Local Mode:** When `apiKey` is empty or `aiProvider` is configured as `'local'`, QEVRA immediately routes microphone audio through the on-device local Whisper ONNX pipeline with zero network requests.
-   - **Automatic Failover:** When using Groq Cloud acceleration, any network hiccup, rate limit, quota exhaustion, or invalid key instantly triggers automatic failover to the local Whisper ONNX model without throwing errors or locking the UI.
-   - **Local Inference (`qevra:transcribe-local`):** Audio is decoded in the renderer using native Web Audio API `AudioContext.decodeAudioData` into 16kHz mono `Float32Array` samples, transferred over Electron IPC, and transcribed using `@xenova/transformers` running the quantized `Xenova/whisper-tiny.en` model on CPU/DirectML.
+1. **Push-to-Talk Native Voice Capture (Hold `Right Alt` / `Any Alt`):**
+   - Managed via native `HoldToTalkManager` and `WinKeyServer.exe` with low-level keyboard hooks.
+   - Holding down Right Alt triggers instant microsecond audio streaming via `AudioRecorder` with visual Obsidian-glass audio visualizers.
+   - Releasing Right Alt seamlessly finalizes the audio buffer and initiates the transcription & rephrasing pipeline.
 
-2. **Deterministic Local Rule-Based Post-Processor (`polishWithLocalRules`):**
-   - Operates 100% locally with zero latency (<2ms).
-   - Automatically eliminates verbal speech filler words (`um`, `uh`, `erm`, `er`, `ah`, `you know`, `like, I mean`, `sort of`, `kind of`).
-   - Resolves spoken self-corrections gracefully (`"meeting at three no wait four PM"` $\rightarrow$ `"Meeting at 4:00 PM"`).
-   - Cleans consecutive stutter words (`"the the"` $\rightarrow$ `"the"`, `"I I"` $\rightarrow$ `"I"`).
-   - Normalizes currency, times, and dates (`"five hundred dollars"` $\rightarrow$ `"$500"`).
-   - Formats code tokens when in IDE context (`camelCase`, `snake_case`, `kebab-case`, `Pull Request`).
-   - Recursively purges hallucinated trailing Whisper artifacts (`"thank you."`, `"thanks for watching."`, `"transcribed by..."`).
-   - Applies proper sentence capitalization and terminal punctuation.
+2. **Whisper Turbo v3 Speech-to-Text Pipeline (`transcribeAudio`):**
+   - **Whisper Turbo v3 Model:** Defaults to `whisper-large-v3-turbo` for state-of-the-art dictation accuracy and ultra-fast inference speed.
+   - **Intelligent Dual-Engine Dispatcher:** When a Groq API key is present and online, requests run on Groq LPUs at ~250 words per second. If offline, in local mode, or if no API key is configured, QEVRA automatically routes to the local on-device Whisper ONNX engine.
+   - **Local Inference (`qevra:transcribe-local`):** Native Web Audio API decodes audio into 16kHz mono `Float32Array` PCM samples. Electron IPC invokes `@xenova/transformers` with local ONNX models cached in `resources/models/transformers-cache` with zero network calls.
 
-3. **Local LLM Polishing via Ollama (`polishWithOllama`):**
-   - Connects to local Ollama daemon (`http://localhost:11434`, model `llama3.2`).
-   - If Ollama is offline or not installed, automatically falls back to `polishWithLocalRules`.
+3. **Context-Aware LLM Rephrasing & Dictation Polishing:**
+   - **Ollama Local LLM (`polishWithOllama`):** Connects to on-device Ollama (`http://localhost:11434`, model `llama3.2` or configurable) to rephrase raw speech, fix domain jargon, and format syntax.
+   - **Cloud Llama 3.3 70B (`polishWithGroqLlama`):** When Groq is connected, leverages 70B parameters for deep reasoning and complex prompt formatting.
+   - **Deterministic Local Rule-Based Engine (`polishWithLocalRules`):** 100% offline fallback (<2ms latency). Eliminates fillers (`um`, `uh`, `you know`), resolves spoken self-corrections (`"three no wait four PM"` $\rightarrow$ `"4:00 PM"`), cleans stutter, formats numbers/code tokens (`camelCase`, `Pull Request`), and strips trailing Whisper silence hallucinations.
 
-4. **In-Process Semantic Vectors (`LocalVectorRAG`):**
+4. **Prompt Engineering & Application Adapter Routing:**
+   - The polished text is ingested into `processIntent` and the Universal Task Object (UTO) pipeline.
+   - `ApplicationAdapterRegistry` detects active window context (Cursor Composer, Antigravity IDE, VS Code, Gmail, Slack, Terminal, Browser) and generates engineered prompts tailored for that environment.
+   - `executeAction` automatically types or pastes the engineered prompt directly at the user's cursor.
+
+5. **In-Process Semantic Vectors (`LocalVectorRAG`):**
    - Employs `Xenova/all-MiniLM-L6-v2` locally cached in `resources/models/transformers-cache` for 384-dimensional vector embeddings with zero external API calls.
 
 ### 13.2 Model Asset Preloader (`preload-models.cjs`)
