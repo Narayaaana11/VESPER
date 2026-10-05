@@ -4,7 +4,7 @@ import { SystemContext, DisambiguationQuestion, UniversalTaskObject, AppSettings
 import { AudioRecorder } from './core/audio-recorder'
 import { validateWhisperTranscript, validatePolishedOutput } from './core/transcription-validator'
 import { processIntent } from './core/intent-engine'
-import { transcribeWithGroq, polishWithGroqLlama, polishWithOllama } from './core/groq-service'
+import { transcribeAudio, transcribeWithGroq, polishWithGroqLlama, polishWithOllama, polishWithLocalRules } from './core/groq-service'
 import { executeScreenAgent, ScreenAgentResult } from './core/screen-agent'
 import { AudioVisualizer } from './components/AudioVisualizer'
 import { ContextBadge } from './components/ContextBadge'
@@ -75,10 +75,11 @@ const getInitialApiKey = (): string => {
 
 const getInitialSettings = (): AppSettings => {
   const envMode = ((import.meta as any).env?.VITE_DICTATION_MODE as any) || 'direct'
+  const initialKey = getInitialApiKey()
   const defaults: AppSettings = {
     hotkey: 'CommandOrControl+Shift+Space',
     holdKey: 'ANY ALT',
-    aiProvider: 'groq',
+    aiProvider: initialKey ? 'groq' : 'local',
     whisperModel: 'whisper-large-v3',
     whisperLanguage: 'auto',
     dictationMode: envMode,
@@ -86,7 +87,7 @@ const getInitialSettings = (): AppSettings => {
     englishLettersOnly: true,
     ollamaModel: 'llama3.2',
     ollamaEndpoint: 'http://localhost:11434',
-    apiKey: getInitialApiKey(),
+    apiKey: initialKey,
     autoPaste: true,
     soundFeedback: true,
     privacyMode: 'strict_local'
@@ -488,9 +489,10 @@ export const App: React.FC = () => {
       return
     }
 
-    // 3. Transcribe with Groq Whisper-large-v3
-    setExecutionStatus('Transcribing with Whisper-large-v3...')
-    console.log(`[QEVRA] Transcribing with Groq Whisper-large-v3 (${audioBlob.size} bytes, ${recResult.durationMs}ms)...`)
+    // 3. Transcribe with Intelligent Dispatcher (Groq Cloud Whisper with Local Whisper ONNX failover)
+    const isLocalMode = settings.aiProvider === 'local' || settings.aiProvider === 'ollama' || !apiKey
+    setExecutionStatus(isLocalMode ? 'Transcribing with Local Whisper (ONNX)...' : 'Transcribing with Whisper-large-v3...')
+    console.log(`[QEVRA] Transcribing audio (${audioBlob.size} bytes, ${recResult.durationMs}ms, mode: ${isLocalMode ? 'local' : 'groq'})...`)
 
     // Compile dynamic Whisper context prompt from custom vocabulary + domain priming + active window
     let dynamicPrompt = ''
@@ -505,20 +507,21 @@ export const App: React.FC = () => {
       dynamicPrompt = promptParts.join('. ')
     } catch {}
 
-    const { text: rawGroqTranscript, error: groqErr } = await transcribeWithGroq(
+    const { text: rawTranscript, provider: activeProvider, error: sttErr } = await transcribeAudio(
       audioBlob,
       apiKey,
       {
         model: settings.whisperModel || 'whisper-large-v3',
         language: settings.whisperLanguage || 'auto',
         prompt: dynamicPrompt || undefined,
-        translateToEnglish: settings.englishLettersOnly !== false
+        translateToEnglish: settings.englishLettersOnly !== false,
+        preferLocal: isLocalMode
       }
     )
 
-    if (groqErr) {
-      console.error('[QEVRA] Groq STT error:', groqErr)
-      setExecutionStatus(`⚠️ ${groqErr}`)
+    if (sttErr && !rawTranscript) {
+      console.error('[QEVRA] STT error:', sttErr)
+      setExecutionStatus(`⚠️ ${sttErr}`)
       isStoppingRef.current = false
       isRecordingRef.current = false
       setTimeout(() => {
@@ -529,15 +532,15 @@ export const App: React.FC = () => {
       return
     }
 
-    // 4. Task 8 & 9: Transcription Validation BEFORE Llama
+    // 4. Transcription Validation BEFORE Polishing
     const whisperValidation = validateWhisperTranscript(
-      rawGroqTranscript || '',
+      rawTranscript || '',
       recResult.durationMs,
       recResult.byteSize
     )
 
     if (!whisperValidation.valid) {
-      console.warn(`[QEVRA] ❌ Whisper transcript rejected: ${whisperValidation.reason} | Raw: "${rawGroqTranscript}"`)
+      console.warn(`[QEVRA] ❌ Whisper transcript rejected: ${whisperValidation.reason} | Raw: "${rawTranscript}"`)
       setExecutionStatus('Transcription unclear — please try again.')
       setTranscript('')
       isStoppingRef.current = false
@@ -550,37 +553,33 @@ export const App: React.FC = () => {
       return
     }
 
-    const groqTranscript = whisperValidation.cleanedText || ''
-    console.log(`[QEVRA] [OK] Whisper Transcript validated: "${groqTranscript}"`)
-    let textToProcess = groqTranscript
-    setTranscript(groqTranscript)
+    const validatedTranscript = whisperValidation.cleanedText || ''
+    console.log(`[QEVRA] [OK] Transcript validated (${activeProvider}): "${validatedTranscript}"`)
+    let textToProcess = validatedTranscript
+    setTranscript(validatedTranscript)
 
     // 5. Screen & Context-Aware AI Polishing
     if (settings.aiPolishing !== false) {
-      setExecutionStatus('Polishing with screen context & English letters...')
-      console.log(`[QEVRA] Polishing with screen context [App: ${context.activeApp || 'Desktop'}, Title: ${context.windowTitle || 'Unknown'}, English Letters: ${settings.englishLettersOnly !== false}]...`)
+      setExecutionStatus(isLocalMode ? 'Polishing with Local Rule Engine...' : 'Polishing with screen context...')
+      console.log(`[QEVRA] Polishing with context [App: ${context.activeApp || 'Desktop'}, Title: ${context.windowTitle || 'Unknown'}, Provider: ${settings.aiProvider}]...`)
 
       let polished: string | null = null
 
-      // If Ollama is selected, try local Ollama first
-      if (settings.aiProvider === 'ollama') {
-        setExecutionStatus('Polishing with Local LLM (Ollama)...')
+      // If Ollama is selected or running locally, try local Ollama
+      if (settings.aiProvider === 'ollama' || settings.aiProvider === 'local') {
         polished = await polishWithOllama(
-          groqTranscript,
+          validatedTranscript,
           context,
           settings.ollamaEndpoint || 'http://localhost:11434',
           settings.ollamaModel || 'llama3.2',
           settings.englishLettersOnly !== false
         )
-        if (!polished) {
-          console.warn('[QEVRA] Local Ollama offline, falling back to Groq Cloud')
-        }
       }
 
-      // Fall back to / use Groq Cloud LLM
-      if (!polished) {
+      // If not polished and Groq API key is present and not strict local, use Groq Llama
+      if (!polished && apiKey && settings.aiProvider !== 'local') {
         polished = await polishWithGroqLlama(
-          groqTranscript,
+          validatedTranscript,
           context,
           apiKey,
           'llama-3.3-70b-versatile',
@@ -588,9 +587,14 @@ export const App: React.FC = () => {
         )
       }
 
-      // 6. Task 10: Validation step AFTER Llama polishing
+      // Local Deterministic Rule Polishing Fallback (Zero network overhead, 100% offline)
+      if (!polished) {
+        polished = polishWithLocalRules(validatedTranscript, context)
+      }
+
+      // 6. Validation step AFTER polishing
       if (polished) {
-        const polishValidation = validatePolishedOutput(polished, groqTranscript)
+        const polishValidation = validatePolishedOutput(polished, validatedTranscript)
         if (!polishValidation.valid) {
           console.warn(`[QEVRA] [FAIL] Polished output rejected: ${polishValidation.reason} | Polished: "${polished}"`)
           setExecutionStatus('Transcription unclear — please try again.')
@@ -605,7 +609,7 @@ export const App: React.FC = () => {
           return
         }
         const cleanedPolished = polishValidation.cleanedText || ''
-        console.log(`[QEVRA] [OK] Polished Transcript (English letters): "${cleanedPolished}"`)
+        console.log(`[QEVRA] [OK] Polished Transcript: "${cleanedPolished}"`)
         textToProcess = cleanedPolished
         setTranscript(cleanedPolished)
       }

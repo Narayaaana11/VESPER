@@ -34,6 +34,7 @@ export interface IElectronAPI {
   toggleScreenTracking: (enable?: boolean) => Promise<{ enabled: boolean; recentActivities: any[] }>
   getRecentScreenActivities: (limit?: number) => Promise<any[]>
   generateEmbedding: (text: string) => Promise<number[] | null>
+  transcribeLocal: (audioSamples: Float32Array | number[]) => Promise<{ text: string; error?: string }>
   openCheckout: (url: string) => Promise<any>
   activateLicense: (payload: { licenseKey: string; tier: string }) => Promise<any>
   getSubscription: () => Promise<any>
@@ -123,6 +124,7 @@ const electronAPI: IElectronAPI = {
   toggleScreenTracking: (enable) => ipcRenderer.invoke('qevra:toggle-screen-tracking', enable),
   getRecentScreenActivities: (limit) => ipcRenderer.invoke('qevra:get-recent-screen-activities', limit),
   generateEmbedding: (text) => ipcRenderer.invoke('qevra:generate-embedding', text),
+  transcribeLocal: (audioSamples) => ipcRenderer.invoke('qevra:transcribe-local', audioSamples),
   openCheckout: (url: string) => ipcRenderer.invoke('qevra:open-checkout', url),
   activateLicense: (payload: { licenseKey: string; tier: string }) => ipcRenderer.invoke('qevra:activate-license', payload),
   getSubscription: () => ipcRenderer.invoke('qevra:get-subscription'),

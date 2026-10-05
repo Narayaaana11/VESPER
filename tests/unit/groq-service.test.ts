@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { transcribeWithGroq, polishWithGroqLlama } from '../../src/renderer/src/core/groq-service'
+import { transcribeWithGroq, polishWithGroqLlama, polishWithLocalRules, transcribeAudio } from '../../src/renderer/src/core/groq-service'
 import { SystemContext } from '../../src/renderer/src/types/task'
 
 describe('Groq Service - Whisper STT & Llama Polishing Pipeline', () => {
@@ -85,5 +85,97 @@ describe('Groq Service - Whisper STT & Llama Polishing Pipeline', () => {
     const raw = 'Write a function to calculate fibonacci numbers'
     const result = await polishWithGroqLlama(raw, dummyContext, 'gsk_test1234567890')
     expect(result).toBe(raw)
+  })
+
+  describe('Local Compute STT & Deterministic Rule Polishing', () => {
+    it('polishes raw speech deterministically with local rules (zero cloud API)', () => {
+      const raw = 'um uh build a modern landing page no wait a personal portfolio you know'
+      const polished = polishWithLocalRules(raw, dummyContext)
+
+      expect(polished).not.toContain('um')
+      expect(polished).not.toContain('uh')
+      expect(polished).not.toContain('you know')
+      expect(polished.toLowerCase()).toContain('personal portfolio')
+      expect(polished.endsWith('.')).toBe(true)
+    })
+
+    it('strips Whisper trailing hallucinations in local rules', () => {
+      const raw = 'Create a navbar and footer thank you. Thanks for watching.'
+      const polished = polishWithLocalRules(raw, dummyContext)
+
+      expect(polished).not.toContain('thank you')
+      expect(polished).not.toContain('Thanks for watching')
+      expect(polished).toContain('Create a navbar and footer')
+    })
+
+    it('formats code keywords properly in code context', () => {
+      const raw = 'convert this to camel case and submit a pull request'
+      const polished = polishWithLocalRules(raw, dummyContext)
+
+      expect(polished).toContain('camelCase')
+      expect(polished).toContain('Pull Request')
+    })
+
+    it('transcribeAudio automatically falls back to local Whisper when Groq fails', async () => {
+      // Mock window.electronAPI.transcribeLocal
+      const originalWindow = (globalThis as any).window
+      ;(globalThis as any).window = {
+        electronAPI: {
+          transcribeLocal: vi.fn().mockResolvedValue({ text: 'Local Whisper transcript text' })
+        },
+        AudioContext: class {
+          decodeAudioData() {
+            return Promise.resolve({
+              getChannelData: () => new Float32Array(16000)
+            })
+          }
+          close() {
+            return Promise.resolve()
+          }
+        }
+      }
+
+      // Mock Groq fetch failure
+      globalThis.fetch = vi.fn().mockRejectedValue(new Error('Network offline'))
+
+      const fakeBlob = new Blob(['audio data'], { type: 'audio/webm' })
+      const result = await transcribeAudio(fakeBlob, 'gsk_test', {
+        preferLocal: false
+      })
+
+      expect(result.provider).toBe('local')
+      expect(result.text).toBe('Local Whisper transcript text')
+
+      ;(globalThis as any).window = originalWindow
+    })
+
+    it('transcribeAudio uses local Whisper directly when preferLocal is true', async () => {
+      const originalWindow = (globalThis as any).window
+      ;(globalThis as any).window = {
+        electronAPI: {
+          transcribeLocal: vi.fn().mockResolvedValue({ text: 'Direct offline transcript' })
+        },
+        AudioContext: class {
+          decodeAudioData() {
+            return Promise.resolve({
+              getChannelData: () => new Float32Array(16000)
+            })
+          }
+          close() {
+            return Promise.resolve()
+          }
+        }
+      }
+
+      const fakeBlob = new Blob(['audio data'], { type: 'audio/webm' })
+      const result = await transcribeAudio(fakeBlob, '', {
+        preferLocal: true
+      })
+
+      expect(result.provider).toBe('local')
+      expect(result.text).toBe('Direct offline transcript')
+
+      ;(globalThis as any).window = originalWindow
+    })
   })
 })

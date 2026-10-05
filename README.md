@@ -8,7 +8,7 @@
 ## 🌟 Key Capabilities
 
 ### 1. 🎙️ Hold-to-Talk (Wispr Flow Default)
-- **Zero Focus Stealing:** Hold `Right Alt` (or `F8` / `Fn` / configured key) $\ge 180\text{ms}$. The floating capsule appears seamlessly at the top of your screen *without stealing focus from your cursor*.
+- **Zero Focus Stealing:** Hold `Right Alt` (or `Left Alt` / `F8` / `Fn` / configured key) $\ge 180\text{ms}$. The floating capsule appears seamlessly at the top of your screen *without stealing focus from your cursor*.
 - **Auto-Paste at Cursor:** Release the key to immediately finalize transcription and auto-paste directly into your active application (`Cursor`, `VS Code`, `Google Chrome`, `Slack`, `Notepad`, `Discord`, etc.).
 
 ### 2. ⚡ Double-Tap Persistent Mode
@@ -19,55 +19,73 @@
   - **Done / Stop & Insert:** Complete dictation and inject into the active window.
   - **Cancel:** Discard recording and return to idle.
 
-### 3. 🎯 Direct Voice Dictation vs. Smart AI Assistant
-- **Direct Dictation (Default):** Types exactly what you say verbatim with proper capitalization and punctuation. No unwanted prompt engineering, XML tags, or markdown templates.
-- **Smart AI Assistant Mode:** Toggle in ⚙️ Settings for tailored coding prompts (`Cursor Composer`, `VS Code Copilot`, `Claude XML`, `ChatGPT Prompts`, `Gmail Drafts`).
+### 3. 💻 100% Local Compute & Zero-API Offline Mode
+- **On-Device Whisper ONNX (`Xenova/whisper-tiny.en`):** Runs 100% locally on CPU/DirectML with zero external API calls or network latency.
+- **Automatic Cloud-to-Local Failover:** When using cloud acceleration (Groq), any network disruption or rate limit instantly fails over to local on-device Whisper.
+- **Deterministic Local Rule Polisher:** Cleans filler words (`um`, `uh`, `you know`), fixes speech self-corrections, removes stutter, formats currency/numbers/dates, capitalizes sentences, and removes Whisper trailing hallucinations in <2ms on device.
+- **Local Ollama Integration:** Supports local `llama3.2` on `http://localhost:11434` for on-device reasoning and text polishing.
 
-### 4. 🌐 Multilingual Whisper-large-v3 STT & Llama 3.3 Polishing
-- **Groq Cloud STT:** Ultra-fast (<180ms) inference using state-of-the-art `whisper-large-v3`.
+### 4. 🌐 Multilingual Cloud STT (Groq Whisper-large-v3)
+- **Groq Cloud STT (Optional):** Ultra-fast (<180ms) inference using state-of-the-art `whisper-large-v3`.
 - **99+ Languages:** Supports Auto-Detect or explicit selection (English, Hindi, Spanish, French, German, Japanese, Chinese, etc.).
-- **Whisper & Noise Robustness:** Greedy decoding (`temperature: 0.0`) captures quiet whispers without hallucinating during silence or loud background noise.
-- **Llama 3.3 Post-Processor:** Removes verbal filler words (`um`, `uh`) and applies natural punctuation while strictly preserving spoken words.
+- **Greedy Decoding:** `temperature: 0.0` captures quiet whispers without hallucinating during silence or loud background noise.
 
-### 5. 🤖 Autonomous Screen & Chat Copilot Agent + HITL Safety Gate
-- **Multimodal Visual Context:** Automatically inspects active screens via Electron's `desktopCapturer` and Groq Vision (`llama-3.2-11b-vision-preview`).
-- **Targeted Conversation & Sales Guidance:** Resolves customer objections, crafts replies for WhatsApp, LinkedIn, Slack, and CRM leads.
-- **Human-in-the-Loop (HITL) Safety Gate:** Destructive or autonomous agent actions stop at the floating **Approval Card**. Review, edit the response with one click, or hit `Enter` to approve & paste or `Esc` to reject.
+### 5. 🤖 Littlebird Context MCP Server (Tools for AI Agents)
+- **Model Context Protocol (MCP) Server:** Runs on `http://127.0.0.1:32123/mcp` and via stdio `npm run mcp` (configured in `.agents/mcp_config.json`).
+- **Exposed Tools:**
+  - `search_user_context`: Hybrid semantic & keyword recall over user desktop timeline with Littlebird evidence receipts.
+  - `get_day_reconstruction`: Reconstructs work sessions into dev logs, application usage minutes, files edited, and ready-to-paste changelogs.
+  - `get_active_screen_context`: Real-time active foreground window, application, category, and workspace path.
 
 ### 6. 🛡️ Native Context & Security Gate
-- **Active Window Detection:** Ultra-fast native foreground window and process detection on Windows.
+- **Active Window Detection:** Ultra-fast native foreground window telemetry on Windows via `detect-window.exe`.
 - **Prompt Injection Defense:** Intercepts malicious instructions and enforces user confirmation for destructive actions.
-- **Local Privacy Guard:** Operates in strict local rule mode or hybrid cloud mode.
+- **Human-in-the-Loop (HITL) Gate:** Destructive actions display an interactive Approval Card before running.
 
 ---
 
 ## 🚀 How to Run the App
 
-### 1. Start Development Mode
+### 1. Preload Local AI Models (Offline Whisper & Embeddings)
+```powershell
+npm run preload-models
+```
+
+### 2. Start Development Mode
 ```powershell
 npm run dev
 ```
 
-### 2. Run Test Suite (57 Unit & Integration Tests)
+### 3. Run Test Suite (197 Unit & Integration Tests across 27 Suites)
 ```powershell
 npm run test
 ```
 
-### 3. Build Production Executable
+### 4. Build Production Executable
 ```powershell
 npm run build
 ```
 
+### 5. Run Standalone MCP Context Server
+```powershell
+npm run mcp
+```
+
 ---
 
-## ⚙️ Quick Setup for Free Groq Speech-to-Text
+## ⚙️ Configuration & Modes
 
-1. Open QEVRA and click the **⚙️ Settings** icon on the floating capsule.
-2. Select **⚡ Groq Cloud (Whisper-large-v3 + Llama 3.3)**.
+### Option A: 100% Offline / Local Compute (Default without API Key)
+1. Open QEVRA and click **⚙️ Settings** on the floating capsule.
+2. Select **Inference Engine:** `Built-in Local (Deterministic)` or `Ollama (Local Llama 3.2)`.
+3. No API key needed! All audio transcription and polishing run completely on device.
+
+### Option B: Cloud-Accelerated Mode (Groq)
+1. Open QEVRA and click **⚙️ Settings**.
+2. Select **Inference Engine:** `Groq Cloud (Whisper-large-v3 + Llama 3.3)`.
 3. Paste your free Groq API key (starts with `gsk_` from [groq.com](https://console.groq.com)).
 4. Choose **Dictation Mode:** `Direct Dictation (Wispr Flow Style)`.
-5. Choose **Speech Language:** `Auto-Detect (99+ Languages)`.
-6. Click **Save Settings**.
+5. Click **Save Settings**. (If internet disconnects, QEVRA automatically fails over to Local Whisper).
 
 ---
 
@@ -75,7 +93,7 @@ npm run build
 
 | Key / Shortcut | Action | Behavior |
 |---|---|---|
-| **Hold `Right Alt`** (or `F8` / `Fn`) | Hold-to-Talk | Starts recording on press; auto-pastes on release |
+| **Hold `Right Alt`** (or `Left Alt` / `F8` / `Fn`) | Hold-to-Talk | Starts recording on press; auto-pastes on release |
 | **Double-tap `Right Alt`** | Persistent Mode | Opens interactive capsule with Record, Pause, Stop, Cancel |
 | **`Ctrl + Shift + Space`** | Toggle HUD | Manually opens/hides the floating HUD |
 | **`F8`** | Global Shortcut | Quick toggle hotkey |

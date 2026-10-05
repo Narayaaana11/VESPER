@@ -61,6 +61,7 @@ export function resolveBinary(binaryName: string): string {
   if (!isPackaged) {
     candidates.push(path.join(cwd, 'src', 'main', binaryName))
     candidates.push(path.join(cwd, 'out', 'main', binaryName))
+    candidates.push(path.join(cwd, 'out', 'bin', binaryName))
     candidates.push(path.join(__dirname, binaryName))
     candidates.push(path.join(__dirname, '..', binaryName))
     candidates.push(path.join(__dirname, '..', '..', 'bin', binaryName))

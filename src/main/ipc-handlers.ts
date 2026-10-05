@@ -409,6 +409,43 @@ export function registerIpcHandlers(mainWindow: BrowserWindow): void {
       return null
     }
   })
+
+  // 7b. Transcribe Audio locally in Main Process via Transformers.js (Whisper ONNX)
+  let mainTranscriber: any = null
+  ipcMain.handle('qevra:transcribe-local', async (_, audioSamples: Float32Array | number[]) => {
+    try {
+      if (!audioSamples || audioSamples.length === 0) return { text: '' }
+      const samples = audioSamples instanceof Float32Array ? audioSamples : new Float32Array(audioSamples)
+
+      if (!mainTranscriber) {
+        const { pipeline, env } = await import('@xenova/transformers')
+        env.allowLocalModels = true
+        env.allowRemoteModels = false
+        const resPath = typeof process !== 'undefined' && process.resourcesPath ? process.resourcesPath : ''
+        const appPath = typeof app !== 'undefined' && app.getAppPath ? app.getAppPath() : process.cwd()
+        const cacheCandidates = [
+          path.join(process.cwd(), 'resources', 'models', 'transformers-cache'),
+          ...(resPath
+            ? [
+                path.join(resPath, 'resources', 'models', 'transformers-cache'),
+                path.join(resPath, 'models', 'transformers-cache')
+              ]
+            : []),
+          path.join(appPath, 'resources', 'models', 'transformers-cache')
+        ]
+        const resolvedCacheDir = cacheCandidates.find((p) => fs.existsSync(p)) || cacheCandidates[0]
+        env.cacheDir = resolvedCacheDir
+        mainTranscriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en', {
+          quantized: true
+        })
+      }
+      const output = await mainTranscriber(samples)
+      return { text: (output?.text || '').trim() }
+    } catch (err: any) {
+      console.warn('[QEVRA Main] Local whisper STT error:', err)
+      return { text: '', error: err?.message || 'Local STT error' }
+    }
+  })
   // 8. System Startup & Login Item Settings (Auto-start with Windows)
   ipcMain.handle('qevra:get-startup-setting', () => {
     try {

@@ -453,46 +453,120 @@ gantt
 ### 12.5 Codebase Inventory & Verification Status
 
 ```
-C:\Users\naray\OneDrive\Desktop\QEVRA
+C:\Users\gowri\Videos\QEVRA
+├── .agents
+│   └── mcp_config.json            # Antigravity & IDE Model Context Protocol configuration
+├── resources
+│   ├── models/transformers-cache  # Local ONNX weights (all-MiniLM-L6-v2, whisper-tiny.en)
+│   └── scripts/preload-models.cjs # Local model asset verification and preloader
 ├── src
 │   ├── main
 │   │   ├── action-executor.ts         # Clipboard & keyboard injection (auto-paste)
+│   │   ├── binary-resolver.ts         # Bulletproof native executable locator
 │   │   ├── context-detector.ts        # Win32 active window telemetry
 │   │   ├── detect-window.exe          # Native foreground window detector
 │   │   ├── hold-to-talk.ts            # Global key listener (RIGHT ALT hold/double-tap)
 │   │   ├── hotkey.ts                  # Electron global shortcuts
-│   │   ├── index.ts                   # BrowserWindow lifecycle (transparent frameless)
-│   │   └── ipc-handlers.ts            # Main-Renderer IPC communication
+│   │   ├── index.ts                   # BrowserWindow lifecycle & HTTP MCP listener (32123)
+│   │   ├── ipc-handlers.ts            # Main-Renderer IPC (local vector RAG + local Whisper STT)
+│   │   ├── mcp-runner.ts              # Standalone stdio MCP runner
+│   │   ├── mcp/qevra-mcp-server.ts    # Ambient computer context Littlebird MCP server
+│   │   ├── send-input.exe             # High-speed native keystroke injector
+│   │   └── WinKeyServer.exe           # Low-level Windows global keyboard server
 │   ├── preload
 │   │   └── index.ts                   # Context-isolated safe bridge (electronAPI)
 │   └── renderer
 │       ├── src
-│       │   ├── App.tsx                # Central state orchestrator & HUD view
+│       │   ├── App.tsx                # Central state orchestrator with intelligent local/cloud failover
 │       │   ├── components
 │       │   │   ├── AgentApprovalCard.tsx  # HITL action approval card
 │       │   │   ├── AudioVisualizer.tsx    # React Bits Pro AI Chat 8 audio waveform
 │       │   │   ├── ContextBadge.tsx       # Active app indicator
-│       │   │   ├── SettingsModal.tsx      # Config modal (API keys, models, hotkeys)
+│       │   │   ├── SettingsModal.tsx      # Config modal (API keys, models, hotkeys, local mode)
 │       │   │   ├── SmartQAOverlay.tsx     # Disambiguation question card
-│       │   │   └── TaskPreviewCard.tsx    # Canonical task preview
+│       │   │   ├── TaskPreviewCard.tsx    # Canonical task preview
+│       │   │   └── WisprFlowDashboard.tsx # Flow Hub (History, Dictionary, Snippets, Style)
 │       │   ├── core
 │       │   │   ├── adapters.ts            # App-specific payload formats (Cursor, Slack, etc.)
+│       │   │   ├── ai
+│       │   │   │   ├── ai-factory.ts      # Provider factory (Groq, Local Ollama, Rule-Based)
+│       │   │   │   ├── local-provider.ts  # Local Ollama provider with deterministic fallback
+│       │   │   │   └── rule-provider.ts   # 100% offline deterministic rule engine
 │       │   │   ├── audio-recorder.ts      # Web Audio API capture with clean lifecycle
 │       │   │   ├── disambiguation.ts      # Intent clarification & slot filling
-│       │   │   ├── groq-service.ts        # Whisper STT & Llama-3.3-70b polishing
-│       │   │   ├── intent-classifier.ts   # LLM intent classification
+│       │   │   ├── groq-service.ts        # Hybrid STT dispatcher & local rule polisher
+│       │   │   ├── intent-classifier.ts   # Intent classification engine
 │       │   │   ├── intent-engine.ts       # Intent orchestrator
+│       │   │   ├── local-vector-rag.ts    # In-process semantic vector indexing via Transformers.js
 │       │   │   ├── memory-manager.ts      # User preferences and adaptive context
 │       │   │   ├── screen-agent.ts        # Autonomous desktop agent
 │       │   │   ├── security-gate.ts       # 3-tier risk governance (Safe/Moderate/Destructive)
+│       │   │   ├── selection-transformer.ts # In-place text transformation (Edit Mode)
 │       │   │   ├── task-validator.ts      # Universal Task Object validator
 │       │   │   └── transcription-validator.ts # Pre- & post-Llama validation gates
 │       │   ├── styles
+│       │   │   ├── dashboard.css          # Flow Hub styles
 │       │   │   └── hud.css                # Obsidian glass design system & waveforms
 │       │   └── types
 │       │       └── task.ts                # Master TypeScript schemas
-└── tests                                  # 12 Test suites, 79 unit & integration tests
+│       └── tests                          # 27 Test suites, 197 unit & integration tests
 ```
 
-- **Testing Status:** 100% Passing (79 of 79 tests pass across 12 test files via Vitest).
+- **Testing Status:** 100% Passing (197 of 197 tests pass across 27 test files via Vitest).
 - **Build Status:** Clean SSR Main, Preload, and Renderer production bundle via `electron-vite build`.
+
+---
+
+## 13. Local-First Compute Engine, Zero-API Offline Mode & MCP Integration
+
+### 13.1 100% On-Device Compute Architecture (Zero Cloud Dependency)
+QEVRA functions as a completely autonomous, local-first computing platform when no cloud API keys are provided or when the user is working completely offline:
+
+1. **Intelligent STT Dispatcher (`transcribeAudio` in `src/renderer/src/core/groq-service.ts`):**
+   - **Default Local Mode:** When `apiKey` is empty or `aiProvider` is configured as `'local'`, QEVRA immediately routes microphone audio through the on-device local Whisper ONNX pipeline with zero network requests.
+   - **Automatic Failover:** When using Groq Cloud acceleration, any network hiccup, rate limit, quota exhaustion, or invalid key instantly triggers automatic failover to the local Whisper ONNX model without throwing errors or locking the UI.
+   - **Local Inference (`qevra:transcribe-local`):** Audio is decoded in the renderer using native Web Audio API `AudioContext.decodeAudioData` into 16kHz mono `Float32Array` samples, transferred over Electron IPC, and transcribed using `@xenova/transformers` running the quantized `Xenova/whisper-tiny.en` model on CPU/DirectML.
+
+2. **Deterministic Local Rule-Based Post-Processor (`polishWithLocalRules`):**
+   - Operates 100% locally with zero latency (<2ms).
+   - Automatically eliminates verbal speech filler words (`um`, `uh`, `erm`, `er`, `ah`, `you know`, `like, I mean`, `sort of`, `kind of`).
+   - Resolves spoken self-corrections gracefully (`"meeting at three no wait four PM"` $\rightarrow$ `"Meeting at 4:00 PM"`).
+   - Cleans consecutive stutter words (`"the the"` $\rightarrow$ `"the"`, `"I I"` $\rightarrow$ `"I"`).
+   - Normalizes currency, times, and dates (`"five hundred dollars"` $\rightarrow$ `"$500"`).
+   - Formats code tokens when in IDE context (`camelCase`, `snake_case`, `kebab-case`, `Pull Request`).
+   - Recursively purges hallucinated trailing Whisper artifacts (`"thank you."`, `"thanks for watching."`, `"transcribed by..."`).
+   - Applies proper sentence capitalization and terminal punctuation.
+
+3. **Local LLM Polishing via Ollama (`polishWithOllama`):**
+   - Connects to local Ollama daemon (`http://localhost:11434`, model `llama3.2`).
+   - If Ollama is offline or not installed, automatically falls back to `polishWithLocalRules`.
+
+4. **In-Process Semantic Vectors (`LocalVectorRAG`):**
+   - Employs `Xenova/all-MiniLM-L6-v2` locally cached in `resources/models/transformers-cache` for 384-dimensional vector embeddings with zero external API calls.
+
+### 13.2 Model Asset Preloader (`preload-models.cjs`)
+A turnkey script pre-caches and verifies all required ONNX models locally:
+```powershell
+npm run preload-models
+```
+- Downloads and verifies `Xenova/all-MiniLM-L6-v2` (semantic search and Littlebird receipts).
+- Downloads and verifies `Xenova/whisper-tiny.en` (quantized local speech recognition).
+
+### 13.3 Littlebird Parity Context MCP Server
+QEVRA includes a dual-mode Model Context Protocol (MCP) server providing real-time desktop context to AI assistants (Antigravity, Cursor, Claude Desktop):
+- **HTTP Transport:** Runs continuously on `http://127.0.0.1:32123/mcp` with CORS support.
+- **Stdio Transport:** Executable via `npm run mcp` or configured in `.agents/mcp_config.json`:
+  ```json
+  {
+    "mcpServers": {
+      "qevra-context": {
+        "command": "node",
+        "args": ["out/main/mcp-runner.js"]
+      }
+    }
+  }
+  ```
+- **Tools Exposed:**
+  1. `search_user_context`: Hybrid semantic & keyword recall over user desktop timeline, active windows, and speech with verifiable Littlebird receipts.
+  2. `get_day_reconstruction`: Rebuilds ambient context into dev logs, application usage minutes, files edited, and ready-to-paste changelogs.
+  3. `get_active_screen_context`: Real-time active foreground window, application, category, and workspace path.

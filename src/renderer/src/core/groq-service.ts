@@ -247,3 +247,158 @@ ${contextDetails || 'Active window: Desktop'}
 
   return null
 }
+
+/**
+ * Decodes WebM/WAV audio blob into a 16kHz mono Float32Array suitable for Whisper ONNX
+ */
+export async function decodeAudioBlobToSamples(
+  audioBlob: Blob,
+  targetSampleRate = 16000
+): Promise<Float32Array> {
+  const arrayBuffer = await audioBlob.arrayBuffer()
+  const AudioContextClass =
+    (window as any).AudioContext || (window as any).webkitAudioContext
+  if (!AudioContextClass) {
+    throw new Error('Web Audio API not supported')
+  }
+
+  const audioContext = new AudioContextClass({ sampleRate: targetSampleRate })
+  try {
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+    return audioBuffer.getChannelData(0)
+  } finally {
+    audioContext.close().catch(() => {})
+  }
+}
+
+/**
+ * Transcribes audio 100% locally via Transformers.js Whisper (ONNX) in Main process
+ */
+export async function transcribeLocally(
+  audioBlob: Blob
+): Promise<{ text: string; error?: string }> {
+  try {
+    if (typeof window !== 'undefined' && (window as any).electronAPI?.transcribeLocal) {
+      const samples = await decodeAudioBlobToSamples(audioBlob, 16000)
+      if (!samples || samples.length === 0) {
+        return { text: '', error: 'Audio buffer is empty' }
+      }
+      const res = await (window as any).electronAPI.transcribeLocal(samples)
+      return { text: (res?.text || '').trim(), error: res?.error }
+    }
+    return { text: '', error: 'Local transcription bridge not available' }
+  } catch (err: any) {
+    console.warn('[QEVRA Local STT] Transcription failed:', err)
+    return { text: '', error: err?.message || 'Local STT failed' }
+  }
+}
+
+/**
+ * High-performance deterministic rule-based post-processor (Wispr Flow style)
+ * Operates 100% locally with zero external API calls or network overhead.
+ */
+export function polishWithLocalRules(
+  rawTranscript: string,
+  context?: SystemContext
+): string {
+  if (!rawTranscript || !rawTranscript.trim()) return ''
+
+  let text = rawTranscript.trim()
+
+  // 1. Strip Whisper silence / hallucination artifacts
+  const wholeHallucinations = [
+    /^(thank you|thanks for watching|transcribed by|subtitles by|www\.\S+)\.?$/i
+  ]
+  for (const pat of wholeHallucinations) {
+    text = text.replace(pat, '').trim()
+  }
+  const trailingHallucination = /\b(thank you|thanks for watching|transcribed by|subtitles by|please like and subscribe)\.?\s*$/i
+  while (trailingHallucination.test(text)) {
+    text = text.replace(trailingHallucination, '').trim()
+  }
+
+  // 2. Remove filler words (um, uh, er, ah, you know, like I mean)
+  text = text
+    .replace(/\b(um|uh|erm|er|ah)\b,?\s*/gi, '')
+    .replace(/\b(you know|I mean|sort of|kind of)\b,?\s*/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  // 3. Resolve common conversational self-corrections
+  // e.g. "meeting at 3 no wait 4 PM" -> "meeting at 4 PM"
+  text = text
+    .replace(/\b(?:no wait|or rather|actually wait|I mean)\s+/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  // 4. Remove stutter / duplicate consecutive words ("the the" -> "the", "I I" -> "I")
+  text = text.replace(/\b(\w+)\s+\1\b/gi, '$1')
+
+  // 5. Fix common number/time representations
+  text = text
+    .replace(/\b(\d+)\s*dollars\b/gi, '$$$1')
+    .replace(/\b(\d+)\s*(pm|am)\b/gi, (_, n, m) => `${n}:00 ${m.toUpperCase()}`)
+
+  // 6. IDE / Code context enhancements
+  const isCodeContext =
+    context?.detectedCategory === 'code' ||
+    /cursor|code|terminal|bash|powershell|cmd/i.test(context?.activeApp || '')
+
+  if (isCodeContext) {
+    text = text
+      .replace(/\bcamel case\b/gi, 'camelCase')
+      .replace(/\bsnake case\b/gi, 'snake_case')
+      .replace(/\bkebab case\b/gi, 'kebab-case')
+      .replace(/\bpull request\b/gi, 'Pull Request')
+  }
+
+  // 7. Auto-capitalize sentences
+  text = text.replace(/(^\s*|[.!?]\s+)([a-z])/g, (_, prefix, char) => prefix + char.toUpperCase())
+
+  // Ensure first character is uppercase
+  if (text.length > 0) {
+    text = text.charAt(0).toUpperCase() + text.slice(1)
+  }
+
+  // 8. Ensure trailing punctuation if a full sentence
+  if (text.length > 3 && !/[.!?]$/.test(text)) {
+    text += '.'
+  }
+
+  return text
+}
+
+/**
+ * Intelligent STT Dispatcher:
+ * Uses Groq Cloud Whisper when API key is provided and online,
+ * otherwise seamlessly falls back to 100% on-device Local Whisper (ONNX).
+ */
+export async function transcribeAudio(
+  audioBlob: Blob,
+  apiKey: string,
+  options: GroqTranscriptionOptions & { preferLocal?: boolean } = {}
+): Promise<{ text: string; provider: 'groq' | 'local'; error?: string }> {
+  const hasGroqKey = Boolean(apiKey && apiKey.trim())
+  const shouldTryGroq = hasGroqKey && !options.preferLocal
+
+  if (shouldTryGroq) {
+    const groqRes = await transcribeWithGroq(audioBlob, apiKey, options)
+    if (groqRes.text && groqRes.text.trim()) {
+      return { text: groqRes.text.trim(), provider: 'groq' }
+    }
+    console.warn('[QEVRA STT] Groq transcription unavailable or failed:', groqRes.error, '-> Failing over to Local Whisper ONNX...')
+  }
+
+  // Fallback to Local Compute STT (zero network, zero API key)
+  const localRes = await transcribeLocally(audioBlob)
+  if (localRes.text && localRes.text.trim()) {
+    return { text: localRes.text.trim(), provider: 'local' }
+  }
+
+  return {
+    text: '',
+    provider: 'local',
+    error: localRes.error || (shouldTryGroq ? 'Both cloud and local transcription were unable to transcribe.' : 'Local transcription could not detect speech.')
+  }
+}
+

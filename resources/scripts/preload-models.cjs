@@ -28,6 +28,22 @@ async function preload() {
   const result = await extractor('QEVRA local semantic vector test', { pooling: 'mean', normalize: true })
   console.log('[QEVRA Asset Downloader] [SUCCESS] Embeddings initialized! Dimensions:', result.dims)
   console.log('[QEVRA Asset Downloader] First 5 vector weights:', Array.from(result.data.slice(0, 5)).map(n => n.toFixed(4)).join(', '))
+
+  console.log('[QEVRA Asset Downloader] Downloading and verifying Xenova/whisper-tiny.en (Local STT ONNX)...')
+  const transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en', {
+    quantized: true,
+    progress_callback: (progress) => {
+      if (progress.status === 'progress') {
+        const percent = Math.round(progress.progress || 0)
+        if (percent % 25 === 0) {
+          console.log(`[QEVRA Asset Downloader] ${progress.file}: ${percent}%`)
+        }
+      } else if (progress.status === 'done') {
+        console.log(`[QEVRA Asset Downloader] Loaded: ${progress.file}`)
+      }
+    }
+  })
+  console.log('[QEVRA Asset Downloader] [SUCCESS] Local Whisper STT model initialized & verified!')
 }
 
 preload().catch(err => {

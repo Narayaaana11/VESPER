@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build && node -e \"const fs=require('fs'), path=require('path'); if(fs.existsSync('src/main/detect-window.exe')) fs.copyFileSync('src/main/detect-window.exe', 'out/main/detect-window.exe'); if(fs.existsSync('src/main/send-input.exe')) fs.copyFileSync('src/main/send-input.exe', 'out/main/send-input.exe'); const binDir='out/bin'; if(!fs.existsSync(binDir)) fs.mkdirSync(binDir, {recursive:true}); const wks='node_modules/node-global-key-listener/bin/WinKeyServer.exe'; if(fs.existsSync(wks)) fs.copyFileSync(wks, 'out/bin/WinKeyServer.exe');\"",
+    "mcp": "node out/main/mcp-runner.js",
     "preview": "electron-vite preview",
     "test": "vitest run",
     "preload-models": "node resources/scripts/preload-models.cjs",

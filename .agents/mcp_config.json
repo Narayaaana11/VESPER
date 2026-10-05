@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "qevra-context": {
+      "command": "node",
+      "args": ["out/main/mcp-runner.js"]
+    }
+  }
+}

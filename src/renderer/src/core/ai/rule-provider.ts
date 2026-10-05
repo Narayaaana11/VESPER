@@ -1,6 +1,6 @@
 import { SystemContext, UniversalTaskObject } from '../../types/task'
 import { classifyIntent, IntentClassificationResult } from '../intent-classifier'
-import { DisambiguationEngine } from '../disambiguation'
+import { polishWithLocalRules } from '../groq-service'
 import { AIProvider, ExtractedRequirements, AmbiguityReport, ActionPlan } from './ai-types'
 
 export class RuleBasedProvider implements AIProvider {
@@ -13,6 +13,10 @@ export class RuleBasedProvider implements AIProvider {
 
   public async generate(prompt: string): Promise<string> {
     return prompt
+  }
+
+  public polish(prompt: string, context?: SystemContext): string {
+    return polishWithLocalRules(prompt, context)
   }
 
   public async classify(
