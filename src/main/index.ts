@@ -176,6 +176,7 @@ function createCapsuleWindow(): void {
 
   capsuleWindow.on('ready-to-show', () => {
     capsuleWindow?.setAlwaysOnTop(true, 'screen-saver')
+    capsuleWindow?.showInactive()
   })
 
   AppLogger.attachWindow(capsuleWindow, 'Capsule')
