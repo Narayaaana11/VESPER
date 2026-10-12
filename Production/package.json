@@ -1,0 +1,43 @@
+{
+  "name": "vesper-production",
+  "version": "1.0.0",
+  "description": "VESPER Production Suite - Local-First Context-Aware AI Voice & Desktop Action Platform",
+  "main": "./out/main/index.js",
+  "author": "VESPER Team",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build && node -e \"const fs=require('fs'), path=require('path'); if(fs.existsSync('src/main/detect-window.exe')) fs.copyFileSync('src/main/detect-window.exe', 'out/main/detect-window.exe'); if(fs.existsSync('src/main/send-input.exe')) fs.copyFileSync('src/main/send-input.exe', 'out/main/send-input.exe'); const binDir='out/bin'; if(!fs.existsSync(binDir)) fs.mkdirSync(binDir, {recursive:true}); const wks=fs.existsSync('src/main/WinKeyServer.exe') ? 'src/main/WinKeyServer.exe' : 'resources/bin/WinKeyServer.exe'; if(fs.existsSync(wks)) { fs.copyFileSync(wks, 'out/bin/WinKeyServer.exe'); }\"",
+    "mcp": "node out/main/mcp-runner.js",
+    "preview": "electron-vite preview",
+    "test": "vitest run",
+    "pack": "electron-vite build && electron-builder --dir",
+    "dist:win": "npm run build && electron-builder --win --config.directories.output=\"%TEMP%/vesper-dist\" && node -e \"const fs=require('fs'), path=require('path'); const src=path.join(process.env.TEMP, 'vesper-dist'); fs.mkdirSync('dist', {recursive:true}); const d='../launchpad/public/downloads'; fs.mkdirSync(d, {recursive:true}); fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe'), 'dist/VESPER-Setup-1.0.0.exe'); if(fs.existsSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'))) fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'), 'dist/VESPER-Setup-1.0.0.exe.blockmap'); fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe'), path.join(d, 'VESPER-Setup-1.0.0.exe'));\""
+  },
+  "dependencies": {
+    "@types/animejs": "^3.1.13",
+    "@types/sql.js": "^1.4.11",
+    "@types/ws": "^8.18.2",
+    "@xenova/transformers": "^2.17.2",
+    "animejs": "^4.5.0",
+    "dotenv": "^17.4.2",
+    "lucide-react": "^1.16.0",
+    "motion": "^13.3.0",
+    "node-global-key-listener": "^0.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sql.js": "^1.14.2",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.14",
+    "vitest": "^2.1.9"
+  }
+}

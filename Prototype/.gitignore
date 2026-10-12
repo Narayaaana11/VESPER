@@ -1,0 +1,48 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+out/
+Release/
+*.exe
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+vesper-settings.json
+*.pem
+*.key
+
+# Debug and audio capture recordings
+debug-recordings/
+*.webm
+*.wav
+
+# Local SQLite databases and logs
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# IDE configuration
+.vscode/
+.idea/
+
+# Local Model Weights & Transformers Cache
+resources/models/transformers-cache/
+*.onnx
+
+# Landing page repo (tracked in its own git repo)
+Landing/
+

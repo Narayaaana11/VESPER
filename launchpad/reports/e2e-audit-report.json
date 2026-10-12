@@ -1,0 +1,423 @@
+{
+  "generatedAt": "2026-10-12T11:57:01.850Z",
+  "target": "http://localhost:8080",
+  "summary": {
+    "passed": 37,
+    "failed": 0,
+    "warnings": 0,
+    "totalDurationMs": 1689
+  },
+  "tests": [
+    {
+      "suite": "Health",
+      "testName": "GET /api/health responds with 200 OK",
+      "status": "PASS",
+      "durationMs": 145,
+      "details": {
+        "status": "ok",
+        "service": "VESPER Production API",
+        "version": "1.0.0-release"
+      },
+      "timestamp": "2026-10-12T11:57:00.309Z"
+    },
+    {
+      "suite": "Health",
+      "testName": "MongoDB Atlas is connected with healthy latency",
+      "status": "PASS",
+      "durationMs": 42,
+      "details": {
+        "engine": "mongodb",
+        "dbName": "vesper",
+        "latencyMs": 17
+      },
+      "timestamp": "2026-10-12T11:57:00.352Z"
+    },
+    {
+      "suite": "Health",
+      "testName": "Required database collections exist with documents",
+      "status": "PASS",
+      "durationMs": 58,
+      "details": {
+        "leadCount": 2,
+        "userCount": 5
+      },
+      "timestamp": "2026-10-12T11:57:00.409Z"
+    },
+    {
+      "suite": "Routes",
+      "testName": "GET / (Landing Page) renders valid HTML5 document",
+      "status": "PASS",
+      "durationMs": 126,
+      "details": {
+        "length": 269695,
+        "hasMetaViewport": true
+      },
+      "timestamp": "2026-10-12T11:57:00.536Z"
+    },
+    {
+      "suite": "Routes",
+      "testName": "GET /guidance (Startup Guide Hub) renders all 5 documentation pillars",
+      "status": "PASS",
+      "durationMs": 25,
+      "details": {
+        "status": 200,
+        "length": 18342
+      },
+      "timestamp": "2026-10-12T11:57:00.561Z"
+    },
+    {
+      "suite": "Routes",
+      "testName": "GET /admin (Admin Portal) renders successfully",
+      "status": "PASS",
+      "durationMs": 29,
+      "details": {
+        "status": 200,
+        "length": 7581
+      },
+      "timestamp": "2026-10-12T11:57:00.590Z"
+    },
+    {
+      "suite": "Routes",
+      "testName": "GET /icon.png returns valid branding icon asset",
+      "status": "PASS",
+      "durationMs": 18,
+      "details": {
+        "bytes": 29726,
+        "contentType": "image/png"
+      },
+      "timestamp": "2026-10-12T11:57:00.608Z"
+    },
+    {
+      "suite": "Routes",
+      "testName": "GET /api/download/windows serves verified standalone setup binary",
+      "status": "PASS",
+      "durationMs": 22,
+      "details": {
+        "contentLength": 425978829,
+        "contentType": "application/vnd.microsoft.portable-executable",
+        "contentDisposition": "attachment; filename=\"VESPER-Setup-1.0.0.exe\""
+      },
+      "timestamp": "2026-10-12T11:57:00.630Z"
+    },
+    {
+      "suite": "Security",
+      "testName": "Sanitization Scan: / contains NO leaked keys or vendor names",
+      "status": "PASS",
+      "durationMs": 79,
+      "details": {
+        "scannedChars": 269695,
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:00.710Z"
+    },
+    {
+      "suite": "Security",
+      "testName": "Sanitization Scan: /guidance contains NO leaked keys or vendor names",
+      "status": "PASS",
+      "durationMs": 18,
+      "details": {
+        "scannedChars": 18342,
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:00.728Z"
+    },
+    {
+      "suite": "Security",
+      "testName": "Sanitization Scan: /admin contains NO leaked keys or vendor names",
+      "status": "PASS",
+      "durationMs": 16,
+      "details": {
+        "scannedChars": 7581,
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:00.744Z"
+    },
+    {
+      "suite": "Security",
+      "testName": "Sanitization Scan: /api/health contains NO leaked keys or vendor names",
+      "status": "PASS",
+      "durationMs": 43,
+      "details": {
+        "scannedChars": 260,
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:00.787Z"
+    },
+    {
+      "suite": "Security",
+      "testName": "Sanitization Scan: /api/crm/stats contains NO leaked keys or vendor names",
+      "status": "PASS",
+      "durationMs": 29,
+      "details": {
+        "scannedChars": 250,
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:00.816Z"
+    },
+    {
+      "suite": "Auth",
+      "testName": "POST /api/auth/signup activates account instantly with welcome email",
+      "status": "PASS",
+      "durationMs": 61,
+      "details": {
+        "verified": true,
+        "licenseKey": "VESPER-73TL-C5CN-7CGL",
+        "tier": "pro"
+      },
+      "timestamp": "2026-10-12T11:57:00.878Z"
+    },
+    {
+      "suite": "Auth",
+      "testName": "POST /api/auth/google advises user to use email authentication",
+      "status": "PASS",
+      "durationMs": 9,
+      "details": {
+        "noticeReturned": true,
+        "message": "Google Sign-In is currently in progress. Please use email authentication — we are working on that."
+      },
+      "timestamp": "2026-10-12T11:57:00.886Z"
+    },
+    {
+      "suite": "Licensing",
+      "testName": "POST /api/license/verify validates genuine active license",
+      "status": "PASS",
+      "durationMs": 33,
+      "details": {
+        "valid": true,
+        "status": "active",
+        "remainingMinutes": 1200
+      },
+      "timestamp": "2026-10-12T11:57:00.920Z"
+    },
+    {
+      "suite": "Licensing",
+      "testName": "POST /api/license/verify rejects corrupted/fake license key",
+      "status": "PASS",
+      "durationMs": 31,
+      "details": {
+        "rejected": true,
+        "message": "License key not recognized. Register at vesper.com to generate your key."
+      },
+      "timestamp": "2026-10-12T11:57:00.951Z"
+    },
+    {
+      "suite": "Licensing",
+      "testName": "POST /api/license/verify handles empty payload gracefully (400)",
+      "status": "PASS",
+      "durationMs": 2,
+      "details": {
+        "status": 400,
+        "handledCorrectly": true
+      },
+      "timestamp": "2026-10-12T11:57:00.953Z"
+    },
+    {
+      "suite": "CRM",
+      "testName": "GET /api/crm/stats returns pipeline totals and conversion rates",
+      "status": "PASS",
+      "durationMs": 34,
+      "details": {
+        "totalLeads": 2,
+        "totalPipelineValue": 9600,
+        "conversionRate": 0
+      },
+      "timestamp": "2026-10-12T11:57:00.987Z"
+    },
+    {
+      "suite": "CRM",
+      "testName": "POST /api/crm/leads creates enterprise deal with Mongo persistence",
+      "status": "PASS",
+      "durationMs": 32,
+      "details": {
+        "leadId": "lead-1791806220995",
+        "company": "QuantumScale Systems",
+        "dealValue": 4800
+      },
+      "timestamp": "2026-10-12T11:57:01.019Z"
+    },
+    {
+      "suite": "CRM",
+      "testName": "PATCH /api/crm/leads/:id updates lead stage to 'Qualified'",
+      "status": "PASS",
+      "durationMs": 28,
+      "details": {
+        "leadId": "lead-1791806220995",
+        "updatedStatus": "Qualified"
+      },
+      "timestamp": "2026-10-12T11:57:01.047Z"
+    },
+    {
+      "suite": "Telemetry",
+      "testName": "POST /api/feedback submits 5-star operator rating",
+      "status": "PASS",
+      "durationMs": 32,
+      "details": {
+        "submitted": true,
+        "rating": 5
+      },
+      "timestamp": "2026-10-12T11:57:01.080Z"
+    },
+    {
+      "suite": "Telemetry",
+      "testName": "POST /api/telemetry logs client interaction telemetry",
+      "status": "PASS",
+      "durationMs": 31,
+      "details": {
+        "success": true
+      },
+      "timestamp": "2026-10-12T11:57:01.111Z"
+    },
+    {
+      "suite": "Telemetry",
+      "testName": "POST /api/telemetry/tokens records prompt and completion token burn",
+      "status": "PASS",
+      "durationMs": 88,
+      "details": {
+        "success": true,
+        "tokensRecorded": 165,
+        "usedTokens": 165
+      },
+      "timestamp": "2026-10-12T11:57:01.199Z"
+    },
+    {
+      "suite": "Admin",
+      "testName": "GET /api/admin/users retrieves user directory with licenses",
+      "status": "PASS",
+      "durationMs": 45,
+      "details": {
+        "count": 6
+      },
+      "timestamp": "2026-10-12T11:57:01.245Z"
+    },
+    {
+      "suite": "Admin",
+      "testName": "PATCH /api/admin/users/:id revokes software license",
+      "status": "PASS",
+      "durationMs": 40,
+      "details": {
+        "userId": "usr-1791806220843",
+        "licenseActive": false
+      },
+      "timestamp": "2026-10-12T11:57:01.285Z"
+    },
+    {
+      "suite": "Admin",
+      "testName": "Verification gate confirms revoked license is rejected",
+      "status": "PASS",
+      "durationMs": 26,
+      "details": {
+        "rejectedCorrectly": true
+      },
+      "timestamp": "2026-10-12T11:57:01.311Z"
+    },
+    {
+      "suite": "Admin",
+      "testName": "PATCH /api/admin/users/:id re-activates license & promotes to Enterprise",
+      "status": "PASS",
+      "durationMs": 51,
+      "details": {
+        "userId": "usr-1791806220843",
+        "licenseActive": true,
+        "tier": "enterprise"
+      },
+      "timestamp": "2026-10-12T11:57:01.362Z"
+    },
+    {
+      "suite": "Admin",
+      "testName": "POST /api/admin/invite dispatches enterprise invitation with Nodemailer",
+      "status": "PASS",
+      "durationMs": 46,
+      "details": {
+        "inviteEmail": "invited.engineer.1791806221362@vesper.ai",
+        "licenseKey": "VESPER-7GMK-N5S2-LBQS",
+        "tier": "enterprise"
+      },
+      "timestamp": "2026-10-12T11:57:01.408Z"
+    },
+    {
+      "suite": "UI",
+      "testName": "Nav bar Download CTA has NO magnetic hover physics",
+      "status": "PASS",
+      "durationMs": 81,
+      "details": {
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:01.489Z"
+    },
+    {
+      "suite": "UI",
+      "testName": "Nav bar has NO experimental 'v0.1.0-alpha' badge",
+      "status": "PASS",
+      "durationMs": 79,
+      "details": {
+        "clean": true
+      },
+      "timestamp": "2026-10-12T11:57:01.568Z"
+    },
+    {
+      "suite": "UI",
+      "testName": "Guidance hub is linked directly in navigation header",
+      "status": "PASS",
+      "durationMs": 88,
+      "details": {
+        "hasGuidanceLink": true
+      },
+      "timestamp": "2026-10-12T11:57:01.656Z"
+    },
+    {
+      "suite": "Performance",
+      "testName": "Landing Page TTFB (< 200ms)",
+      "status": "PASS",
+      "durationMs": 85,
+      "details": {
+        "latencyMs": 85,
+        "status": 200
+      },
+      "timestamp": "2026-10-12T11:57:01.741Z"
+    },
+    {
+      "suite": "Performance",
+      "testName": "Guidance Hub TTFB (< 200ms)",
+      "status": "PASS",
+      "durationMs": 22,
+      "details": {
+        "latencyMs": 22,
+        "status": 200
+      },
+      "timestamp": "2026-10-12T11:57:01.763Z"
+    },
+    {
+      "suite": "Performance",
+      "testName": "Admin Console TTFB (< 200ms)",
+      "status": "PASS",
+      "durationMs": 14,
+      "details": {
+        "latencyMs": 14,
+        "status": 200
+      },
+      "timestamp": "2026-10-12T11:57:01.777Z"
+    },
+    {
+      "suite": "Performance",
+      "testName": "Health API Response (< 200ms)",
+      "status": "PASS",
+      "durationMs": 42,
+      "details": {
+        "latencyMs": 42,
+        "status": 200
+      },
+      "timestamp": "2026-10-12T11:57:01.819Z"
+    },
+    {
+      "suite": "Performance",
+      "testName": "CRM Stats API Response (< 200ms)",
+      "status": "PASS",
+      "durationMs": 31,
+      "details": {
+        "latencyMs": 31,
+        "status": 200
+      },
+      "timestamp": "2026-10-12T11:57:01.850Z"
+    }
+  ]
+}

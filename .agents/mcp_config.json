@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "qevra-context": {
+    "vesper-context": {
       "command": "node",
       "args": ["out/main/mcp-runner.js"]
     }

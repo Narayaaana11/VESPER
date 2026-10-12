@@ -1,0 +1,77 @@
+appId: com.vesper.desktop
+productName: VESPER
+copyright: Copyright © 2026 VESPER Team
+directories:
+  output: dist
+  buildResources: resources
+
+files:
+  - out/**/*
+  - node_modules/**/*
+  - package.json
+
+asar: true
+asarUnpack:
+  - "**/*.exe"
+  - "**/*.node"
+  - "node_modules/node-global-key-listener/**"
+
+extraResources:
+  - from: src/main/detect-window.exe
+    to: out/main/detect-window.exe
+  - from: src/main/detect-window.exe
+    to: detect-window.exe
+  - from: src/main/send-input.exe
+    to: out/main/send-input.exe
+  - from: src/main/send-input.exe
+    to: send-input.exe
+  - from: src/main/WinKeyServer.exe
+    to: out/bin/WinKeyServer.exe
+  - from: resources/models/transformers-cache
+    to: resources/models/transformers-cache
+  - from: resources/icon.ico
+    to: resources/icon.ico
+  - from: resources/icon.png
+    to: resources/icon.png
+
+npmRebuild: false
+nodeGypRebuild: false
+
+win:
+  signAndEditExecutable: false
+  icon: resources/icon.ico
+  publisherName: VESPER
+  target:
+    - target: nsis
+      arch:
+        - x64
+  executableName: VESPER
+  artifactName: "${productName}-Setup-${version}.${ext}"
+
+nsis:
+  oneClick: true
+  perMachine: false
+  allowElevation: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: VESPER Flow
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  installerHeaderIcon: resources/icon.ico
+  runAfterFinish: true
+  uninstallDisplayName: "${productName} Flow"
+  include: resources/installer.nsh
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.productivity
+
+linux:
+  target:
+    - AppImage
+    - tar.gz
+  category: Utility

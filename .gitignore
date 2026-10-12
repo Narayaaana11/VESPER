@@ -5,13 +5,17 @@ node_modules/
 dist/
 out/
 Release/
+build/
 *.exe
+*.apk
+.output/
+.wrangler/
 
 # Environment and secrets
 .env
 .env.local
 .env.*.local
-qevra-settings.json
+vesper-settings.json
 *.pem
 *.key
 

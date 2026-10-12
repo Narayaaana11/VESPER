@@ -1,0 +1,25 @@
+{
+  "name": "vesper-companion",
+  "displayName": "VESPER Context Companion",
+  "description": "Zero-overhead companion extension streaming IDE cursor, active file, and AST context to VESPER",
+  "version": "0.1.0",
+  "publisher": "vesper",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vesper.syncContext",
+        "title": "VESPER: Sync Active Editor Context"
+      }
+    ]
+  }
+}
