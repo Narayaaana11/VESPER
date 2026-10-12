@@ -217,7 +217,7 @@ var Database = class {
 		const adminUser = {
 			id: "usr-admin-narayana",
 			name: "Narayana",
-			email: (process.env["ADMIN_EMAIL"] || "narayana@vesper.com").toLowerCase().trim(),
+			email: (process.env["ADMIN_EMAIL"] || "narayaaana@vesper.in").toLowerCase().trim(),
 			avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=NarayanaAdmin",
 			role: "admin",
 			provider: "local",
@@ -251,6 +251,8 @@ var Database = class {
 				const usersCol = await getMongoCollection("users");
 				const leadsCol = await getMongoCollection("leads");
 				if (usersCol && leadsCol) {
+					const adminUser = Array.from(this.inMemoryUsers.values()).find((u) => u.role === "admin");
+					if (adminUser) await usersCol.updateOne({ email: adminUser.email }, { $set: adminUser }, { upsert: true });
 					if (await usersCol.countDocuments() === 0) {
 						const seedUsers = Array.from(this.inMemoryUsers.values());
 						await usersCol.insertMany(seedUsers);
@@ -259,6 +261,7 @@ var Database = class {
 						const users = await usersCol.find({}).toArray();
 						this.inMemoryUsers.clear();
 						users.forEach((u) => this.inMemoryUsers.set(u.id, u));
+						if (adminUser) this.inMemoryUsers.set(adminUser.id, adminUser);
 					}
 					const leads = await leadsCol.find({}).toArray();
 					this.inMemoryLeads.clear();
@@ -1509,7 +1512,7 @@ async function handleApiRequest(request) {
 }
 var serverEntryPromise;
 async function getServerEntry() {
-	if (!serverEntryPromise) serverEntryPromise = import("./server-B-4l5J-W.mjs").then((m) => m.default ?? m);
+	if (!serverEntryPromise) serverEntryPromise = import("./server-PMUVTUkn.mjs").then((m) => m.default ?? m);
 	return serverEntryPromise;
 }
 async function normalizeCatastrophicSsrResponse(response) {

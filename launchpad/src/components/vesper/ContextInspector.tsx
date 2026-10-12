@@ -172,7 +172,7 @@ export function ContextInspector({
                   </span>
                   <span className="text-titanium-silver">142 Tokens</span>
                 </div>
-                <pre className="mt-2.5 overflow-x-auto rounded-lg border border-titanium-border/80 bg-obsidian p-3 font-mono text-xs text-stark/90 leading-relaxed">
+                <pre className="mt-2.5 overflow-x-auto rounded-lg border border-titanium-border bg-[#0a0a0c] p-3.5 font-mono text-xs text-emerald-400 leading-relaxed">
                   {`// Captured from foreground editor without overwriting Windows clipboard
 export async function authenticate(req: Request) {
   const token = req.headers.get("Authorization");
@@ -183,14 +183,14 @@ export async function authenticate(req: Request) {
               </div>
 
               {/* Rationale explanation */}
-              <div className="rounded-xl border border-emerald/30 bg-emerald/5 p-4 text-xs leading-relaxed text-titanium-silver">
-                <div className="flex items-center gap-1.5 font-semibold text-stark mb-1">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald" />
+              <div className="rounded-xl border border-primary/30 bg-primary/10 p-4 text-xs leading-relaxed text-slate-300">
+                <div className="flex items-center gap-1.5 font-semibold text-primary mb-1">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
                   <span>Why Context Was Enriched</span>
                 </div>
                 WinKeyServer tracked that you held Right Alt while inside Cursor Composer. VESPER
                 fused the active file path (
-                <code className="font-mono text-stark">auth.middleware.ts</code>) and the
+                <code className="font-mono text-white bg-black/40 px-1 py-0.5 rounded">auth.middleware.ts</code>) and the
                 surrounding authentication functions so that your voice command was executed with
                 zero manual prompt engineering.
               </div>
@@ -360,7 +360,7 @@ export async function authenticate(req: Request) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-titanium-border bg-titanium px-4 py-1.5 text-stark hover:border-emerald hover:text-emerald transition-colors"
+            className="rounded-lg border border-titanium-border bg-titanium-elevated px-4 py-1.5 text-stark hover:bg-[#262632] hover:text-white transition-colors cursor-pointer"
           >
             Close Inspector
           </button>

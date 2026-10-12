@@ -4,14 +4,14 @@ import { n as toast } from "../_libs/sonner.mjs";
 import { n as useAuth } from "./auth-context-DIX5izGL.mjs";
 import { t as crmService } from "./crm-service-Yn1PsX10.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { $ as Clock, A as MessageSquare, B as FileSpreadsheet, C as ScanEye, D as PenTool, F as Layers, G as ExternalLink, H as FileBraces, I as Keyboard, J as Database, K as Download, L as Key, M as Mail, N as LogOut, O as Network, P as Lock, Q as CodeXml, R as Gauge, S as Search, T as Radio, U as Eye, V as FileCode, W as EyeOff, X as Cpu, Y as Crosshair, Z as Copy, _ as Shield, at as Check, ct as BookOpen, d as Terminal, et as CircleQuestionMark, f as Target, ft as ArrowDown, g as SlidersHorizontal, h as Sparkles, i as Volume2, it as ChevronDown, j as Menu, k as Mic, l as Trash2, m as Star, n as X, nt as CircleCheckBig, o as User, ot as Building2, p as Table, pt as Activity, r as VolumeX, st as Briefcase, t as Zap, tt as CircleCheck, u as Ticket, ut as ArrowRight, v as ShieldCheck, x as Send, y as ShieldAlert, z as FileText } from "../_libs/lucide-react.mjs";
+import { $ as Clock, A as MessageSquare, B as FileSpreadsheet, C as ScanEye, D as PenTool, F as Layers, G as ExternalLink, H as FileBraces, I as Keyboard, K as Download, L as Key, M as Mail, N as LogOut, O as Network, P as Lock, Q as CodeXml, R as Gauge, S as Search, T as Radio, U as Eye, V as FileCode, W as EyeOff, X as Cpu, Y as Crosshair, Z as Copy, _ as Shield, at as Check, ct as BookOpen, d as Terminal, et as CircleQuestionMark, f as Target, ft as ArrowDown, g as SlidersHorizontal, h as Sparkles, i as Volume2, it as ChevronDown, j as Menu, k as Mic, l as Trash2, m as Star, n as X, nt as CircleCheckBig, o as User, ot as Building2, p as Table, pt as Activity, r as VolumeX, st as Briefcase, t as Zap, tt as CircleCheck, u as Ticket, ut as ArrowRight, v as ShieldCheck, x as Send, y as ShieldAlert, z as FileText } from "../_libs/lucide-react.mjs";
 import { t as VesperLogo } from "./VesperLogo-K0DjSlQl.mjs";
 import { a as useMotionValue, i as useTransform, n as useAnimationFrame, r as useSpring, t as useInView } from "../_libs/framer-motion+[...].mjs";
 import { t as motion } from "../_libs/motion.mjs";
 import { a as Geometry, i as Program, n as Camera, r as Renderer, t as Mesh } from "../_libs/ogl.mjs";
 import { t as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-BnUX32Tf.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-CvtI5V5F.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var links = [
@@ -2164,7 +2164,7 @@ function ContextInspector({ isOpen, onClose, activeApp = "Cursor.exe (PID 14208)
 											children: "142 Tokens"
 										})]
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
-										className: "mt-2.5 overflow-x-auto rounded-lg border border-titanium-border/80 bg-obsidian p-3 font-mono text-xs text-stark/90 leading-relaxed",
+										className: "mt-2.5 overflow-x-auto rounded-lg border border-titanium-border bg-[#0a0a0c] p-3.5 font-mono text-xs text-emerald-400 leading-relaxed",
 										children: `// Captured from foreground editor without overwriting Windows clipboard
 export async function authenticate(req: Request) {
   const token = req.headers.get("Authorization");
@@ -2174,15 +2174,15 @@ export async function authenticate(req: Request) {
 									})]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "rounded-xl border border-emerald/30 bg-emerald/5 p-4 text-xs leading-relaxed text-titanium-silver",
+									className: "rounded-xl border border-primary/30 bg-primary/10 p-4 text-xs leading-relaxed text-slate-300",
 									children: [
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "flex items-center gap-1.5 font-semibold text-stark mb-1",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-3.5 w-3.5 text-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Why Context Was Enriched" })]
+											className: "flex items-center gap-1.5 font-semibold text-primary mb-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-3.5 w-3.5 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Why Context Was Enriched" })]
 										}),
 										"WinKeyServer tracked that you held Right Alt while inside Cursor Composer. VESPER fused the active file path (",
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
-											className: "font-mono text-stark",
+											className: "font-mono text-white bg-black/40 px-1 py-0.5 rounded",
 											children: "auth.middleware.ts"
 										}),
 										") and the surrounding authentication functions so that your voice command was executed with zero manual prompt engineering."
@@ -2342,7 +2342,7 @@ export async function authenticate(req: Request) {
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Obsidian Glass Engine" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						onClick: onClose,
-						className: "rounded-lg border border-titanium-border bg-titanium px-4 py-1.5 text-stark hover:border-emerald hover:text-emerald transition-colors",
+						className: "rounded-lg border border-titanium-border bg-titanium-elevated px-4 py-1.5 text-stark hover:bg-[#262632] hover:text-white transition-colors cursor-pointer",
 						children: "Close Inspector"
 					})]
 				})
@@ -2579,7 +2579,7 @@ function UtoExplorerModal({ isOpen, onClose }) {
 							children: [copied ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-emerald" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: copied ? "Copied" : "Copy JSON Contract" })]
 						})]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
-						className: "overflow-x-auto rounded-xl border border-titanium-border/80 bg-obsidian p-4 font-mono text-xs text-emerald/90 leading-relaxed shadow-inner",
+						className: "overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-4 font-mono text-xs text-emerald-400 leading-relaxed shadow-inner",
 						children: jsonString
 					})]
 				}),
@@ -2598,7 +2598,7 @@ function UtoExplorerModal({ isOpen, onClose }) {
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						onClick: onClose,
-						className: "rounded-lg border border-titanium-border bg-titanium px-4 py-1.5 text-stark hover:border-emerald hover:text-emerald transition-colors",
+						className: "rounded-lg border border-titanium-border bg-titanium-elevated px-4 py-1.5 text-stark hover:bg-[#262632] hover:text-white transition-colors cursor-pointer",
 						children: "Close"
 					})]
 				})
@@ -6297,237 +6297,178 @@ function LegalModal({ isOpen, onClose, defaultTab = "privacy" }) {
 	});
 }
 function Footer() {
-	const [dbState, setDbState] = (0, import_react.useState)({
-		connected: true,
-		latencyMs: 17
-	});
 	const [legalModalOpen, setLegalModalOpen] = (0, import_react.useState)(false);
 	const [legalTab, setLegalTab] = (0, import_react.useState)("privacy");
-	(0, import_react.useEffect)(() => {
-		fetch("/api/health").then((res) => res.json()).then((data) => {
-			if (data?.database) setDbState({
-				connected: Boolean(data.database.connected),
-				latencyMs: data.database.latencyMs ?? 17
-			});
-		}).catch(() => {});
-	}, []);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
 		className: "border-t border-titanium-border bg-obsidian text-titanium-silver relative z-10",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "border-b border-titanium-border/60 bg-titanium/50 py-3 px-5",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 text-xs font-mono",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-3",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "mx-auto max-w-6xl px-5 py-14",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "grid gap-10 sm:grid-cols-2 lg:grid-cols-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-4",
 						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "flex h-2 w-2 rounded-full bg-emerald animate-pulse shadow-[0_0_8px_var(--emerald)]" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-stark font-medium",
-								children: "Windows Engine Status: Active"
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(VesperLogo, { size: 28 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-mono text-base font-bold tracking-[0.2em] text-stark",
+									children: "VESPER"
+								})]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-titanium-silver/40",
-								children: "|"
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs leading-relaxed text-titanium-silver",
+								children: "Hardware-hooked push-to-talk ambient intelligence engine for Windows 10/11. Hold Right Alt, speak, and paste directly at your cursor without stealing window focus."
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-titanium-silver",
-								children: "WinKeyServer.exe PID attached"
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "inline-flex items-center gap-2 rounded-full border border-titanium-border bg-titanium-elevated px-3 py-1 font-mono text-[10px] text-titanium-silver",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-1.5 w-1.5 rounded-full bg-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Version 1.0 Enterprise Production" })]
 							})
 						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-4 text-titanium-silver/80",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "flex items-center gap-1.5",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Database, { className: "h-3 w-3 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-									"MongoDB Atlas:",
-									" ",
-									dbState.connected ? `Connected (${dbState.latencyMs ?? 17}ms)` : "In-Memory Resilient"
-								] })]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "hidden sm:inline text-titanium-silver/40",
-								children: "|"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-primary font-semibold",
-								children: "Sub-180ms Latency Waterfall"
-							})
-						]
-					})]
-				})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mx-auto max-w-6xl px-5 py-14",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "grid gap-10 sm:grid-cols-2 lg:grid-cols-4",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-4",
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
+							children: "Architecture"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+							className: "space-y-2 text-xs",
 							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-2.5",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(VesperLogo, { size: 28 }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-mono text-base font-bold tracking-[0.2em] text-stark",
-										children: "VESPER"
-									})]
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#pipeline",
+									className: "hover:text-stark transition-colors",
+									children: "WinKeyServer Low-Level Hook"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#pipeline",
+									className: "hover:text-stark transition-colors",
+									children: "Silero VAD Chunking"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#pipeline",
+									className: "hover:text-stark transition-colors",
+									children: "Sub-180ms Neural Pipeline"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#pipeline",
+									className: "hover:text-stark transition-colors",
+									children: "Win32 SendInput Preservation"
+								}) })
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
+							children: "Resources"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+							className: "space-y-2 text-xs",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "/guidance",
+									className: "hover:text-emerald text-emerald font-semibold transition-colors flex items-center gap-1.5",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Developer Guidance & Manual" })
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#shortcuts",
+									className: "hover:text-stark transition-colors",
+									children: "Mechanical Keycap Tester"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#download",
+									className: "hover:text-stark transition-colors",
+									children: "Windows Installer & SHA-256"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#roadmap",
+									className: "hover:text-stark transition-colors",
+									children: "Air-Gapped Whisper Roadmap"
+								}) }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "#waitlist",
+									className: "hover:text-stark transition-colors",
+									children: "Excel Leads Database"
+								}) })
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "space-y-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
+							children: "Architecture & Security"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-2.5 text-xs",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+									href: "#pipeline",
+									className: "flex items-center gap-1.5 hover:text-stark transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cpu, { className: "h-3.5 w-3.5 text-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "8-Layer Architecture Specs" })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+									href: "#faq",
+									className: "flex items-center gap-1.5 hover:text-stark transition-colors",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3.5 w-3.5 text-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Zero Audio Retention Guarantee" })]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "text-xs leading-relaxed text-titanium-silver",
-									children: "Hardware-hooked push-to-talk ambient intelligence engine for Windows 10/11. Hold Right Alt, speak, and paste directly at your cursor without stealing window focus."
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "inline-flex items-center gap-2 rounded-full border border-titanium-border bg-titanium-elevated px-3 py-1 font-mono text-[10px] text-titanium-silver",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-1.5 w-1.5 rounded-full bg-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Version 1.0 Enterprise Production" })]
+									className: "font-mono text-[11px] text-titanium-silver/70 pt-2",
+									children: "Enterprise Core Engine. Built with React 19, TanStack Start, and Tailwind CSS."
 								})
 							]
+						})]
+					})
+				]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-titanium-border/60 pt-6 text-xs text-titanium-silver/70",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-wrap items-center gap-x-4 gap-y-1",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
+							"© ",
+							(/* @__PURE__ */ new Date()).getFullYear(),
+							" VESPER Platform. All rights reserved."
+						] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: () => {
+								setLegalTab("privacy");
+								setLegalModalOpen(true);
+							},
+							className: "hover:text-emerald transition-colors underline-offset-2 hover:underline",
+							children: "Privacy Policy"
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-								className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
-								children: "Architecture"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
-								className: "space-y-2 text-xs",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#pipeline",
-										className: "hover:text-stark transition-colors",
-										children: "WinKeyServer Low-Level Hook"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#pipeline",
-										className: "hover:text-stark transition-colors",
-										children: "Silero VAD Chunking"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#pipeline",
-										className: "hover:text-stark transition-colors",
-										children: "Sub-180ms Neural Pipeline"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#pipeline",
-										className: "hover:text-stark transition-colors",
-										children: "Win32 SendInput Preservation"
-									}) })
-								]
-							})]
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: () => {
+								setLegalTab("terms");
+								setLegalModalOpen(true);
+							},
+							className: "hover:text-emerald transition-colors underline-offset-2 hover:underline",
+							children: "Terms of Service"
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-								className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
-								children: "Resources"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
-								className: "space-y-2 text-xs",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "/guidance",
-										className: "hover:text-emerald text-emerald font-semibold transition-colors flex items-center gap-1.5",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Developer Guidance & Manual" })
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#shortcuts",
-										className: "hover:text-stark transition-colors",
-										children: "Mechanical Keycap Tester"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#download",
-										className: "hover:text-stark transition-colors",
-										children: "Windows Installer & SHA-256"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#roadmap",
-										className: "hover:text-stark transition-colors",
-										children: "Air-Gapped Whisper Roadmap"
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-										href: "#waitlist",
-										className: "hover:text-stark transition-colors",
-										children: "Excel Leads Database"
-									}) })
-								]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "space-y-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-								className: "font-mono text-xs font-semibold tracking-wider text-stark uppercase",
-								children: "Architecture & Security"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2.5 text-xs",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-										href: "#pipeline",
-										className: "flex items-center gap-1.5 hover:text-stark transition-colors",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cpu, { className: "h-3.5 w-3.5 text-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "8-Layer Architecture Specs" })]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-										href: "#faq",
-										className: "flex items-center gap-1.5 hover:text-stark transition-colors",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3.5 w-3.5 text-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Zero Audio Retention Guarantee" })]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "font-mono text-[11px] text-titanium-silver/70 pt-2",
-										children: "Enterprise Core Engine. Built with React 19, TanStack Start, and Tailwind CSS."
-									})
-								]
-							})]
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+							href: "mailto:contact@vesper.ai?subject=VESPER%20Feedback%20%26%20Inquiry",
+							className: "hover:text-emerald transition-colors flex items-center gap-1 underline-offset-2 hover:underline",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Feedback & Contact" })]
 						})
 					]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-titanium-border/60 pt-6 text-xs text-titanium-silver/70",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-wrap items-center gap-x-4 gap-y-1",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
-								"© ",
-								(/* @__PURE__ */ new Date()).getFullYear(),
-								" VESPER Platform. All rights reserved."
-							] }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => {
-									setLegalTab("privacy");
-									setLegalModalOpen(true);
-								},
-								className: "hover:text-emerald transition-colors underline-offset-2 hover:underline",
-								children: "Privacy Policy"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => {
-									setLegalTab("terms");
-									setLegalModalOpen(true);
-								},
-								className: "hover:text-emerald transition-colors underline-offset-2 hover:underline",
-								children: "Terms of Service"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "mailto:contact@vesper.ai?subject=VESPER%20Feedback%20%26%20Inquiry",
-								className: "hover:text-emerald transition-colors flex items-center gap-1 underline-offset-2 hover:underline",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Feedback & Contact" })]
-							})
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-4 font-mono text-[11px]",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "SHA-256: 8f4a2c9e...3d1b" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "winget install vesper" })
-						]
-					})]
+					className: "flex items-center gap-4 font-mono text-[11px]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "SHA-256: 8f4a2c9e...3d1b" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "•" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "winget install vesper" })
+					]
 				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LegalModal, {
-				isOpen: legalModalOpen,
-				onClose: () => setLegalModalOpen(false),
-				defaultTab: legalTab
-			})
-		]
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LegalModal, {
+			isOpen: legalModalOpen,
+			onClose: () => setLegalModalOpen(false),
+			defaultTab: legalTab
+		})]
 	});
 }
 var TEAM_SIZES = [
@@ -6853,14 +6794,14 @@ function ArchitectureModal({ isOpen, onClose }) {
 									className: "font-mono text-[11px] uppercase tracking-wider text-titanium-silver mb-2",
 									children: "Tool 1: Semantic User Context Query"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
-									className: "overflow-x-auto rounded-xl border border-titanium-border bg-obsidian p-3 font-mono text-[11px] text-emerald leading-relaxed",
+									className: "overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-3 font-mono text-[11px] text-emerald leading-relaxed",
 									children: MCP_SCHEMA_SAMPLE
 								})] }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
 									className: "font-mono text-[11px] uppercase tracking-wider text-titanium-silver mb-2",
 									children: "Tool 2: Zero Focus-Loss Screen State"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
-									className: "overflow-x-auto rounded-xl border border-titanium-border bg-obsidian p-3 font-mono text-[11px] text-cyan-400 leading-relaxed",
+									className: "overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-3 font-mono text-[11px] text-cyan-400 leading-relaxed",
 									children: MCP_SCREEN_SCHEMA
 								})] })
 							]
@@ -7017,11 +6958,11 @@ function ArchitectureModal({ isOpen, onClose }) {
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "border-t border-titanium-border bg-titanium-elevated px-6 py-3 flex justify-end",
+					className: "border-t border-titanium-border bg-titanium/50 px-6 py-3 flex justify-end",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						onClick: onClose,
-						className: "rounded-xl bg-stark px-5 py-2 font-semibold text-xs text-obsidian hover:bg-white transition-colors",
+						className: "rounded-xl border border-titanium-border bg-titanium-elevated hover:bg-[#262632] px-5 py-2 font-semibold text-xs text-stark transition-colors cursor-pointer",
 						children: "Close Inspector"
 					})
 				})

@@ -264,7 +264,7 @@ export function UtoExplorerModal({ isOpen, onClose }: UtoExplorerModalProps) {
             </button>
           </div>
 
-          <pre className="overflow-x-auto rounded-xl border border-titanium-border/80 bg-obsidian p-4 font-mono text-xs text-emerald/90 leading-relaxed shadow-inner">
+          <pre className="overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-4 font-mono text-xs text-emerald-400 leading-relaxed shadow-inner">
             {jsonString}
           </pre>
         </div>
@@ -282,7 +282,7 @@ export function UtoExplorerModal({ isOpen, onClose }: UtoExplorerModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-titanium-border bg-titanium px-4 py-1.5 text-stark hover:border-emerald hover:text-emerald transition-colors"
+            className="rounded-lg border border-titanium-border bg-titanium-elevated px-4 py-1.5 text-stark hover:bg-[#262632] hover:text-white transition-colors cursor-pointer"
           >
             Close
           </button>

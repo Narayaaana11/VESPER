@@ -101,7 +101,7 @@ class Database {
 
   private seedFallbackData() {
     // System Administrator Root Account
-    const adminEmail = (process.env["ADMIN_EMAIL"] || "narayana@vesper.com").toLowerCase().trim();
+    const adminEmail = (process.env["ADMIN_EMAIL"] || "narayaaana@vesper.in").toLowerCase().trim();
     const adminPassword = process.env["ADMIN_PASSWORD"] || "Narayana@11";
     const adminUser: User = {
       id: "usr-admin-narayana",
@@ -143,6 +143,16 @@ class Database {
         const leadsCol = await getMongoCollection<Lead>("leads");
 
         if (usersCol && leadsCol) {
+          // Always ensure the configured admin account exists and is up to date in Atlas
+          const adminUser = Array.from(this.inMemoryUsers.values()).find((u) => u.role === "admin");
+          if (adminUser) {
+            await usersCol.updateOne(
+              { email: adminUser.email },
+              { $set: adminUser },
+              { upsert: true },
+            );
+          }
+
           // Check if users collection needs initial seeding
           const userCount = await usersCol.countDocuments();
           if (userCount === 0) {
@@ -155,6 +165,9 @@ class Database {
             const users = await usersCol.find({}).toArray();
             this.inMemoryUsers.clear();
             users.forEach((u) => this.inMemoryUsers.set(u.id, u));
+            if (adminUser) {
+              this.inMemoryUsers.set(adminUser.id, adminUser);
+            }
           }
 
           // Sync real leads from database (no dummy seeding)

@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-DZcVEVRt.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-kBbyjWEX.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "D:/narayana/Vesper/launchpad/src/routes/__root.tsx",
@@ -7,41 +7,41 @@ var tsrStartManifest = () => ({ routes: {
 			"/admin",
 			"/guidance"
 		],
-		preloads: ["/assets/index-CDF8uF6n.js"],
+		preloads: ["/assets/index-CK-Kxss_.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-CDF8uF6n.js"
+			src: "/assets/index-CK-Kxss_.js"
 		} }]
 	},
 	"/": {
 		filePath: "D:/narayana/Vesper/launchpad/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-BWhgbXPh.js",
-			"/assets/crm-service-xONmN8SZ.js",
-			"/assets/terminal-tRE-z8tw.js",
-			"/assets/shield-CC7w_ZEl.js"
+			"/assets/routes-BCwNiCF4.js",
+			"/assets/crm-service-BND3gv-R.js",
+			"/assets/terminal-CWcqhu_K.js",
+			"/assets/shield-GKQQg54Y.js"
 		]
 	},
 	"/admin": {
 		filePath: "D:/narayana/Vesper/launchpad/src/routes/admin.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/admin-Cw0XIvtI.js",
-			"/assets/crm-service-xONmN8SZ.js",
-			"/assets/circle-alert-CNxVqv8n.js",
-			"/assets/shield-CC7w_ZEl.js"
+			"/assets/admin-DTTzGp11.js",
+			"/assets/crm-service-BND3gv-R.js",
+			"/assets/circle-alert-C2KdPMr7.js",
+			"/assets/shield-GKQQg54Y.js"
 		]
 	},
 	"/guidance": {
 		filePath: "D:/narayana/Vesper/launchpad/src/routes/guidance.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/guidance-BW37Bg27.js",
-			"/assets/circle-alert-CNxVqv8n.js",
-			"/assets/terminal-tRE-z8tw.js",
-			"/assets/shield-CC7w_ZEl.js"
+			"/assets/guidance-CFkS-Lu7.js",
+			"/assets/circle-alert-C2KdPMr7.js",
+			"/assets/terminal-CWcqhu_K.js",
+			"/assets/shield-GKQQg54Y.js"
 		]
 	}
 } });

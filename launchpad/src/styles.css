@@ -57,12 +57,12 @@
   --radius: 0.75rem;
   --background: #ffffff;
   --canvas: #f8fafc;
-  --obsidian: #ffffff;
-  --titanium: #ffffff;
-  --titanium-elevated: #f8fafc;
-  --titanium-border: rgba(0, 0, 0, 0.08);
-  --titanium-silver: #475569;
-  --stark: #0f172a;
+  --obsidian: #0a0a0c;
+  --titanium: #121217;
+  --titanium-elevated: #181820;
+  --titanium-border: #262632;
+  --titanium-silver: #8e8e9f;
+  --stark: #f4f4f7;
   --muted-slate: #64748b;
   --surface: #ffffff;
   --surface-elevated: #f8fafc;
