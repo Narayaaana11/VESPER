@@ -336,7 +336,19 @@ function AdminPage() {
     const activeLicenses = users.filter((u) => u.licenseActive).length;
     const proTier = users.filter((u) => u.tier === "pro" || u.tier === "enterprise").length;
     const pending = total - verified;
-    return { total, verified, activeLicenses, proTier, pending };
+    const totalTokensBurned = users.reduce((acc, u) => acc + (u.tokenQuota?.usedTokens || 0), 0);
+    const totalPromptTokens = users.reduce((acc, u) => acc + (u.tokenQuota?.promptTokens || 0), 0);
+    const totalCompletionTokens = users.reduce((acc, u) => acc + (u.tokenQuota?.completionTokens || 0), 0);
+    return {
+      total,
+      verified,
+      activeLicenses,
+      proTier,
+      pending,
+      totalTokensBurned,
+      totalPromptTokens,
+      totalCompletionTokens,
+    };
   }, [users]);
 
   const filteredUsers = useMemo(() => {
@@ -756,7 +768,7 @@ function AdminPage() {
         {adminTab === "users" && (
           <div className="flex flex-col gap-8">
             {/* Metric Cards Row */}
-            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               {/* Card 1: Total Accounts */}
               <div className="rounded-xl border border-titanium-border bg-titanium p-5 shadow-sm transition-all hover:border-titanium-border/80">
                 <div className="flex items-center justify-between text-titanium-silver">
@@ -789,7 +801,7 @@ function AdminPage() {
               {/* Card 3: Active Desktop Licenses */}
               <div className="rounded-xl border border-titanium-border bg-titanium p-5 shadow-sm transition-all hover:border-titanium-border/80">
                 <div className="flex items-center justify-between text-titanium-silver">
-                  <span className="font-mono text-xs uppercase tracking-wider">Active Licenses</span>
+                  <span className="font-mono text-xs uppercase tracking-wider">Active Workstations</span>
                   <Key className="h-4 w-4 text-cyan-400" />
                 </div>
                 <div className="mt-3 font-mono text-2xl font-bold text-cyan-400">
@@ -800,7 +812,21 @@ function AdminPage() {
                 </div>
               </div>
 
-              {/* Card 4: Pro / Enterprise Tiers */}
+              {/* Card 4: Real-time Tokens Burned */}
+              <div className="rounded-xl border border-titanium-border bg-titanium p-5 shadow-sm transition-all hover:border-titanium-border/80">
+                <div className="flex items-center justify-between text-titanium-silver">
+                  <span className="font-mono text-xs uppercase tracking-wider">Tokens Burned</span>
+                  <Zap className="h-4 w-4 text-amber-400" />
+                </div>
+                <div className="mt-3 font-mono text-2xl font-bold text-amber-400">
+                  {userStats.totalTokensBurned.toLocaleString()}
+                </div>
+                <div className="mt-1 font-mono text-[11px] text-titanium-silver">
+                  P: {userStats.totalPromptTokens.toLocaleString()} | C: {userStats.totalCompletionTokens.toLocaleString()}
+                </div>
+              </div>
+
+              {/* Card 5: Pro / Enterprise Tiers */}
               <div className="rounded-xl border border-titanium-border bg-titanium p-5 shadow-sm transition-all hover:border-titanium-border/80">
                 <div className="flex items-center justify-between text-titanium-silver">
                   <span className="font-mono text-xs uppercase tracking-wider">Paid Subscribers</span>
@@ -814,13 +840,13 @@ function AdminPage() {
                 </div>
               </div>
 
-              {/* Card 5: Pending Verification */}
+              {/* Card 6: Pending Verification */}
               <div className="rounded-xl border border-titanium-border bg-titanium p-5 shadow-sm transition-all hover:border-titanium-border/80">
                 <div className="flex items-center justify-between text-titanium-silver">
                   <span className="font-mono text-xs uppercase tracking-wider">Pending PIN</span>
-                  <Clock className="h-4 w-4 text-amber-400" />
+                  <Clock className="h-4 w-4 text-rose-400" />
                 </div>
-                <div className="mt-3 font-mono text-2xl font-bold text-amber-400">
+                <div className="mt-3 font-mono text-2xl font-bold text-rose-400">
                   {userStats.pending}
                 </div>
                 <div className="mt-1 font-mono text-[11px] text-titanium-silver">
@@ -901,6 +927,7 @@ function AdminPage() {
                       <th className="px-4 py-3.5">Verification Status</th>
                       <th className="px-4 py-3.5">Software License</th>
                       <th className="px-4 py-3.5">Subscription Tier</th>
+                      <th className="px-4 py-3.5">Tokens Burned</th>
                       <th className="px-4 py-3.5">Usage Quota</th>
                       <th className="px-5 py-3.5 text-right">Admin Actions</th>
                     </tr>
@@ -908,7 +935,7 @@ function AdminPage() {
                   <tbody className="divide-y divide-titanium-border font-sans">
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="px-5 py-12 text-center text-titanium-silver">
+                        <td colSpan={8} className="px-5 py-12 text-center text-titanium-silver">
                           {usersLoading ? "Loading user accounts..." : "No users match the search filters."}
                         </td>
                       </tr>
@@ -1020,6 +1047,17 @@ function AdminPage() {
                               <option value="pro">Pro ($29/mo)</option>
                               <option value="enterprise">Enterprise</option>
                             </select>
+                          </td>
+
+                          {/* Tokens Burned */}
+                          <td className="px-4 py-3.5">
+                            <div className="font-mono text-xs font-semibold text-stark flex items-center gap-1.5">
+                              <Zap className="h-3 w-3 text-amber-400" />
+                              <span>{(u.tokenQuota?.usedTokens || 0).toLocaleString()}</span>
+                            </div>
+                            <div className="font-mono text-[10px] text-titanium-silver">
+                              P: {(u.tokenQuota?.promptTokens || 0).toLocaleString()} | C: {(u.tokenQuota?.completionTokens || 0).toLocaleString()}
+                            </div>
                           </td>
 
                           {/* Quota */}
@@ -1486,7 +1524,7 @@ function AdminPage() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
                 {/* Metric 1: Database */}
                 <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
                   <div className="flex items-center justify-between text-titanium-silver">
@@ -1505,56 +1543,74 @@ function AdminPage() {
                   </div>
                 </div>
 
-                {/* Metric 2: Nodemailer */}
+                {/* Metric 2: Fleet Real-Time Token Burn */}
                 <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
                   <div className="flex items-center justify-between text-titanium-silver">
-                    <span className="font-mono text-xs uppercase">Email Dispatch Engine</span>
+                    <span className="font-mono text-xs uppercase">Fleet Token Burn</span>
+                    <Zap className="h-4 w-4 text-amber-400" />
+                  </div>
+                  <div className="mt-2 font-mono text-base font-bold text-amber-400">
+                    {userStats.totalTokensBurned.toLocaleString()} <span className="text-xs text-stark font-normal">tokens</span>
+                  </div>
+                  <div className="mt-1 font-mono text-[11px] text-titanium-silver">
+                    {userStats.activeLicenses} active workstations
+                  </div>
+                  <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
+                    <Activity className="h-3 w-3" />
+                    <span>Live Desktop REST Stream</span>
+                  </div>
+                </div>
+
+                {/* Metric 3: Nodemailer */}
+                <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
+                  <div className="flex items-center justify-between text-titanium-silver">
+                    <span className="font-mono text-xs uppercase">Email Dispatch</span>
                     <Mail className="h-4 w-4 text-cyan-400" />
                   </div>
                   <div className="mt-2 font-mono text-base font-bold text-stark">
                     Nodemailer SMTP
                   </div>
                   <div className="mt-1 font-mono text-[11px] text-titanium-silver">
-                    TLS 587 Gateway + Local Fallback
+                    TLS 587 Gateway
                   </div>
                   <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] text-cyan-400">
                     <CheckCircle className="h-3 w-3" />
-                    <span>PIN & License Delivery Active</span>
+                    <span>PIN & License Delivery</span>
                   </div>
                 </div>
 
-                {/* Metric 3: License Gate */}
+                {/* Metric 4: License Gate */}
                 <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
                   <div className="flex items-center justify-between text-titanium-silver">
-                    <span className="font-mono text-xs uppercase">Desktop Software Gate</span>
+                    <span className="font-mono text-xs uppercase">Software Gate</span>
                     <Key className="h-4 w-4 text-purple-400" />
                   </div>
                   <div className="mt-2 font-mono text-base font-bold text-stark">
                     /api/license/verify
                   </div>
                   <div className="mt-1 font-mono text-[11px] text-titanium-silver">
-                    Subscription & Quota Validation
+                    Hardware & Tier Gate
                   </div>
                   <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] text-purple-400">
                     <Shield className="h-3 w-3" />
-                    <span>Cryptographic Verification Gate</span>
+                    <span>Cryptographic Verification</span>
                   </div>
                 </div>
 
-                {/* Metric 4: Speech Engine */}
+                {/* Metric 5: Speech Engine */}
                 <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
                   <div className="flex items-center justify-between text-titanium-silver">
                     <span className="font-mono text-xs uppercase">Speech Pipeline</span>
-                    <Zap className="h-4 w-4 text-amber-400" />
+                    <Activity className="h-4 w-4 text-emerald" />
                   </div>
                   <div className="mt-2 font-mono text-base font-bold text-stark">
-                    Ultra-Low Latency
+                    Low-Latency Hook
                   </div>
                   <div className="mt-1 font-mono text-[11px] text-titanium-silver">
-                    Zero-Focus Steal Low-Level Hook
+                    Zero-Focus Steal Native
                   </div>
-                  <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] text-amber-400">
-                    <Activity className="h-3 w-3" />
+                  <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] text-emerald">
+                    <CheckCircle className="h-3 w-3" />
                     <span>Average Latency &lt; 350ms</span>
                   </div>
                 </div>

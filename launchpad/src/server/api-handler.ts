@@ -190,6 +190,13 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
           usedSeconds: 0,
           periodReset: new Date(Date.now() + 30 * 86400000).toISOString(),
         },
+        tokenQuota: {
+          monthlyAllowance: 5000000,
+          usedTokens: 0,
+          promptTokens: 0,
+          completionTokens: 0,
+          periodReset: new Date(Date.now() + 30 * 86400000).toISOString(),
+        },
         createdAt: new Date().toISOString(),
       };
 
@@ -216,6 +223,7 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
           licenseKey: newUser.licenseKey,
           licenseActive: newUser.licenseActive,
           usageQuota: newUser.usageQuota,
+          tokenQuota: newUser.tokenQuota,
         },
       });
     }
@@ -663,6 +671,37 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
     // -------------------------------------------------------------
     // ADMIN USERS & LICENSE MANAGEMENT ENDPOINTS
     // -------------------------------------------------------------
+
+    // GET /api/admin/metrics (High-level real-time fleet, tokens, and revenue telemetry)
+    if (pathname === "/api/admin/metrics" && method === "GET") {
+      const users = await db.getAllUsers();
+      const leads = await db.getAllLeads();
+      const crmStats = await db.getCrmStats();
+
+      const totalUsers = users.length;
+      const activeWorkstations = users.filter((u) => u.licenseActive).length;
+      const verifiedUsers = users.filter((u) => u.isVerified).length;
+      const payingCustomers = users.filter((u) => u.tier === "pro" || u.tier === "enterprise").length;
+      const totalTokensBurned = users.reduce((acc, u) => acc + (u.tokenQuota?.usedTokens || 0), 0);
+      const totalPromptTokens = users.reduce((acc, u) => acc + (u.tokenQuota?.promptTokens || 0), 0);
+      const totalCompletionTokens = users.reduce((acc, u) => acc + (u.tokenQuota?.completionTokens || 0), 0);
+
+      return json({
+        success: true,
+        metrics: {
+          totalUsers,
+          activeWorkstations,
+          verifiedUsers,
+          payingCustomers,
+          totalTokensBurned,
+          totalPromptTokens,
+          totalCompletionTokens,
+          pipelineValue: crmStats.totalPipelineValue || crmStats.pipelineValue || 0,
+          totalLeads: leads.length,
+          proTrials: crmStats.activeTrials || crmStats.proTrials || 0,
+        },
+      });
+    }
 
     // GET /api/admin/users
     if (pathname === "/api/admin/users" && method === "GET") {

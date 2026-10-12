@@ -169,9 +169,56 @@ export class TokenUsageService {
       }
 
       this.getChannel()?.postMessage({ type: 'TOKENS_UPDATED', data: updated, session })
+
+      // Dispatch real-time telemetry to connected Launchpad / Cloud Admin Console
+      this.syncTokenUsageToCloud(prompt, completion, total, params.model)
     } catch {}
 
     return session
+  }
+
+  private static syncTokenUsageToCloud(
+    promptTokens: number,
+    completionTokens: number,
+    totalTokens: number,
+    model: string
+  ): void {
+    if (typeof fetch === 'undefined') return
+
+    try {
+      let licenseKey: string | undefined = undefined
+      if (typeof localStorage !== 'undefined') {
+        const storedSub = localStorage.getItem('vesper_subscription_cache')
+        if (storedSub) {
+          try {
+            const parsed = JSON.parse(storedSub)
+            if (parsed.licenseKey) licenseKey = parsed.licenseKey
+          } catch {}
+        }
+        if (!licenseKey) {
+          licenseKey = localStorage.getItem('vesper_license_key') || undefined
+        }
+      }
+
+      const apiBase =
+        (typeof localStorage !== 'undefined' && localStorage.getItem('vesper_api_url')) ||
+        (typeof process !== 'undefined' && (process.env?.VITE_VESPER_API_URL || (process.env as any)?.REACT_APP_VESPER_API_URL)) ||
+        'http://localhost:8080'
+
+      fetch(`${apiBase}/api/telemetry/tokens`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          licenseKey,
+          promptTokens,
+          completionTokens,
+          totalTokens,
+          model
+        })
+      }).catch(() => {
+        // Silent fallback when running offline or disconnected from cloud
+      })
+    } catch {}
   }
 
   public static resetTokensForToday(): TokenDailyData {

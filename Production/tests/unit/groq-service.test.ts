@@ -52,7 +52,9 @@ describe('Groq Service - Whisper STT & Llama Polishing Pipeline', () => {
     let capturedPayload: any = null
 
     globalThis.fetch = vi.fn().mockImplementation((url: string, init: any) => {
-      capturedPayload = JSON.parse(init.body)
+      if (String(url).includes('groq.com')) {
+        capturedPayload = JSON.parse(init.body)
+      }
       return Promise.resolve({
         ok: true,
         json: () =>
