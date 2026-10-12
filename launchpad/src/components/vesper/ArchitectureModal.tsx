@@ -171,7 +171,7 @@ export function ArchitectureModal({ isOpen, onClose }: ArchitectureModalProps) {
                 <h4 className="font-mono text-[11px] uppercase tracking-wider text-titanium-silver mb-2">
                   Tool 1: Semantic User Context Query
                 </h4>
-                <pre className="overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-3 font-mono text-[11px] text-emerald leading-relaxed">
+                <pre className="overflow-x-auto rounded-xl border border-titanium-border bg-obsidian p-3 font-mono text-[11px] text-emerald leading-relaxed">
                   {MCP_SCHEMA_SAMPLE}
                 </pre>
               </div>
@@ -180,7 +180,7 @@ export function ArchitectureModal({ isOpen, onClose }: ArchitectureModalProps) {
                 <h4 className="font-mono text-[11px] uppercase tracking-wider text-titanium-silver mb-2">
                   Tool 2: Zero Focus-Loss Screen State
                 </h4>
-                <pre className="overflow-x-auto rounded-xl border border-titanium-border bg-[#0a0a0c] p-3 font-mono text-[11px] text-cyan-400 leading-relaxed">
+                <pre className="overflow-x-auto rounded-xl border border-titanium-border bg-obsidian p-3 font-mono text-[11px] text-cyan-400 leading-relaxed">
                   {MCP_SCREEN_SCHEMA}
                 </pre>
               </div>
@@ -322,11 +322,11 @@ export function ArchitectureModal({ isOpen, onClose }: ArchitectureModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-titanium-border bg-titanium/50 px-6 py-3 flex justify-end">
+        <div className="border-t border-titanium-border bg-titanium-elevated px-6 py-3 flex justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-titanium-border bg-titanium-elevated hover:bg-[#262632] px-5 py-2 font-semibold text-xs text-stark transition-colors cursor-pointer"
+            className="rounded-xl bg-stark px-5 py-2 font-semibold text-xs text-obsidian hover:bg-white transition-colors"
           >
             Close Inspector
           </button>
