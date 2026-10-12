@@ -37,19 +37,13 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
   }
 
   const handleOpenWebSignup = () => {
-    const baseUrl = (import.meta as any).env?.VITE_LAUNCHPAD_URL || 'http://localhost:8080'
+    const baseUrl = (import.meta as any).env?.VITE_LAUNCHPAD_URL || (import.meta as any).env?.VITE_VESPER_API_URL || 'https://vesperflow-ai.vercel.app'
     const url = `${baseUrl}/#signup`
     if (window.electronAPI?.openExternalUrl) {
       window.electronAPI.openExternalUrl(url)
     } else {
       window.open(url, '_blank')
     }
-  }
-
-  const handleGuestContinue = () => {
-    const profile = ProfileService.login('guest.user@vesper.local')
-    onAuthenticated(profile)
-    onClose()
   }
 
   return (
@@ -115,12 +109,6 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
           <span>Create Account on Web Portal</span>
           <ExternalLink size={13} className="ml-auto text-slate-400" />
         </button>
-
-        <div className="wfd-auth-footer">
-          <button type="button" className="wfd-auth-guest-btn" onClick={handleGuestContinue}>
-            Continue as Guest (30m Daily Quota)
-          </button>
-        </div>
       </div>
     </div>
   )

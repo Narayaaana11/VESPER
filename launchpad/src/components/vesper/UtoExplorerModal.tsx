@@ -192,7 +192,7 @@ export function UtoExplorerModal({ isOpen, onClose }: UtoExplorerModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)]">
+      <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border bg-obsidian-elevated shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-titanium-border px-6 py-4 bg-titanium/50">
           <div className="flex items-center gap-3">

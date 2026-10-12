@@ -315,37 +315,36 @@ export function DownloadSetup() {
         </SpotlightCard>
       </div>
 
-      {/* Interactive Download & Deployment Modal */}
       {isDownloadModalOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
           onClick={() => setIsDownloadModalOpen(false)}
         >
           <div
-            className="relative w-full max-w-xl rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] p-6 sm:p-7 text-stark animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-xl rounded-2xl border border-border bg-white shadow-2xl p-6 sm:p-7 text-foreground"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-4 border-b border-titanium-border pb-4">
+            <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 border border-primary/30 text-primary">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <WindowsIcon className="h-4 w-4" />
                   </div>
-                  <h3 className="text-lg font-bold text-stark">VESPER Installation Center</h3>
-                  <span className="rounded bg-emerald/10 text-emerald border border-emerald/30 px-2 py-0.5 font-mono text-[10px] font-semibold">
+                  <h3 className="text-lg font-bold text-foreground">VESPER Installation Center</h3>
+                  <span className="rounded bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 font-mono text-[10px] font-semibold">
                     v1.0.0 Stable
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-titanium-silver">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Native Windows 10 &amp; 11 (64-bit) · Low-latency Win32 caret injection
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsDownloadModalOpen(false)}
-                className="rounded-lg p-1.5 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer"
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />
@@ -353,15 +352,15 @@ export function DownloadSetup() {
             </div>
 
             <div className="mt-5 space-y-4">
-              <div className="rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40">
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 border border-primary/30 text-primary">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-primary">
                       <Download className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-stark">Direct Installer (.exe)</p>
-                      <p className="font-mono text-[11px] text-titanium-silver">
+                      <p className="text-sm font-semibold text-foreground">Direct Installer (.exe)</p>
+                      <p className="font-mono text-[11px] text-muted-foreground">
                         VESPER-Setup-1.0.0.exe · ~170 MB · Standard NSIS
                       </p>
                     </div>
@@ -380,20 +379,20 @@ export function DownloadSetup() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40">
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <div className="flex items-center gap-2">
                     <Terminal className="h-4 w-4 text-primary" />
-                    <span className="text-xs font-semibold text-stark">Windows Package Manager (winget)</span>
+                    <span className="text-xs font-semibold text-foreground">Windows Package Manager (winget)</span>
                   </div>
-                  <span className="font-mono text-[10px] text-titanium-silver">Recommended for CLI</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">Recommended for CLI</span>
                 </div>
-                <div className="flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-xs text-stark">
+                <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-xs text-foreground">
                   <span className="truncate">winget install vesper</span>
                   <button
                     type="button"
                     onClick={copyWinget}
-                    className="shrink-0 rounded p-1 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer"
+                    className="shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
                     title="Copy command"
                   >
                     {copiedWinget ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
@@ -401,20 +400,20 @@ export function DownloadSetup() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40">
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="text-xs font-semibold text-stark">PowerShell One-Liner Install</span>
+                    <span className="text-xs font-semibold text-foreground">PowerShell One-Liner Install</span>
                   </div>
-                  <span className="font-mono text-[10px] text-titanium-silver">Auto-fetch &amp; run</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">Auto-fetch &amp; run</span>
                 </div>
-                <div className="flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-[11px] text-stark">
-                  <span className="truncate text-titanium-silver">irm .../api/download/windows -OutFile ...</span>
+                <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-[11px] text-foreground">
+                  <span className="truncate text-slate-600">irm .../api/download/windows -OutFile ...</span>
                   <button
                     type="button"
                     onClick={copyPowerShell}
-                    className="shrink-0 rounded p-1 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer"
+                    className="shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
                     title="Copy PowerShell script"
                   >
                     {copiedPowerShell ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
@@ -423,20 +422,20 @@ export function DownloadSetup() {
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl border border-titanium-border/80 bg-titanium/60 p-3.5 text-xs text-titanium-silver space-y-1.5">
-              <p className="font-semibold text-stark flex items-center gap-1.5">
+            <div className="mt-4 rounded-xl border border-border bg-orange-50/50 p-3.5 text-xs text-slate-700 space-y-1.5">
+              <p className="font-semibold text-foreground flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 <span>Windows SmartScreen Note</span>
               </p>
-              <p className="text-[11px] leading-relaxed text-titanium-silver">
-                Because VESPER installs low-level Win32 keyboard hooks for zero-focus text injection, Windows SmartScreen may show an initial prompt on unsigned previews. Simply click <strong className="text-stark">More info &gt; Run anyway</strong>.
+              <p className="text-[11px] leading-relaxed text-muted-foreground">
+                Because VESPER installs low-level Win32 keyboard hooks for zero-focus text injection, Windows SmartScreen may show an initial prompt on unsigned previews. Simply click <strong className="text-foreground">More info &gt; Run anyway</strong>.
               </p>
             </div>
 
-            <div className="mt-5 flex items-center justify-between gap-3 border-t border-titanium-border pt-4 text-xs">
+            <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs">
               <a
                 href="/guidance"
-                className="inline-flex items-center gap-1.5 font-medium text-emerald hover:text-emerald/80 transition-colors"
+                className="inline-flex items-center gap-1.5 font-medium text-primary hover:text-orange-700 transition-colors"
               >
                 <Key className="h-3.5 w-3.5" />
                 <span>Validate License Key in Guidance</span>
@@ -446,7 +445,7 @@ export function DownloadSetup() {
               <button
                 type="button"
                 onClick={() => setIsDownloadModalOpen(false)}
-                className="rounded-lg border border-titanium-border bg-titanium-elevated hover:bg-titanium-border px-4 py-2 text-xs font-semibold text-stark transition-colors cursor-pointer"
+                className="rounded-lg border border-border bg-slate-100 hover:bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 transition-colors cursor-pointer"
               >
                 Close
               </button>

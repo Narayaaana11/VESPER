@@ -332,7 +332,7 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
       {/* Interactive Pro License Modal */}
       {isProModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
+          <div className="relative w-full max-w-md rounded-2xl border border-titanium-border bg-titanium p-6 shadow-2xl text-stark">
             <button
               type="button"
               onClick={() => setIsProModalOpen(false)}

@@ -131,8 +131,8 @@ export function ExcelWaitlistModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-6 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl text-stark shadow-[0_24px_64px_rgba(0,0,0,0.85)] overflow-hidden font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-obsidian/90 p-3 sm:p-6 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-2xl border border-titanium-border bg-titanium text-stark shadow-2xl overflow-hidden font-sans">
         {/* Excel Title Bar */}
         <div className="flex items-center justify-between border-b border-titanium-border bg-titanium-elevated px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">

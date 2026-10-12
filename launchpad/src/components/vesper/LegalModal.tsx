@@ -13,8 +13,8 @@ export function LegalModal({ isOpen, onClose, defaultTab = "privacy" }: LegalMod
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-titanium-border bg-titanium shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-titanium-border px-6 py-4 bg-titanium-elevated">
           <div className="flex items-center gap-2.5">
