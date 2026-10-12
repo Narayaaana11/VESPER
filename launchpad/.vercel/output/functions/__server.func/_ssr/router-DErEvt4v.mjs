@@ -3,16 +3,16 @@ import { c as require_react, s as require_jsx_runtime } from "../_libs/@radix-ui
 import { n as toast, t as Toaster } from "../_libs/sonner.mjs";
 import { n as useAuth, t as AuthProvider } from "./auth-context-DIX5izGL.mjs";
 import { c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useRouter, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter } from "../_libs/@tanstack/react-router+[...].mjs";
-import { M as Mail, P as Lock, n as X, o as User, ut as ArrowRight } from "../_libs/lucide-react.mjs";
-import { t as VesperLogo } from "./VesperLogo-K0DjSlQl.mjs";
+import { M as Mail, P as Lock, lt as ArrowRight, n as X, o as User } from "../_libs/lucide-react.mjs";
+import { a as DownloadSetup, b as VesperLogo, c as Footer, d as Personas, f as Pricing, g as Simulator, h as Shortcuts, i as ContextInspector, n as Capabilities, o as EnterpriseModal, p as Roadmap, r as ClickSpark, s as FaqFeedback, t as ArchitectureModal, u as Nav, x as Waitlist, y as UtoExplorerModal } from "./Personas-B0b6j4YH.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as Analytics } from "../_libs/vercel__analytics.mjs";
 import { t as SpeedInsights } from "../_libs/vercel__speed-insights.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-CSFZkGC1.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-DErEvt4v.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-BUUElh7Q.css";
+var styles_default = "/assets/styles-C_DpofL4.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -267,7 +267,7 @@ function ErrorComponent({ error, reset }) {
 		})
 	});
 }
-var Route$3 = createRootRouteWithContext()({
+var Route$11 = createRootRouteWithContext()({
 	head: () => ({
 		meta: [
 			{ charSet: "utf-8" },
@@ -349,7 +349,7 @@ function RootShell({ children }) {
 	});
 }
 function RootComponent() {
-	const { queryClient } = Route$3.useRouteContext();
+	const { queryClient } = Route$11.useRouteContext();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QueryClientProvider, {
 		client: queryClient,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AuthProvider, { children: [
@@ -366,10 +366,408 @@ function RootComponent() {
 		] })
 	});
 }
-var $$splitComponentImporter$2 = () => import("./routes-Vy62zepx.mjs");
-var title = "VESPER Desktop: Software 3.0 Ambient Voice-to-Action for Windows";
-var description = "The high-bandwidth biological bridge to your PC. Hold Right Alt, speak naturally, and paste pre-polished text directly at your cursor in sub-180ms. Follows the Zero-Backspace Rule.";
-var Route$2 = createFileRoute("/")({
+var $$splitComponentImporter$2 = () => import("./routes-DgOnN22S.mjs");
+var title$8 = "VESPER Desktop: Software 3.0 Ambient Voice-to-Action for Windows";
+var description$8 = "The high-bandwidth biological bridge to your PC. Hold Right Alt, speak naturally, and paste pre-polished text directly at your cursor in sub-180ms. Follows the Zero-Backspace Rule.";
+var Route$10 = createFileRoute("/")({
+	head: () => ({ meta: [
+		{ title: title$8 },
+		{
+			name: "description",
+			content: description$8
+		},
+		{
+			property: "og:title",
+			content: title$8
+		},
+		{
+			property: "og:description",
+			content: description$8
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: lazyRouteComponent($$splitComponentImporter$2, "component")
+});
+var $$splitComponentImporter$1 = () => import("./admin-AoA0Wnbq.mjs");
+var Route$9 = createFileRoute("/admin")({
+	head: () => ({ meta: [{ title: "VESPER CRM: Admin Pipeline & Lead Management" }, {
+		name: "description",
+		content: "Enterprise CRM pipeline, pro trial metrics, and lead qualification for VESPER Desktop."
+	}] }),
+	component: lazyRouteComponent($$splitComponentImporter$1, "component")
+});
+var title$7 = "System Architecture & 8-Layer Pipeline | VESPER Desktop";
+var description$7 = "Explore the sub-180ms neural speech pipeline, WinKeyServer C++ hardware hooks, Silero VAD, and caret injection architecture.";
+var Route$8 = createFileRoute("/architecture")({
+	head: () => ({ meta: [
+		{ title: title$7 },
+		{
+			name: "description",
+			content: description$7
+		},
+		{
+			property: "og:title",
+			content: title$7
+		},
+		{
+			property: "og:description",
+			content: description$7
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: ArchitecturePage
+});
+function ArchitecturePage() {
+	const [isArchitectureOpen, setIsArchitectureOpen] = (0, import_react.useState)(false);
+	const [isContextInspectorOpen, setIsContextInspectorOpen] = (0, import_react.useState)(false);
+	const [isUtoOpen, setIsUtoOpen] = (0, import_react.useState)(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Capabilities, {
+						onOpenArchitectureModal: () => setIsArchitectureOpen(true),
+						onOpenContextInspector: () => setIsContextInspectorOpen(true),
+						onOpenUtoModal: () => setIsUtoOpen(true)
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArchitectureModal, {
+					isOpen: isArchitectureOpen,
+					onClose: () => setIsArchitectureOpen(false)
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ContextInspector, {
+					isOpen: isContextInspectorOpen,
+					onClose: () => setIsContextInspectorOpen(false)
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(UtoExplorerModal, {
+					isOpen: isUtoOpen,
+					onClose: () => setIsUtoOpen(false)
+				})
+			]
+		})
+	});
+}
+var title$6 = "Download VESPER for Windows (.exe) | Official Release";
+var description$6 = "Download the official VESPER Windows Installer (64-bit), verify SHA-256 checksums, or install via Windows Package Manager (winget).";
+var Route$7 = createFileRoute("/download")({
+	head: () => ({ meta: [
+		{ title: title$6 },
+		{
+			name: "description",
+			content: description$6
+		},
+		{
+			property: "og:title",
+			content: title$6
+		},
+		{
+			property: "og:description",
+			content: description$6
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: DownloadPage
+});
+function DownloadPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DownloadSetup, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
+var title$5 = "FAQ & Community Feedback | VESPER Desktop";
+var description$5 = "Frequently asked questions about VESPER's caret preservation, zero audio retention privacy guarantee, and feedback submission.";
+var Route$6 = createFileRoute("/faq")({
+	head: () => ({ meta: [
+		{ title: title$5 },
+		{
+			name: "description",
+			content: description$5
+		},
+		{
+			property: "og:title",
+			content: title$5
+		},
+		{
+			property: "og:description",
+			content: description$5
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: FaqPage
+});
+function FaqPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FaqFeedback, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
+var $$splitComponentImporter = () => import("./guidance-BAIhV20d.mjs");
+var Route$5 = createFileRoute("/guidance")({ component: lazyRouteComponent($$splitComponentImporter, "component") });
+var title$4 = "Transparent Pricing & Licenses | VESPER Desktop";
+var description$4 = "Simple, transparent pricing for VESPER Desktop. Free community tier with 30m daily allowance, Pro tier, and custom Enterprise deployments.";
+var Route$4 = createFileRoute("/pricing")({
+	head: () => ({ meta: [
+		{ title: title$4 },
+		{
+			name: "description",
+			content: description$4
+		},
+		{
+			property: "og:title",
+			content: title$4
+		},
+		{
+			property: "og:description",
+			content: description$4
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: PricingPage
+});
+function PricingPage() {
+	const [isEnterpriseOpen, setIsEnterpriseOpen] = (0, import_react.useState)(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pricing, { onOpenEnterpriseModal: () => setIsEnterpriseOpen(true) })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EnterpriseModal, {
+					isOpen: isEnterpriseOpen,
+					onClose: () => setIsEnterpriseOpen(false)
+				})
+			]
+		})
+	});
+}
+var title$3 = "Software 3.0 Engineering Roadmap | VESPER Desktop";
+var description$3 = "Explore the upcoming development phases of VESPER: local on-device neural pipelines, multi-modal screen agents, and enterprise telemetry.";
+var Route$3 = createFileRoute("/roadmap")({
+	head: () => ({ meta: [
+		{ title: title$3 },
+		{
+			name: "description",
+			content: description$3
+		},
+		{
+			property: "og:title",
+			content: title$3
+		},
+		{
+			property: "og:description",
+			content: description$3
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: RoadmapPage
+});
+function RoadmapPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
+					className: "relative z-10 pt-16",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Roadmap, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Waitlist, {})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
+var title$2 = "Keyboard Shortcuts & Hardware Keys | VESPER Desktop";
+var description$2 = "Hardware-hooked push-to-talk key combinations, mechanical keycap tester, and sub-1ms WinKeyServer keyboard shortcuts for Windows.";
+var Route$2 = createFileRoute("/shortcuts")({
+	head: () => ({ meta: [
+		{ title: title$2 },
+		{
+			name: "description",
+			content: description$2
+		},
+		{
+			property: "og:title",
+			content: title$2
+		},
+		{
+			property: "og:description",
+			content: description$2
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: ShortcutsPage
+});
+function ShortcutsPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Shortcuts, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
+var title$1 = "Interactive Voice Simulator | VESPER Desktop";
+var description$1 = "Test the sub-180ms physical push-to-talk voice mechanic in your browser. Live WebAudio feedback, HWND caret simulation, and the Zero-Backspace Rule.";
+var Route$1 = createFileRoute("/simulator")({
+	head: () => ({ meta: [
+		{ title: title$1 },
+		{
+			name: "description",
+			content: description$1
+		},
+		{
+			property: "og:title",
+			content: title$1
+		},
+		{
+			property: "og:description",
+			content: description$1
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: SimulatorPage
+});
+function SimulatorPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Simulator, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
+var title = "High-Frequency Daily Workflows | VESPER Desktop";
+var description = "See how senior engineers, founders, and creators use VESPER for code reviews, rapid memos, and documentation with the Zero-Backspace Rule.";
+var Route = createFileRoute("/workflows")({
 	head: () => ({ meta: [
 		{ title },
 		{
@@ -393,36 +791,86 @@ var Route$2 = createFileRoute("/")({
 			content: "summary_large_image"
 		}
 	] }),
-	component: lazyRouteComponent($$splitComponentImporter$2, "component")
+	component: WorkflowsPage
 });
-var $$splitComponentImporter$1 = () => import("./admin-AoA0Wnbq.mjs");
-var Route$1 = createFileRoute("/admin")({
-	head: () => ({ meta: [{ title: "VESPER CRM: Admin Pipeline & Lead Management" }, {
-		name: "description",
-		content: "Enterprise CRM pipeline, pro trial metrics, and lead qualification for VESPER Desktop."
-	}] }),
-	component: lazyRouteComponent($$splitComponentImporter$1, "component")
-});
-var $$splitComponentImporter = () => import("./guidance-BAIhV20d.mjs");
-var Route = createFileRoute("/guidance")({ component: lazyRouteComponent($$splitComponentImporter, "component") });
+function WorkflowsPage() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ClickSpark, {
+		sparkColor: "#ff6b00",
+		sparkSize: 10,
+		sparkRadius: 20,
+		sparkCount: 8,
+		duration: 400,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Nav, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
+					className: "relative z-10 pt-16",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Personas, {})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Footer, {})
+			]
+		})
+	});
+}
 var rootRouteChildren = {
-	IndexRoute: Route$2.update({
+	IndexRoute: Route$10.update({
 		id: "/",
 		path: "/",
-		getParentRoute: () => Route$3
+		getParentRoute: () => Route$11
 	}),
-	AdminRoute: Route$1.update({
+	AdminRoute: Route$9.update({
 		id: "/admin",
 		path: "/admin",
-		getParentRoute: () => Route$3
+		getParentRoute: () => Route$11
 	}),
-	GuidanceRoute: Route.update({
+	ArchitectureRoute: Route$8.update({
+		id: "/architecture",
+		path: "/architecture",
+		getParentRoute: () => Route$11
+	}),
+	DownloadRoute: Route$7.update({
+		id: "/download",
+		path: "/download",
+		getParentRoute: () => Route$11
+	}),
+	FaqRoute: Route$6.update({
+		id: "/faq",
+		path: "/faq",
+		getParentRoute: () => Route$11
+	}),
+	GuidanceRoute: Route$5.update({
 		id: "/guidance",
 		path: "/guidance",
-		getParentRoute: () => Route$3
+		getParentRoute: () => Route$11
+	}),
+	PricingRoute: Route$4.update({
+		id: "/pricing",
+		path: "/pricing",
+		getParentRoute: () => Route$11
+	}),
+	RoadmapRoute: Route$3.update({
+		id: "/roadmap",
+		path: "/roadmap",
+		getParentRoute: () => Route$11
+	}),
+	ShortcutsRoute: Route$2.update({
+		id: "/shortcuts",
+		path: "/shortcuts",
+		getParentRoute: () => Route$11
+	}),
+	SimulatorRoute: Route$1.update({
+		id: "/simulator",
+		path: "/simulator",
+		getParentRoute: () => Route$11
+	}),
+	WorkflowsRoute: Route.update({
+		id: "/workflows",
+		path: "/workflows",
+		getParentRoute: () => Route$11
 	})
 };
-var routeTree = Route$3._addFileChildren(rootRouteChildren)._addFileTypes();
+var routeTree = Route$11._addFileChildren(rootRouteChildren)._addFileTypes();
 var getRouter = () => {
 	const queryClient = new QueryClient();
 	return createRouter({

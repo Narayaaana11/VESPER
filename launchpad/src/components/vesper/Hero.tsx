@@ -111,7 +111,7 @@ export function Hero() {
           <Magnet padding={50} magnetStrength={3}>
             <StarBorder
               as="a"
-              href="#download"
+              href="/download"
               color="#ff6b00"
               speed="3.5s"
               thickness={1.5}
@@ -137,7 +137,7 @@ export function Hero() {
 
           <Magnet padding={40} magnetStrength={3}>
             <a
-              href="#simulator"
+              href="/simulator"
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 py-4 text-sm font-semibold text-slate-700 backdrop-blur-sm transition-all hover:border-primary/50 hover:bg-orange-50/50 hover:text-primary sm:w-auto shadow-sm active:scale-[0.98]"
             >
               <span>Try Interactive Simulator</span>

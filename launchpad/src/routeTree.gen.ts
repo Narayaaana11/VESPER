@@ -11,7 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ArchitectureRouteImport } from './routes/architecture'
+import { Route as DownloadRouteImport } from './routes/download'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GuidanceRouteImport } from './routes/guidance'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
+import { Route as ShortcutsRouteImport } from './routes/shortcuts'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as WorkflowsRouteImport } from './routes/workflows'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +31,146 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArchitectureRoute = ArchitectureRouteImport.update({
+  id: '/architecture',
+  path: '/architecture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadRoute = DownloadRouteImport.update({
+  id: '/download',
+  path: '/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidanceRoute = GuidanceRouteImport.update({
   id: '/guidance',
   path: '/guidance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShortcutsRoute = ShortcutsRouteImport.update({
+  id: '/shortcuts',
+  path: '/shortcuts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkflowsRoute = WorkflowsRouteImport.update({
+  id: '/workflows',
+  path: '/workflows',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/architecture': typeof ArchitectureRoute
+  '/download': typeof DownloadRoute
+  '/faq': typeof FaqRoute
   '/guidance': typeof GuidanceRoute
+  '/pricing': typeof PricingRoute
+  '/roadmap': typeof RoadmapRoute
+  '/shortcuts': typeof ShortcutsRoute
+  '/simulator': typeof SimulatorRoute
+  '/workflows': typeof WorkflowsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/architecture': typeof ArchitectureRoute
+  '/download': typeof DownloadRoute
+  '/faq': typeof FaqRoute
   '/guidance': typeof GuidanceRoute
+  '/pricing': typeof PricingRoute
+  '/roadmap': typeof RoadmapRoute
+  '/shortcuts': typeof ShortcutsRoute
+  '/simulator': typeof SimulatorRoute
+  '/workflows': typeof WorkflowsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/architecture': typeof ArchitectureRoute
+  '/download': typeof DownloadRoute
+  '/faq': typeof FaqRoute
   '/guidance': typeof GuidanceRoute
+  '/pricing': typeof PricingRoute
+  '/roadmap': typeof RoadmapRoute
+  '/shortcuts': typeof ShortcutsRoute
+  '/simulator': typeof SimulatorRoute
+  '/workflows': typeof WorkflowsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/guidance'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/architecture'
+    | '/download'
+    | '/faq'
+    | '/guidance'
+    | '/pricing'
+    | '/roadmap'
+    | '/shortcuts'
+    | '/simulator'
+    | '/workflows'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/guidance'
-  id: '__root__' | '/' | '/admin' | '/guidance'
+  to:
+    | '/'
+    | '/admin'
+    | '/architecture'
+    | '/download'
+    | '/faq'
+    | '/guidance'
+    | '/pricing'
+    | '/roadmap'
+    | '/shortcuts'
+    | '/simulator'
+    | '/workflows'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/architecture'
+    | '/download'
+    | '/faq'
+    | '/guidance'
+    | '/pricing'
+    | '/roadmap'
+    | '/shortcuts'
+    | '/simulator'
+    | '/workflows'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  ArchitectureRoute: typeof ArchitectureRoute
+  DownloadRoute: typeof DownloadRoute
+  FaqRoute: typeof FaqRoute
   GuidanceRoute: typeof GuidanceRoute
+  PricingRoute: typeof PricingRoute
+  RoadmapRoute: typeof RoadmapRoute
+  ShortcutsRoute: typeof ShortcutsRoute
+  SimulatorRoute: typeof SimulatorRoute
+  WorkflowsRoute: typeof WorkflowsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +189,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/architecture': {
+      id: '/architecture'
+      path: '/architecture'
+      fullPath: '/architecture'
+      preLoaderRoute: typeof ArchitectureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/download': {
+      id: '/download'
+      path: '/download'
+      fullPath: '/download'
+      preLoaderRoute: typeof DownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guidance': {
       id: '/guidance'
       path: '/guidance'
       fullPath: '/guidance'
       preLoaderRoute: typeof GuidanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shortcuts': {
+      id: '/shortcuts'
+      path: '/shortcuts'
+      fullPath: '/shortcuts'
+      preLoaderRoute: typeof ShortcutsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workflows': {
+      id: '/workflows'
+      path: '/workflows'
+      fullPath: '/workflows'
+      preLoaderRoute: typeof WorkflowsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -88,7 +258,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  ArchitectureRoute: ArchitectureRoute,
+  DownloadRoute: DownloadRoute,
+  FaqRoute: FaqRoute,
   GuidanceRoute: GuidanceRoute,
+  PricingRoute: PricingRoute,
+  RoadmapRoute: RoadmapRoute,
+  ShortcutsRoute: ShortcutsRoute,
+  SimulatorRoute: SimulatorRoute,
+  WorkflowsRoute: WorkflowsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

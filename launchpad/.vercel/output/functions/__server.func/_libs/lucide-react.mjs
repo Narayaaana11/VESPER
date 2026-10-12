@@ -179,19 +179,6 @@ var Award = createLucideIcon("award", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var BookOpen = createLucideIcon("book-open", [["path", {
-	d: "M12 7v14",
-	key: "1akyts"
-}], ["path", {
-	d: "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z",
-	key: "ruj8y"
-}]]);
-/**
-* @license lucide-react v0.575.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
 var Briefcase = createLucideIcon("briefcase", [["path", {
 	d: "M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16",
 	key: "jecpp"
@@ -1557,4 +1544,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { Clock as $, MessageSquare as A, FileSpreadsheet as B, ScanEye as C, PenTool as D, Plus as E, Layers as F, ExternalLink as G, FileBraces as H, Keyboard as I, Database as J, Download as K, Key as L, Mail as M, LogOut as N, Network as O, Lock as P, CodeXml as Q, Gauge as R, Search as S, Radio as T, Eye as U, FileCode as V, EyeOff as W, Cpu as X, Crosshair as Y, Copy as Z, Shield as _, Users as a, Check as at, Server as b, TrendingUp as c, BookOpen as ct, Terminal as d, ArrowLeft as dt, CircleQuestionMark as et, Target as f, ArrowDown as ft, SlidersHorizontal as g, Sparkles as h, Volume2 as i, ChevronDown as it, Menu as j, Mic as k, Trash2 as l, Award as lt, Star as m, X as n, CircleCheckBig as nt, User as o, Building2 as ot, Table as p, Activity as pt, DollarSign as q, VolumeX as r, CircleAlert as rt, UserCheck as s, Briefcase as st, Zap as t, CircleCheck as tt, Ticket as u, ArrowRight as ut, ShieldCheck as v, RefreshCw as w, Send as x, ShieldAlert as y, FileText as z };
+export { Clock as $, MessageSquare as A, FileSpreadsheet as B, ScanEye as C, PenTool as D, Plus as E, Layers as F, ExternalLink as G, FileBraces as H, Keyboard as I, Database as J, Download as K, Key as L, Mail as M, LogOut as N, Network as O, Lock as P, CodeXml as Q, Gauge as R, Search as S, Radio as T, Eye as U, FileCode as V, EyeOff as W, Cpu as X, Crosshair as Y, Copy as Z, Shield as _, Users as a, Check as at, Server as b, TrendingUp as c, Award as ct, Terminal as d, ArrowDown as dt, CircleQuestionMark as et, Target as f, Activity as ft, SlidersHorizontal as g, Sparkles as h, Volume2 as i, ChevronDown as it, Menu as j, Mic as k, Trash2 as l, ArrowRight as lt, Star as m, X as n, CircleCheckBig as nt, User as o, Building2 as ot, Table as p, DollarSign as q, VolumeX as r, CircleAlert as rt, UserCheck as s, Briefcase as st, Zap as t, CircleCheck as tt, Ticket as u, ArrowLeft as ut, ShieldCheck as v, RefreshCw as w, Send as x, ShieldAlert as y, FileText as z };

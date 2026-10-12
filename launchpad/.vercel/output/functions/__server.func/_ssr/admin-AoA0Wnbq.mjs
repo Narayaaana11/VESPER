@@ -4,7 +4,7 @@ import { n as toast } from "../_libs/sonner.mjs";
 import { n as useAuth } from "./auth-context-DIX5izGL.mjs";
 import { t as crmService } from "./crm-service-Yn1PsX10.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { $ as Clock, E as Plus, J as Database, K as Download, L as Key, M as Mail, P as Lock, S as Search, Z as Copy, _ as Shield, a as Users, at as Check, b as Server, c as TrendingUp, dt as ArrowLeft, l as Trash2, lt as Award, nt as CircleCheckBig, pt as Activity, q as DollarSign, rt as CircleAlert, s as UserCheck, t as Zap, w as RefreshCw, x as Send } from "../_libs/lucide-react.mjs";
+import { $ as Clock, E as Plus, J as Database, K as Download, L as Key, M as Mail, P as Lock, S as Search, Z as Copy, _ as Shield, a as Users, at as Check, b as Server, c as TrendingUp, ct as Award, ft as Activity, l as Trash2, nt as CircleCheckBig, q as DollarSign, rt as CircleAlert, s as UserCheck, t as Zap, ut as ArrowLeft, w as RefreshCw, x as Send } from "../_libs/lucide-react.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/admin-AoA0Wnbq.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();

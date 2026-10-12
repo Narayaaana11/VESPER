@@ -1,5 +1,6 @@
 import { ShieldCheck, Cpu, Database, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { LegalModal } from "./LegalModal";
 import { VesperLogo } from "./VesperLogo";
 
@@ -82,24 +83,24 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#pipeline" className="hover:text-stark transition-colors">
+                <Link to="/architecture" className="hover:text-stark transition-colors">
                   WinKeyServer Low-Level Hook
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#pipeline" className="hover:text-stark transition-colors">
+                <Link to="/architecture" className="hover:text-stark transition-colors">
                   Silero VAD Chunking
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#pipeline" className="hover:text-stark transition-colors">
+                <Link to="/architecture" className="hover:text-stark transition-colors">
                   Sub-180ms Neural Pipeline
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#pipeline" className="hover:text-stark transition-colors">
+                <Link to="/architecture" className="hover:text-stark transition-colors">
                   Win32 SendInput Preservation
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -111,29 +112,29 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="/guidance" className="hover:text-emerald text-emerald font-semibold transition-colors flex items-center gap-1.5">
+                <Link to="/guidance" className="hover:text-emerald text-emerald font-semibold transition-colors flex items-center gap-1.5">
                   <span>Developer Guidance &amp; Manual</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#shortcuts" className="hover:text-stark transition-colors">
+                <Link to="/shortcuts" className="hover:text-stark transition-colors">
                   Mechanical Keycap Tester
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#download" className="hover:text-stark transition-colors">
+                <Link to="/download" className="hover:text-stark transition-colors">
                   Windows Installer &amp; SHA-256
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#roadmap" className="hover:text-stark transition-colors">
+                <Link to="/roadmap" className="hover:text-stark transition-colors">
                   Air-Gapped Whisper Roadmap
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#waitlist" className="hover:text-stark transition-colors">
-                  Excel Leads Database
-                </a>
+                <Link to="/pricing" className="hover:text-stark transition-colors">
+                  Subscription Plans &amp; Licenses
+                </Link>
               </li>
             </ul>
           </div>
@@ -144,21 +145,21 @@ export function Footer() {
               Architecture &amp; Security
             </h4>
             <div className="space-y-2.5 text-xs">
-              <a
-                href="#pipeline"
+              <Link
+                to="/architecture"
                 className="flex items-center gap-1.5 hover:text-stark transition-colors"
               >
                 <Cpu className="h-3.5 w-3.5 text-emerald" />
                 <span>8-Layer Architecture Specs</span>
-              </a>
+              </Link>
 
-              <a
-                href="#faq"
+              <Link
+                to="/faq"
                 className="flex items-center gap-1.5 hover:text-stark transition-colors"
               >
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald" />
                 <span>Zero Audio Retention Guarantee</span>
-              </a>
+              </Link>
 
               <p className="font-mono text-[11px] text-titanium-silver/70 pt-2">
                 Enterprise Core Engine. Built with React 19, TanStack Start, and Tailwind CSS.
