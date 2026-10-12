@@ -1,6 +1,5 @@
 import { a as __toCommonJS, i as __require, n as __esmMin, r as __exportAll, t as __commonJSMin } from "../_runtime.mjs";
 import { t as require_bson$1 } from "./bson.mjs";
-import { t as require_ip_address } from "./ip-address.mjs";
 import { t as require_node } from "./@mongodb-js/saslprep+[...].mjs";
 //#region node_modules/mongodb/lib/bson.js
 var require_bson = /* @__PURE__ */ __commonJSMin(((exports) => {
@@ -222,7 +221,7 @@ var require_bson = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/mongodb/lib/cmap/wire_protocol/constants.js
-var require_constants$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+var require_constants$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.OP_MSG = exports.OP_COMPRESSED = exports.OP_DELETE = exports.OP_QUERY = exports.OP_INSERT = exports.OP_UPDATE = exports.OP_REPLY = exports.MIN_SUPPORTED_RAW_DATA_SERVER_VERSION = exports.MIN_SUPPORTED_RAW_DATA_WIRE_VERSION = exports.MIN_SUPPORTED_QE_SERVER_VERSION = exports.MIN_SUPPORTED_QE_WIRE_VERSION = exports.MAX_SUPPORTED_WIRE_VERSION = exports.MIN_SUPPORTED_WIRE_VERSION = exports.MIN_SUPPORTED_SNAPSHOT_READS_SERVER_VERSION = exports.MIN_SUPPORTED_SNAPSHOT_READS_WIRE_VERSION = exports.MAX_SUPPORTED_SERVER_VERSION = exports.MIN_SUPPORTED_SERVER_VERSION = void 0;
 	exports.MIN_SUPPORTED_SERVER_VERSION = "4.4";
@@ -1965,7 +1964,7 @@ var require_server_selection = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/mongodb/lib/constants.js
-var require_constants$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+var require_constants = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.END = exports.CHANGE = exports.INIT = exports.MORE = exports.RESPONSE = exports.SERVER_HEARTBEAT_FAILED = exports.SERVER_HEARTBEAT_SUCCEEDED = exports.SERVER_HEARTBEAT_STARTED = exports.COMMAND_FAILED = exports.COMMAND_SUCCEEDED = exports.COMMAND_STARTED = exports.CLUSTER_TIME_RECEIVED = exports.CONNECTION_CHECKED_IN = exports.CONNECTION_CHECKED_OUT = exports.CONNECTION_CHECK_OUT_FAILED = exports.CONNECTION_CHECK_OUT_STARTED = exports.CONNECTION_CLOSED = exports.CONNECTION_READY = exports.CONNECTION_CREATED = exports.CONNECTION_POOL_READY = exports.CONNECTION_POOL_CLEARED = exports.CONNECTION_POOL_CLOSED = exports.CONNECTION_POOL_CREATED = exports.WAITING_FOR_SUITABLE_SERVER = exports.SERVER_SELECTION_SUCCEEDED = exports.SERVER_SELECTION_FAILED = exports.SERVER_SELECTION_STARTED = exports.TOPOLOGY_DESCRIPTION_CHANGED = exports.TOPOLOGY_CLOSED = exports.TOPOLOGY_OPENING = exports.SERVER_DESCRIPTION_CHANGED = exports.SERVER_CLOSED = exports.SERVER_OPENING = exports.DESCRIPTION_RECEIVED = exports.UNPINNED = exports.PINNED = exports.MESSAGE = exports.ENDED = exports.CLOSED = exports.CONNECT = exports.OPEN = exports.CLOSE = exports.TIMEOUT = exports.ERROR = exports.SYSTEM_JS_COLLECTION = exports.SYSTEM_COMMAND_COLLECTION = exports.SYSTEM_USER_COLLECTION = exports.SYSTEM_PROFILE_COLLECTION = exports.SYSTEM_INDEX_COLLECTION = exports.SYSTEM_NAMESPACE_COLLECTION = void 0;
 	exports.kDecoratedKeys = exports.kDecorateResult = exports.LEGACY_HELLO_COMMAND_CAMEL_CASE = exports.LEGACY_HELLO_COMMAND = exports.MONGO_CLIENT_EVENTS = exports.LOCAL_SERVER_EVENTS = exports.SERVER_RELAY_EVENTS = exports.APM_EVENTS = exports.TOPOLOGY_EVENTS = exports.CMAP_EVENTS = exports.HEARTBEAT_EVENTS = exports.RESUME_TOKEN_CHANGED = void 0;
@@ -2367,7 +2366,7 @@ var require_responses = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.isErrorResponse = isErrorResponse;
 	var bson_1 = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var document_1 = require_document();
 	var BSONElementOffset = {
 		type: 0,
@@ -2722,7 +2721,7 @@ var require_write_concern = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/mongodb/lib/utils.js
-var require_utils$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.kDispose = exports.randomBytes = exports.COSMOS_DB_MSG = exports.DOCUMENT_DB_MSG = exports.COSMOS_DB_CHECK = exports.DOCUMENT_DB_CHECK = exports.MONGODB_WARNING_CODE = exports.DEFAULT_PK_FACTORY = exports.HostAddress = exports.BufferPool = exports.List = exports.MongoDBCollectionNamespace = exports.MongoDBNamespace = void 0;
 	exports.isUint8Array = isUint8Array;
@@ -2779,8 +2778,8 @@ var require_utils$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var process$7 = __require("process");
 	var timers_1$5 = __require("timers");
 	var bson_1 = require_bson();
-	var constants_1 = require_constants$2();
-	var constants_2 = require_constants$1();
+	var constants_1 = require_constants$1();
+	var constants_2 = require_constants();
 	var error_1 = require_error();
 	var read_concern_1 = require_read_concern();
 	var read_preference_1 = require_read_preference();
@@ -3666,7 +3665,7 @@ var require_timeout = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.LegacyTimeoutContext = exports.CSOTTimeoutContext = exports.TimeoutContext = exports.Timeout = exports.TimeoutError = void 0;
 	var timers_1$4 = __require("timers");
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/** @internal */
 	var TimeoutError = class extends Error {
 		get name() {
@@ -4055,11 +4054,11 @@ var require_operation = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_command = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.CommandOperation = void 0;
-	var constants_1 = require_constants$2();
+	var constants_1 = require_constants$1();
 	var error_1 = require_error();
 	var explain_1 = require_explain();
 	var read_concern_1 = require_read_concern();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var operation_1 = require_operation();
 	/** @internal */
@@ -4235,13 +4234,13 @@ var require_execute_operation = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.autoConnect = autoConnect;
 	exports.calculateBaseBackoffMS = calculateBaseBackoffMS;
 	var promises_1$3 = __require("timers/promises");
-	var constants_1 = require_constants$2();
+	var constants_1 = require_constants$1();
 	var error_1 = require_error();
 	var read_preference_1 = require_read_preference();
 	var common_1 = require_common$1();
 	var server_selection_1 = require_server_selection();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var aggregate_1 = require_aggregate();
 	var operation_1 = require_operation();
 	var run_command_1 = require_run_command();
@@ -4452,7 +4451,7 @@ var require_list_databases = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ListDatabasesOperation = void 0;
 	var responses_1 = require_responses();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/** @internal */
@@ -4553,7 +4552,7 @@ var require_admin = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var remove_user_1 = require_remove_user();
 	var run_command_1 = require_run_command();
 	var validate_collection_1 = require_validate_collection();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/**
 	* The **Admin** class is an internal class that allows convenient access to
 	* the admin functionality and commands for MongoDB.
@@ -4727,2093 +4726,12 @@ var init___vite_optional_peer_dep_snappy_mongodb = __esmMin((() => {
 	throw new Error(`Could not resolve "snappy" imported by "mongodb". Is it installed?`);
 }));
 //#endregion
-//#region ../node_modules/smart-buffer/build/utils.js
-var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var buffer_1 = __require("buffer");
-	/**
-	* Error strings
-	*/
-	var ERRORS = {
-		INVALID_ENCODING: "Invalid encoding provided. Please specify a valid encoding the internal Node.js Buffer supports.",
-		INVALID_SMARTBUFFER_SIZE: "Invalid size provided. Size must be a valid integer greater than zero.",
-		INVALID_SMARTBUFFER_BUFFER: "Invalid Buffer provided in SmartBufferOptions.",
-		INVALID_SMARTBUFFER_OBJECT: "Invalid SmartBufferOptions object supplied to SmartBuffer constructor or factory methods.",
-		INVALID_OFFSET: "An invalid offset value was provided.",
-		INVALID_OFFSET_NON_NUMBER: "An invalid offset value was provided. A numeric value is required.",
-		INVALID_LENGTH: "An invalid length value was provided.",
-		INVALID_LENGTH_NON_NUMBER: "An invalid length value was provived. A numeric value is required.",
-		INVALID_TARGET_OFFSET: "Target offset is beyond the bounds of the internal SmartBuffer data.",
-		INVALID_TARGET_LENGTH: "Specified length value moves cursor beyong the bounds of the internal SmartBuffer data.",
-		INVALID_READ_BEYOND_BOUNDS: "Attempted to read beyond the bounds of the managed data.",
-		INVALID_WRITE_BEYOND_BOUNDS: "Attempted to write beyond the bounds of the managed data."
-	};
-	exports.ERRORS = ERRORS;
-	/**
-	* Checks if a given encoding is a valid Buffer encoding. (Throws an exception if check fails)
-	*
-	* @param { String } encoding The encoding string to check.
-	*/
-	function checkEncoding(encoding) {
-		if (!buffer_1.Buffer.isEncoding(encoding)) throw new Error(ERRORS.INVALID_ENCODING);
-	}
-	exports.checkEncoding = checkEncoding;
-	/**
-	* Checks if a given number is a finite integer. (Throws an exception if check fails)
-	*
-	* @param { Number } value The number value to check.
-	*/
-	function isFiniteInteger(value) {
-		return typeof value === "number" && isFinite(value) && isInteger(value);
-	}
-	exports.isFiniteInteger = isFiniteInteger;
-	/**
-	* Checks if an offset/length value is valid. (Throws an exception if check fails)
-	*
-	* @param value The value to check.
-	* @param offset True if checking an offset, false if checking a length.
-	*/
-	function checkOffsetOrLengthValue(value, offset) {
-		if (typeof value === "number") {
-			if (!isFiniteInteger(value) || value < 0) throw new Error(offset ? ERRORS.INVALID_OFFSET : ERRORS.INVALID_LENGTH);
-		} else throw new Error(offset ? ERRORS.INVALID_OFFSET_NON_NUMBER : ERRORS.INVALID_LENGTH_NON_NUMBER);
-	}
-	/**
-	* Checks if a length value is valid. (Throws an exception if check fails)
-	*
-	* @param { Number } length The value to check.
-	*/
-	function checkLengthValue(length) {
-		checkOffsetOrLengthValue(length, false);
-	}
-	exports.checkLengthValue = checkLengthValue;
-	/**
-	* Checks if a offset value is valid. (Throws an exception if check fails)
-	*
-	* @param { Number } offset The value to check.
-	*/
-	function checkOffsetValue(offset) {
-		checkOffsetOrLengthValue(offset, true);
-	}
-	exports.checkOffsetValue = checkOffsetValue;
-	/**
-	* Checks if a target offset value is out of bounds. (Throws an exception if check fails)
-	*
-	* @param { Number } offset The offset value to check.
-	* @param { SmartBuffer } buff The SmartBuffer instance to check against.
-	*/
-	function checkTargetOffset(offset, buff) {
-		if (offset < 0 || offset > buff.length) throw new Error(ERRORS.INVALID_TARGET_OFFSET);
-	}
-	exports.checkTargetOffset = checkTargetOffset;
-	/**
-	* Determines whether a given number is a integer.
-	* @param value The number to check.
-	*/
-	function isInteger(value) {
-		return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
-	}
-	/**
-	* Throws if Node.js version is too low to support bigint
-	*/
-	function bigIntAndBufferInt64Check(bufferMethod) {
-		if (typeof BigInt === "undefined") throw new Error("Platform does not support JS BigInt type.");
-		if (typeof buffer_1.Buffer.prototype[bufferMethod] === "undefined") throw new Error(`Platform does not support Buffer.prototype.${bufferMethod}.`);
-	}
-	exports.bigIntAndBufferInt64Check = bigIntAndBufferInt64Check;
-}));
-//#endregion
-//#region ../node_modules/smart-buffer/build/smartbuffer.js
-var require_smartbuffer = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	var utils_1 = require_utils$1();
-	var DEFAULT_SMARTBUFFER_SIZE = 4096;
-	var DEFAULT_SMARTBUFFER_ENCODING = "utf8";
-	exports.SmartBuffer = class SmartBuffer {
-		/**
-		* Creates a new SmartBuffer instance.
-		*
-		* @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
-		*/
-		constructor(options) {
-			this.length = 0;
-			this._encoding = DEFAULT_SMARTBUFFER_ENCODING;
-			this._writeOffset = 0;
-			this._readOffset = 0;
-			if (SmartBuffer.isSmartBufferOptions(options)) {
-				if (options.encoding) {
-					utils_1.checkEncoding(options.encoding);
-					this._encoding = options.encoding;
-				}
-				if (options.size) if (utils_1.isFiniteInteger(options.size) && options.size > 0) this._buff = Buffer.allocUnsafe(options.size);
-				else throw new Error(utils_1.ERRORS.INVALID_SMARTBUFFER_SIZE);
-				else if (options.buff) if (Buffer.isBuffer(options.buff)) {
-					this._buff = options.buff;
-					this.length = options.buff.length;
-				} else throw new Error(utils_1.ERRORS.INVALID_SMARTBUFFER_BUFFER);
-				else this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-			} else {
-				if (typeof options !== "undefined") throw new Error(utils_1.ERRORS.INVALID_SMARTBUFFER_OBJECT);
-				this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-			}
-		}
-		/**
-		* Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
-		*
-		* @param size { Number } The size of the internal Buffer.
-		* @param encoding { String } The BufferEncoding to use for strings.
-		*
-		* @return { SmartBuffer }
-		*/
-		static fromSize(size, encoding) {
-			return new this({
-				size,
-				encoding
-			});
-		}
-		/**
-		* Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
-		*
-		* @param buffer { Buffer } The Buffer to use as the internal Buffer value.
-		* @param encoding { String } The BufferEncoding to use for strings.
-		*
-		* @return { SmartBuffer }
-		*/
-		static fromBuffer(buff, encoding) {
-			return new this({
-				buff,
-				encoding
-			});
-		}
-		/**
-		* Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
-		*
-		* @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
-		*/
-		static fromOptions(options) {
-			return new this(options);
-		}
-		/**
-		* Type checking function that determines if an object is a SmartBufferOptions object.
-		*/
-		static isSmartBufferOptions(options) {
-			const castOptions = options;
-			return castOptions && (castOptions.encoding !== void 0 || castOptions.size !== void 0 || castOptions.buff !== void 0);
-		}
-		/**
-		* Reads an Int8 value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readInt8(offset) {
-			return this._readNumberValue(Buffer.prototype.readInt8, 1, offset);
-		}
-		/**
-		* Reads an Int16BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readInt16BE(offset) {
-			return this._readNumberValue(Buffer.prototype.readInt16BE, 2, offset);
-		}
-		/**
-		* Reads an Int16LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readInt16LE(offset) {
-			return this._readNumberValue(Buffer.prototype.readInt16LE, 2, offset);
-		}
-		/**
-		* Reads an Int32BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readInt32BE(offset) {
-			return this._readNumberValue(Buffer.prototype.readInt32BE, 4, offset);
-		}
-		/**
-		* Reads an Int32LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readInt32LE(offset) {
-			return this._readNumberValue(Buffer.prototype.readInt32LE, 4, offset);
-		}
-		/**
-		* Reads a BigInt64BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { BigInt }
-		*/
-		readBigInt64BE(offset) {
-			utils_1.bigIntAndBufferInt64Check("readBigInt64BE");
-			return this._readNumberValue(Buffer.prototype.readBigInt64BE, 8, offset);
-		}
-		/**
-		* Reads a BigInt64LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { BigInt }
-		*/
-		readBigInt64LE(offset) {
-			utils_1.bigIntAndBufferInt64Check("readBigInt64LE");
-			return this._readNumberValue(Buffer.prototype.readBigInt64LE, 8, offset);
-		}
-		/**
-		* Writes an Int8 value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeInt8(value, offset) {
-			this._writeNumberValue(Buffer.prototype.writeInt8, 1, value, offset);
-			return this;
-		}
-		/**
-		* Inserts an Int8 value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertInt8(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeInt8, 1, value, offset);
-		}
-		/**
-		* Writes an Int16BE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeInt16BE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeInt16BE, 2, value, offset);
-		}
-		/**
-		* Inserts an Int16BE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertInt16BE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeInt16BE, 2, value, offset);
-		}
-		/**
-		* Writes an Int16LE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeInt16LE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeInt16LE, 2, value, offset);
-		}
-		/**
-		* Inserts an Int16LE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertInt16LE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeInt16LE, 2, value, offset);
-		}
-		/**
-		* Writes an Int32BE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeInt32BE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeInt32BE, 4, value, offset);
-		}
-		/**
-		* Inserts an Int32BE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertInt32BE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeInt32BE, 4, value, offset);
-		}
-		/**
-		* Writes an Int32LE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeInt32LE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeInt32LE, 4, value, offset);
-		}
-		/**
-		* Inserts an Int32LE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertInt32LE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeInt32LE, 4, value, offset);
-		}
-		/**
-		* Writes a BigInt64BE value to the current write position (or at optional offset).
-		*
-		* @param value { BigInt } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeBigInt64BE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigInt64BE");
-			return this._writeNumberValue(Buffer.prototype.writeBigInt64BE, 8, value, offset);
-		}
-		/**
-		* Inserts a BigInt64BE value at the given offset value.
-		*
-		* @param value { BigInt } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertBigInt64BE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigInt64BE");
-			return this._insertNumberValue(Buffer.prototype.writeBigInt64BE, 8, value, offset);
-		}
-		/**
-		* Writes a BigInt64LE value to the current write position (or at optional offset).
-		*
-		* @param value { BigInt } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeBigInt64LE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigInt64LE");
-			return this._writeNumberValue(Buffer.prototype.writeBigInt64LE, 8, value, offset);
-		}
-		/**
-		* Inserts a Int64LE value at the given offset value.
-		*
-		* @param value { BigInt } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertBigInt64LE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigInt64LE");
-			return this._insertNumberValue(Buffer.prototype.writeBigInt64LE, 8, value, offset);
-		}
-		/**
-		* Reads an UInt8 value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readUInt8(offset) {
-			return this._readNumberValue(Buffer.prototype.readUInt8, 1, offset);
-		}
-		/**
-		* Reads an UInt16BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readUInt16BE(offset) {
-			return this._readNumberValue(Buffer.prototype.readUInt16BE, 2, offset);
-		}
-		/**
-		* Reads an UInt16LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readUInt16LE(offset) {
-			return this._readNumberValue(Buffer.prototype.readUInt16LE, 2, offset);
-		}
-		/**
-		* Reads an UInt32BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readUInt32BE(offset) {
-			return this._readNumberValue(Buffer.prototype.readUInt32BE, 4, offset);
-		}
-		/**
-		* Reads an UInt32LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readUInt32LE(offset) {
-			return this._readNumberValue(Buffer.prototype.readUInt32LE, 4, offset);
-		}
-		/**
-		* Reads a BigUInt64BE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { BigInt }
-		*/
-		readBigUInt64BE(offset) {
-			utils_1.bigIntAndBufferInt64Check("readBigUInt64BE");
-			return this._readNumberValue(Buffer.prototype.readBigUInt64BE, 8, offset);
-		}
-		/**
-		* Reads a BigUInt64LE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { BigInt }
-		*/
-		readBigUInt64LE(offset) {
-			utils_1.bigIntAndBufferInt64Check("readBigUInt64LE");
-			return this._readNumberValue(Buffer.prototype.readBigUInt64LE, 8, offset);
-		}
-		/**
-		* Writes an UInt8 value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeUInt8(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeUInt8, 1, value, offset);
-		}
-		/**
-		* Inserts an UInt8 value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertUInt8(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeUInt8, 1, value, offset);
-		}
-		/**
-		* Writes an UInt16BE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeUInt16BE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeUInt16BE, 2, value, offset);
-		}
-		/**
-		* Inserts an UInt16BE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertUInt16BE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeUInt16BE, 2, value, offset);
-		}
-		/**
-		* Writes an UInt16LE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeUInt16LE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeUInt16LE, 2, value, offset);
-		}
-		/**
-		* Inserts an UInt16LE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertUInt16LE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeUInt16LE, 2, value, offset);
-		}
-		/**
-		* Writes an UInt32BE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeUInt32BE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeUInt32BE, 4, value, offset);
-		}
-		/**
-		* Inserts an UInt32BE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertUInt32BE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeUInt32BE, 4, value, offset);
-		}
-		/**
-		* Writes an UInt32LE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeUInt32LE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeUInt32LE, 4, value, offset);
-		}
-		/**
-		* Inserts an UInt32LE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertUInt32LE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeUInt32LE, 4, value, offset);
-		}
-		/**
-		* Writes a BigUInt64BE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeBigUInt64BE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigUInt64BE");
-			return this._writeNumberValue(Buffer.prototype.writeBigUInt64BE, 8, value, offset);
-		}
-		/**
-		* Inserts a BigUInt64BE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertBigUInt64BE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigUInt64BE");
-			return this._insertNumberValue(Buffer.prototype.writeBigUInt64BE, 8, value, offset);
-		}
-		/**
-		* Writes a BigUInt64LE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeBigUInt64LE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigUInt64LE");
-			return this._writeNumberValue(Buffer.prototype.writeBigUInt64LE, 8, value, offset);
-		}
-		/**
-		* Inserts a BigUInt64LE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertBigUInt64LE(value, offset) {
-			utils_1.bigIntAndBufferInt64Check("writeBigUInt64LE");
-			return this._insertNumberValue(Buffer.prototype.writeBigUInt64LE, 8, value, offset);
-		}
-		/**
-		* Reads an FloatBE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readFloatBE(offset) {
-			return this._readNumberValue(Buffer.prototype.readFloatBE, 4, offset);
-		}
-		/**
-		* Reads an FloatLE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readFloatLE(offset) {
-			return this._readNumberValue(Buffer.prototype.readFloatLE, 4, offset);
-		}
-		/**
-		* Writes a FloatBE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeFloatBE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeFloatBE, 4, value, offset);
-		}
-		/**
-		* Inserts a FloatBE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertFloatBE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeFloatBE, 4, value, offset);
-		}
-		/**
-		* Writes a FloatLE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeFloatLE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeFloatLE, 4, value, offset);
-		}
-		/**
-		* Inserts a FloatLE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertFloatLE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeFloatLE, 4, value, offset);
-		}
-		/**
-		* Reads an DoublEBE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readDoubleBE(offset) {
-			return this._readNumberValue(Buffer.prototype.readDoubleBE, 8, offset);
-		}
-		/**
-		* Reads an DoubleLE value from the current read position or an optionally provided offset.
-		*
-		* @param offset { Number } The offset to read data from (optional)
-		* @return { Number }
-		*/
-		readDoubleLE(offset) {
-			return this._readNumberValue(Buffer.prototype.readDoubleLE, 8, offset);
-		}
-		/**
-		* Writes a DoubleBE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeDoubleBE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeDoubleBE, 8, value, offset);
-		}
-		/**
-		* Inserts a DoubleBE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertDoubleBE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeDoubleBE, 8, value, offset);
-		}
-		/**
-		* Writes a DoubleLE value to the current write position (or at optional offset).
-		*
-		* @param value { Number } The value to write.
-		* @param offset { Number } The offset to write the value at.
-		*
-		* @return this
-		*/
-		writeDoubleLE(value, offset) {
-			return this._writeNumberValue(Buffer.prototype.writeDoubleLE, 8, value, offset);
-		}
-		/**
-		* Inserts a DoubleLE value at the given offset value.
-		*
-		* @param value { Number } The value to insert.
-		* @param offset { Number } The offset to insert the value at.
-		*
-		* @return this
-		*/
-		insertDoubleLE(value, offset) {
-			return this._insertNumberValue(Buffer.prototype.writeDoubleLE, 8, value, offset);
-		}
-		/**
-		* Reads a String from the current read position.
-		*
-		* @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for
-		*             the string (Defaults to instance level encoding).
-		* @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
-		*
-		* @return { String }
-		*/
-		readString(arg1, encoding) {
-			let lengthVal;
-			if (typeof arg1 === "number") {
-				utils_1.checkLengthValue(arg1);
-				lengthVal = Math.min(arg1, this.length - this._readOffset);
-			} else {
-				encoding = arg1;
-				lengthVal = this.length - this._readOffset;
-			}
-			if (typeof encoding !== "undefined") utils_1.checkEncoding(encoding);
-			const value = this._buff.slice(this._readOffset, this._readOffset + lengthVal).toString(encoding || this._encoding);
-			this._readOffset += lengthVal;
-			return value;
-		}
-		/**
-		* Inserts a String
-		*
-		* @param value { String } The String value to insert.
-		* @param offset { Number } The offset to insert the string at.
-		* @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
-		*
-		* @return this
-		*/
-		insertString(value, offset, encoding) {
-			utils_1.checkOffsetValue(offset);
-			return this._handleString(value, true, offset, encoding);
-		}
-		/**
-		* Writes a String
-		*
-		* @param value { String } The String value to write.
-		* @param arg2 { Number | String } The offset to write the string at, or the BufferEncoding to use.
-		* @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
-		*
-		* @return this
-		*/
-		writeString(value, arg2, encoding) {
-			return this._handleString(value, false, arg2, encoding);
-		}
-		/**
-		* Reads a null-terminated String from the current read position.
-		*
-		* @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
-		*
-		* @return { String }
-		*/
-		readStringNT(encoding) {
-			if (typeof encoding !== "undefined") utils_1.checkEncoding(encoding);
-			let nullPos = this.length;
-			for (let i = this._readOffset; i < this.length; i++) if (this._buff[i] === 0) {
-				nullPos = i;
-				break;
-			}
-			const value = this._buff.slice(this._readOffset, nullPos);
-			this._readOffset = nullPos + 1;
-			return value.toString(encoding || this._encoding);
-		}
-		/**
-		* Inserts a null-terminated String.
-		*
-		* @param value { String } The String value to write.
-		* @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
-		* @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
-		*
-		* @return this
-		*/
-		insertStringNT(value, offset, encoding) {
-			utils_1.checkOffsetValue(offset);
-			this.insertString(value, offset, encoding);
-			this.insertUInt8(0, offset + value.length);
-			return this;
-		}
-		/**
-		* Writes a null-terminated String.
-		*
-		* @param value { String } The String value to write.
-		* @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
-		* @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
-		*
-		* @return this
-		*/
-		writeStringNT(value, arg2, encoding) {
-			this.writeString(value, arg2, encoding);
-			this.writeUInt8(0, typeof arg2 === "number" ? arg2 + value.length : this.writeOffset);
-			return this;
-		}
-		/**
-		* Reads a Buffer from the internal read position.
-		*
-		* @param length { Number } The length of data to read as a Buffer.
-		*
-		* @return { Buffer }
-		*/
-		readBuffer(length) {
-			if (typeof length !== "undefined") utils_1.checkLengthValue(length);
-			const lengthVal = typeof length === "number" ? length : this.length;
-			const endPoint = Math.min(this.length, this._readOffset + lengthVal);
-			const value = this._buff.slice(this._readOffset, endPoint);
-			this._readOffset = endPoint;
-			return value;
-		}
-		/**
-		* Writes a Buffer to the current write position.
-		*
-		* @param value { Buffer } The Buffer to write.
-		* @param offset { Number } The offset to write the Buffer to.
-		*
-		* @return this
-		*/
-		insertBuffer(value, offset) {
-			utils_1.checkOffsetValue(offset);
-			return this._handleBuffer(value, true, offset);
-		}
-		/**
-		* Writes a Buffer to the current write position.
-		*
-		* @param value { Buffer } The Buffer to write.
-		* @param offset { Number } The offset to write the Buffer to.
-		*
-		* @return this
-		*/
-		writeBuffer(value, offset) {
-			return this._handleBuffer(value, false, offset);
-		}
-		/**
-		* Reads a null-terminated Buffer from the current read poisiton.
-		*
-		* @return { Buffer }
-		*/
-		readBufferNT() {
-			let nullPos = this.length;
-			for (let i = this._readOffset; i < this.length; i++) if (this._buff[i] === 0) {
-				nullPos = i;
-				break;
-			}
-			const value = this._buff.slice(this._readOffset, nullPos);
-			this._readOffset = nullPos + 1;
-			return value;
-		}
-		/**
-		* Inserts a null-terminated Buffer.
-		*
-		* @param value { Buffer } The Buffer to write.
-		* @param offset { Number } The offset to write the Buffer to.
-		*
-		* @return this
-		*/
-		insertBufferNT(value, offset) {
-			utils_1.checkOffsetValue(offset);
-			this.insertBuffer(value, offset);
-			this.insertUInt8(0, offset + value.length);
-			return this;
-		}
-		/**
-		* Writes a null-terminated Buffer.
-		*
-		* @param value { Buffer } The Buffer to write.
-		* @param offset { Number } The offset to write the Buffer to.
-		*
-		* @return this
-		*/
-		writeBufferNT(value, offset) {
-			if (typeof offset !== "undefined") utils_1.checkOffsetValue(offset);
-			this.writeBuffer(value, offset);
-			this.writeUInt8(0, typeof offset === "number" ? offset + value.length : this._writeOffset);
-			return this;
-		}
-		/**
-		* Clears the SmartBuffer instance to its original empty state.
-		*/
-		clear() {
-			this._writeOffset = 0;
-			this._readOffset = 0;
-			this.length = 0;
-			return this;
-		}
-		/**
-		* Gets the remaining data left to be read from the SmartBuffer instance.
-		*
-		* @return { Number }
-		*/
-		remaining() {
-			return this.length - this._readOffset;
-		}
-		/**
-		* Gets the current read offset value of the SmartBuffer instance.
-		*
-		* @return { Number }
-		*/
-		get readOffset() {
-			return this._readOffset;
-		}
-		/**
-		* Sets the read offset value of the SmartBuffer instance.
-		*
-		* @param offset { Number } - The offset value to set.
-		*/
-		set readOffset(offset) {
-			utils_1.checkOffsetValue(offset);
-			utils_1.checkTargetOffset(offset, this);
-			this._readOffset = offset;
-		}
-		/**
-		* Gets the current write offset value of the SmartBuffer instance.
-		*
-		* @return { Number }
-		*/
-		get writeOffset() {
-			return this._writeOffset;
-		}
-		/**
-		* Sets the write offset value of the SmartBuffer instance.
-		*
-		* @param offset { Number } - The offset value to set.
-		*/
-		set writeOffset(offset) {
-			utils_1.checkOffsetValue(offset);
-			utils_1.checkTargetOffset(offset, this);
-			this._writeOffset = offset;
-		}
-		/**
-		* Gets the currently set string encoding of the SmartBuffer instance.
-		*
-		* @return { BufferEncoding } The string Buffer encoding currently set.
-		*/
-		get encoding() {
-			return this._encoding;
-		}
-		/**
-		* Sets the string encoding of the SmartBuffer instance.
-		*
-		* @param encoding { BufferEncoding } The string Buffer encoding to set.
-		*/
-		set encoding(encoding) {
-			utils_1.checkEncoding(encoding);
-			this._encoding = encoding;
-		}
-		/**
-		* Gets the underlying internal Buffer. (This includes unmanaged data in the Buffer)
-		*
-		* @return { Buffer } The Buffer value.
-		*/
-		get internalBuffer() {
-			return this._buff;
-		}
-		/**
-		* Gets the value of the internal managed Buffer (Includes managed data only)
-		*
-		* @param { Buffer }
-		*/
-		toBuffer() {
-			return this._buff.slice(0, this.length);
-		}
-		/**
-		* Gets the String value of the internal managed Buffer
-		*
-		* @param encoding { String } The BufferEncoding to display the Buffer as (defaults to instance level encoding).
-		*/
-		toString(encoding) {
-			const encodingVal = typeof encoding === "string" ? encoding : this._encoding;
-			utils_1.checkEncoding(encodingVal);
-			return this._buff.toString(encodingVal, 0, this.length);
-		}
-		/**
-		* Destroys the SmartBuffer instance.
-		*/
-		destroy() {
-			this.clear();
-			return this;
-		}
-		/**
-		* Handles inserting and writing strings.
-		*
-		* @param value { String } The String value to insert.
-		* @param isInsert { Boolean } True if inserting a string, false if writing.
-		* @param arg2 { Number | String } The offset to insert the string at, or the BufferEncoding to use.
-		* @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
-		*/
-		_handleString(value, isInsert, arg3, encoding) {
-			let offsetVal = this._writeOffset;
-			let encodingVal = this._encoding;
-			if (typeof arg3 === "number") offsetVal = arg3;
-			else if (typeof arg3 === "string") {
-				utils_1.checkEncoding(arg3);
-				encodingVal = arg3;
-			}
-			if (typeof encoding === "string") {
-				utils_1.checkEncoding(encoding);
-				encodingVal = encoding;
-			}
-			const byteLength = Buffer.byteLength(value, encodingVal);
-			if (isInsert) this.ensureInsertable(byteLength, offsetVal);
-			else this._ensureWriteable(byteLength, offsetVal);
-			this._buff.write(value, offsetVal, byteLength, encodingVal);
-			if (isInsert) this._writeOffset += byteLength;
-			else if (typeof arg3 === "number") this._writeOffset = Math.max(this._writeOffset, offsetVal + byteLength);
-			else this._writeOffset += byteLength;
-			return this;
-		}
-		/**
-		* Handles writing or insert of a Buffer.
-		*
-		* @param value { Buffer } The Buffer to write.
-		* @param offset { Number } The offset to write the Buffer to.
-		*/
-		_handleBuffer(value, isInsert, offset) {
-			const offsetVal = typeof offset === "number" ? offset : this._writeOffset;
-			if (isInsert) this.ensureInsertable(value.length, offsetVal);
-			else this._ensureWriteable(value.length, offsetVal);
-			value.copy(this._buff, offsetVal);
-			if (isInsert) this._writeOffset += value.length;
-			else if (typeof offset === "number") this._writeOffset = Math.max(this._writeOffset, offsetVal + value.length);
-			else this._writeOffset += value.length;
-			return this;
-		}
-		/**
-		* Ensures that the internal Buffer is large enough to read data.
-		*
-		* @param length { Number } The length of the data that needs to be read.
-		* @param offset { Number } The offset of the data that needs to be read.
-		*/
-		ensureReadable(length, offset) {
-			let offsetVal = this._readOffset;
-			if (typeof offset !== "undefined") {
-				utils_1.checkOffsetValue(offset);
-				offsetVal = offset;
-			}
-			if (offsetVal < 0 || offsetVal + length > this.length) throw new Error(utils_1.ERRORS.INVALID_READ_BEYOND_BOUNDS);
-		}
-		/**
-		* Ensures that the internal Buffer is large enough to insert data.
-		*
-		* @param dataLength { Number } The length of the data that needs to be written.
-		* @param offset { Number } The offset of the data to be written.
-		*/
-		ensureInsertable(dataLength, offset) {
-			utils_1.checkOffsetValue(offset);
-			this._ensureCapacity(this.length + dataLength);
-			if (offset < this.length) this._buff.copy(this._buff, offset + dataLength, offset, this._buff.length);
-			if (offset + dataLength > this.length) this.length = offset + dataLength;
-			else this.length += dataLength;
-		}
-		/**
-		* Ensures that the internal Buffer is large enough to write data.
-		*
-		* @param dataLength { Number } The length of the data that needs to be written.
-		* @param offset { Number } The offset of the data to be written (defaults to writeOffset).
-		*/
-		_ensureWriteable(dataLength, offset) {
-			const offsetVal = typeof offset === "number" ? offset : this._writeOffset;
-			this._ensureCapacity(offsetVal + dataLength);
-			if (offsetVal + dataLength > this.length) this.length = offsetVal + dataLength;
-		}
-		/**
-		* Ensures that the internal Buffer is large enough to write at least the given amount of data.
-		*
-		* @param minLength { Number } The minimum length of the data needs to be written.
-		*/
-		_ensureCapacity(minLength) {
-			const oldLength = this._buff.length;
-			if (minLength > oldLength) {
-				let data = this._buff;
-				let newLength = oldLength * 3 / 2 + 1;
-				if (newLength < minLength) newLength = minLength;
-				this._buff = Buffer.allocUnsafe(newLength);
-				data.copy(this._buff, 0, 0, oldLength);
-			}
-		}
-		/**
-		* Reads a numeric number value using the provided function.
-		*
-		* @typeparam T { number | bigint } The type of the value to be read
-		*
-		* @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
-		* @param byteSize { Number } The number of bytes read.
-		* @param offset { Number } The offset to read from (optional). When this is not provided, the managed readOffset is used instead.
-		*
-		* @returns { T } the number value
-		*/
-		_readNumberValue(func, byteSize, offset) {
-			this.ensureReadable(byteSize, offset);
-			const value = func.call(this._buff, typeof offset === "number" ? offset : this._readOffset);
-			if (typeof offset === "undefined") this._readOffset += byteSize;
-			return value;
-		}
-		/**
-		* Inserts a numeric number value based on the given offset and value.
-		*
-		* @typeparam T { number | bigint } The type of the value to be written
-		*
-		* @param func { Function(offset: T, offset?) => number} The function to write data on the internal Buffer with.
-		* @param byteSize { Number } The number of bytes written.
-		* @param value { T } The number value to write.
-		* @param offset { Number } the offset to write the number at (REQUIRED).
-		*
-		* @returns SmartBuffer this buffer
-		*/
-		_insertNumberValue(func, byteSize, value, offset) {
-			utils_1.checkOffsetValue(offset);
-			this.ensureInsertable(byteSize, offset);
-			func.call(this._buff, value, offset);
-			this._writeOffset += byteSize;
-			return this;
-		}
-		/**
-		* Writes a numeric number value based on the given offset and value.
-		*
-		* @typeparam T { number | bigint } The type of the value to be written
-		*
-		* @param func { Function(offset: T, offset?) => number} The function to write data on the internal Buffer with.
-		* @param byteSize { Number } The number of bytes written.
-		* @param value { T } The number value to write.
-		* @param offset { Number } the offset to write the number at (REQUIRED).
-		*
-		* @returns SmartBuffer this buffer
-		*/
-		_writeNumberValue(func, byteSize, value, offset) {
-			if (typeof offset === "number") {
-				if (offset < 0) throw new Error(utils_1.ERRORS.INVALID_WRITE_BEYOND_BOUNDS);
-				utils_1.checkOffsetValue(offset);
-			}
-			const offsetVal = typeof offset === "number" ? offset : this._writeOffset;
-			this._ensureWriteable(byteSize, offsetVal);
-			func.call(this._buff, value, offsetVal);
-			if (typeof offset === "number") this._writeOffset = Math.max(this._writeOffset, offsetVal + byteSize);
-			else this._writeOffset += byteSize;
-			return this;
-		}
-	};
-}));
-//#endregion
-//#region ../node_modules/socks/build/common/constants.js
-var require_constants = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.SOCKS5_NO_ACCEPTABLE_AUTH = exports.SOCKS5_CUSTOM_AUTH_END = exports.SOCKS5_CUSTOM_AUTH_START = exports.SOCKS_INCOMING_PACKET_SIZES = exports.SocksClientState = exports.Socks5Response = exports.Socks5HostType = exports.Socks5Auth = exports.Socks4Response = exports.SocksCommand = exports.ERRORS = exports.DEFAULT_TIMEOUT = void 0;
-	exports.DEFAULT_TIMEOUT = 3e4;
-	exports.ERRORS = {
-		InvalidSocksCommand: "An invalid SOCKS command was provided. Valid options are connect, bind, and associate.",
-		InvalidSocksCommandForOperation: "An invalid SOCKS command was provided. Only a subset of commands are supported for this operation.",
-		InvalidSocksCommandChain: "An invalid SOCKS command was provided. Chaining currently only supports the connect command.",
-		InvalidSocksClientOptionsDestination: "An invalid destination host was provided.",
-		InvalidSocksClientOptionsExistingSocket: "An invalid existing socket was provided. This should be an instance of stream.Duplex.",
-		InvalidSocksClientOptionsProxy: "Invalid SOCKS proxy details were provided.",
-		InvalidSocksClientOptionsTimeout: "An invalid timeout value was provided. Please enter a value above 0 (in ms).",
-		InvalidSocksClientOptionsProxiesLength: "At least two socks proxies must be provided for chaining.",
-		InvalidSocksClientOptionsCustomAuthRange: "Custom auth must be a value between 0x80 and 0xFE.",
-		InvalidSocksClientOptionsCustomAuthOptions: "When a custom_auth_method is provided, custom_auth_request_handler, custom_auth_response_size, and custom_auth_response_handler must also be provided and valid.",
-		NegotiationError: "Negotiation error",
-		SocketClosed: "Socket closed",
-		ProxyConnectionTimedOut: "Proxy connection timed out",
-		InternalError: "SocksClient internal error (this should not happen)",
-		InvalidSocks4HandshakeResponse: "Received invalid Socks4 handshake response",
-		Socks4ProxyRejectedConnection: "Socks4 Proxy rejected connection",
-		InvalidSocks4IncomingConnectionResponse: "Socks4 invalid incoming connection response",
-		Socks4ProxyRejectedIncomingBoundConnection: "Socks4 Proxy rejected incoming bound connection",
-		InvalidSocks5InitialHandshakeResponse: "Received invalid Socks5 initial handshake response",
-		InvalidSocks5IntiailHandshakeSocksVersion: "Received invalid Socks5 initial handshake (invalid socks version)",
-		InvalidSocks5InitialHandshakeNoAcceptedAuthType: "Received invalid Socks5 initial handshake (no accepted authentication type)",
-		InvalidSocks5InitialHandshakeUnknownAuthType: "Received invalid Socks5 initial handshake (unknown authentication type)",
-		Socks5AuthenticationFailed: "Socks5 Authentication failed",
-		InvalidSocks5FinalHandshake: "Received invalid Socks5 final handshake response",
-		InvalidSocks5FinalHandshakeRejected: "Socks5 proxy rejected connection",
-		InvalidSocks5IncomingConnectionResponse: "Received invalid Socks5 incoming connection response",
-		Socks5ProxyRejectedIncomingBoundConnection: "Socks5 Proxy rejected incoming bound connection"
-	};
-	exports.SOCKS_INCOMING_PACKET_SIZES = {
-		Socks5InitialHandshakeResponse: 2,
-		Socks5UserPassAuthenticationResponse: 2,
-		Socks5ResponseHeader: 5,
-		Socks5ResponseIPv4: 10,
-		Socks5ResponseIPv6: 22,
-		Socks5ResponseHostname: (hostNameLength) => hostNameLength + 7,
-		Socks4Response: 8
-	};
-	var SocksCommand;
-	(function(SocksCommand) {
-		SocksCommand[SocksCommand["connect"] = 1] = "connect";
-		SocksCommand[SocksCommand["bind"] = 2] = "bind";
-		SocksCommand[SocksCommand["associate"] = 3] = "associate";
-	})(SocksCommand || (exports.SocksCommand = SocksCommand = {}));
-	var Socks4Response;
-	(function(Socks4Response) {
-		Socks4Response[Socks4Response["Granted"] = 90] = "Granted";
-		Socks4Response[Socks4Response["Failed"] = 91] = "Failed";
-		Socks4Response[Socks4Response["Rejected"] = 92] = "Rejected";
-		Socks4Response[Socks4Response["RejectedIdent"] = 93] = "RejectedIdent";
-	})(Socks4Response || (exports.Socks4Response = Socks4Response = {}));
-	var Socks5Auth;
-	(function(Socks5Auth) {
-		Socks5Auth[Socks5Auth["NoAuth"] = 0] = "NoAuth";
-		Socks5Auth[Socks5Auth["GSSApi"] = 1] = "GSSApi";
-		Socks5Auth[Socks5Auth["UserPass"] = 2] = "UserPass";
-	})(Socks5Auth || (exports.Socks5Auth = Socks5Auth = {}));
-	exports.SOCKS5_CUSTOM_AUTH_START = 128;
-	exports.SOCKS5_CUSTOM_AUTH_END = 254;
-	exports.SOCKS5_NO_ACCEPTABLE_AUTH = 255;
-	var Socks5Response;
-	(function(Socks5Response) {
-		Socks5Response[Socks5Response["Granted"] = 0] = "Granted";
-		Socks5Response[Socks5Response["Failure"] = 1] = "Failure";
-		Socks5Response[Socks5Response["NotAllowed"] = 2] = "NotAllowed";
-		Socks5Response[Socks5Response["NetworkUnreachable"] = 3] = "NetworkUnreachable";
-		Socks5Response[Socks5Response["HostUnreachable"] = 4] = "HostUnreachable";
-		Socks5Response[Socks5Response["ConnectionRefused"] = 5] = "ConnectionRefused";
-		Socks5Response[Socks5Response["TTLExpired"] = 6] = "TTLExpired";
-		Socks5Response[Socks5Response["CommandNotSupported"] = 7] = "CommandNotSupported";
-		Socks5Response[Socks5Response["AddressNotSupported"] = 8] = "AddressNotSupported";
-	})(Socks5Response || (exports.Socks5Response = Socks5Response = {}));
-	var Socks5HostType;
-	(function(Socks5HostType) {
-		Socks5HostType[Socks5HostType["IPv4"] = 1] = "IPv4";
-		Socks5HostType[Socks5HostType["Hostname"] = 3] = "Hostname";
-		Socks5HostType[Socks5HostType["IPv6"] = 4] = "IPv6";
-	})(Socks5HostType || (exports.Socks5HostType = Socks5HostType = {}));
-	var SocksClientState;
-	(function(SocksClientState) {
-		SocksClientState[SocksClientState["Created"] = 0] = "Created";
-		SocksClientState[SocksClientState["Connecting"] = 1] = "Connecting";
-		SocksClientState[SocksClientState["Connected"] = 2] = "Connected";
-		SocksClientState[SocksClientState["SentInitialHandshake"] = 3] = "SentInitialHandshake";
-		SocksClientState[SocksClientState["ReceivedInitialHandshakeResponse"] = 4] = "ReceivedInitialHandshakeResponse";
-		SocksClientState[SocksClientState["SentAuthentication"] = 5] = "SentAuthentication";
-		SocksClientState[SocksClientState["ReceivedAuthenticationResponse"] = 6] = "ReceivedAuthenticationResponse";
-		SocksClientState[SocksClientState["SentFinalHandshake"] = 7] = "SentFinalHandshake";
-		SocksClientState[SocksClientState["ReceivedFinalResponse"] = 8] = "ReceivedFinalResponse";
-		SocksClientState[SocksClientState["BoundWaitingForConnection"] = 9] = "BoundWaitingForConnection";
-		SocksClientState[SocksClientState["Established"] = 10] = "Established";
-		SocksClientState[SocksClientState["Disconnected"] = 11] = "Disconnected";
-		SocksClientState[SocksClientState["Error"] = 99] = "Error";
-	})(SocksClientState || (exports.SocksClientState = SocksClientState = {}));
-}));
-//#endregion
-//#region ../node_modules/socks/build/common/util.js
-var require_util = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.SocksClientError = void 0;
-	exports.shuffleArray = shuffleArray;
-	/**
-	* Error wrapper for SocksClient
-	*/
-	var SocksClientError = class extends Error {
-		constructor(message, options) {
-			super(message);
-			this.options = options;
-		}
-	};
-	exports.SocksClientError = SocksClientError;
-	/**
-	* Shuffles a given array.
-	* @param array The array to shuffle.
-	*/
-	function shuffleArray(array) {
-		for (let i = array.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[array[i], array[j]] = [array[j], array[i]];
-		}
-	}
-}));
-//#endregion
-//#region ../node_modules/socks/build/common/helpers.js
-var require_helpers = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.validateSocksClientOptions = validateSocksClientOptions;
-	exports.validateSocksClientChainOptions = validateSocksClientChainOptions;
-	exports.ipv4ToInt32 = ipv4ToInt32;
-	exports.int32ToIpv4 = int32ToIpv4;
-	exports.ipToBuffer = ipToBuffer;
-	var util_1 = require_util();
-	var constants_1 = require_constants();
-	var stream = __require("stream");
-	var ip_address_1 = require_ip_address();
-	var net$4 = __require("net");
-	/**
-	* Validates the provided SocksClientOptions
-	* @param options { SocksClientOptions }
-	* @param acceptedCommands { string[] } A list of accepted SocksProxy commands.
-	*/
-	function validateSocksClientOptions(options, acceptedCommands = [
-		"connect",
-		"bind",
-		"associate"
-	]) {
-		if (!constants_1.SocksCommand[options.command]) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksCommand, options);
-		if (acceptedCommands.indexOf(options.command) === -1) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksCommandForOperation, options);
-		if (!isValidSocksRemoteHost(options.destination)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsDestination, options);
-		if (!isValidSocksProxy(options.proxy)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsProxy, options);
-		validateCustomProxyAuth(options.proxy, options);
-		if (options.timeout && !isValidTimeoutValue(options.timeout)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsTimeout, options);
-		if (options.existing_socket && !(options.existing_socket instanceof stream.Duplex)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsExistingSocket, options);
-	}
-	/**
-	* Validates the SocksClientChainOptions
-	* @param options { SocksClientChainOptions }
-	*/
-	function validateSocksClientChainOptions(options) {
-		if (options.command !== "connect") throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksCommandChain, options);
-		if (!isValidSocksRemoteHost(options.destination)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsDestination, options);
-		if (!(options.proxies && Array.isArray(options.proxies) && options.proxies.length >= 2)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsProxiesLength, options);
-		options.proxies.forEach((proxy) => {
-			if (!isValidSocksProxy(proxy)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsProxy, options);
-			validateCustomProxyAuth(proxy, options);
-		});
-		if (options.timeout && !isValidTimeoutValue(options.timeout)) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsTimeout, options);
-	}
-	function validateCustomProxyAuth(proxy, options) {
-		if (proxy.custom_auth_method !== void 0) {
-			if (proxy.custom_auth_method < constants_1.SOCKS5_CUSTOM_AUTH_START || proxy.custom_auth_method > constants_1.SOCKS5_CUSTOM_AUTH_END) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsCustomAuthRange, options);
-			if (proxy.custom_auth_request_handler === void 0 || typeof proxy.custom_auth_request_handler !== "function") throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsCustomAuthOptions, options);
-			if (proxy.custom_auth_response_size === void 0) throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsCustomAuthOptions, options);
-			if (proxy.custom_auth_response_handler === void 0 || typeof proxy.custom_auth_response_handler !== "function") throw new util_1.SocksClientError(constants_1.ERRORS.InvalidSocksClientOptionsCustomAuthOptions, options);
-		}
-	}
-	/**
-	* Validates a SocksRemoteHost
-	* @param remoteHost { SocksRemoteHost }
-	*/
-	function isValidSocksRemoteHost(remoteHost) {
-		return remoteHost && typeof remoteHost.host === "string" && Buffer.byteLength(remoteHost.host) < 256 && typeof remoteHost.port === "number" && remoteHost.port >= 0 && remoteHost.port <= 65535;
-	}
-	/**
-	* Validates a SocksProxy
-	* @param proxy { SocksProxy }
-	*/
-	function isValidSocksProxy(proxy) {
-		return proxy && (typeof proxy.host === "string" || typeof proxy.ipaddress === "string") && typeof proxy.port === "number" && proxy.port >= 0 && proxy.port <= 65535 && (proxy.type === 4 || proxy.type === 5);
-	}
-	/**
-	* Validates a timeout value.
-	* @param value { Number }
-	*/
-	function isValidTimeoutValue(value) {
-		return typeof value === "number" && value > 0;
-	}
-	function ipv4ToInt32(ip) {
-		return new ip_address_1.Address4(ip).toArray().reduce((acc, part) => (acc << 8) + part, 0) >>> 0;
-	}
-	function int32ToIpv4(int32) {
-		return [
-			int32 >>> 24 & 255,
-			int32 >>> 16 & 255,
-			int32 >>> 8 & 255,
-			int32 & 255
-		].join(".");
-	}
-	function ipToBuffer(ip) {
-		if (net$4.isIPv4(ip)) {
-			const address = new ip_address_1.Address4(ip);
-			return Buffer.from(address.toArray());
-		} else if (net$4.isIPv6(ip)) {
-			const address = new ip_address_1.Address6(ip);
-			return Buffer.from(address.canonicalForm().split(":").map((segment) => segment.padStart(4, "0")).join(""), "hex");
-		} else throw new Error("Invalid IP address format");
-	}
-}));
-//#endregion
-//#region ../node_modules/socks/build/common/receivebuffer.js
-var require_receivebuffer = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.ReceiveBuffer = void 0;
-	var ReceiveBuffer = class {
-		constructor(size = 4096) {
-			this.buffer = Buffer.allocUnsafe(size);
-			this.offset = 0;
-			this.originalSize = size;
-		}
-		get length() {
-			return this.offset;
-		}
-		append(data) {
-			if (!Buffer.isBuffer(data)) throw new Error("Attempted to append a non-buffer instance to ReceiveBuffer.");
-			if (this.offset + data.length >= this.buffer.length) {
-				const tmp = this.buffer;
-				this.buffer = Buffer.allocUnsafe(Math.max(this.buffer.length + this.originalSize, this.buffer.length + data.length));
-				tmp.copy(this.buffer);
-			}
-			data.copy(this.buffer, this.offset);
-			return this.offset += data.length;
-		}
-		peek(length) {
-			if (length > this.offset) throw new Error("Attempted to read beyond the bounds of the managed internal data.");
-			return this.buffer.slice(0, length);
-		}
-		get(length) {
-			if (length > this.offset) throw new Error("Attempted to read beyond the bounds of the managed internal data.");
-			const value = Buffer.allocUnsafe(length);
-			this.buffer.slice(0, length).copy(value);
-			this.buffer.copyWithin(0, length, length + this.offset - length);
-			this.offset -= length;
-			return value;
-		}
-	};
-	exports.ReceiveBuffer = ReceiveBuffer;
-}));
-//#endregion
-//#region ../node_modules/socks/build/client/socksclient.js
-var require_socksclient = /* @__PURE__ */ __commonJSMin(((exports) => {
-	var __awaiter = exports && exports.__awaiter || function(thisArg, _arguments, P, generator) {
-		function adopt(value) {
-			return value instanceof P ? value : new P(function(resolve) {
-				resolve(value);
-			});
-		}
-		return new (P || (P = Promise))(function(resolve, reject) {
-			function fulfilled(value) {
-				try {
-					step(generator.next(value));
-				} catch (e) {
-					reject(e);
-				}
-			}
-			function rejected(value) {
-				try {
-					step(generator["throw"](value));
-				} catch (e) {
-					reject(e);
-				}
-			}
-			function step(result) {
-				result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-			}
-			step((generator = generator.apply(thisArg, _arguments || [])).next());
-		});
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.SocksClientError = exports.SocksClient = void 0;
-	var events_1$1 = __require("events");
-	var net$3 = __require("net");
-	var smart_buffer_1 = require_smartbuffer();
-	var constants_1 = require_constants();
-	var helpers_1 = require_helpers();
-	var receivebuffer_1 = require_receivebuffer();
-	var util_1 = require_util();
-	Object.defineProperty(exports, "SocksClientError", {
-		enumerable: true,
-		get: function() {
-			return util_1.SocksClientError;
-		}
-	});
-	var ip_address_1 = require_ip_address();
-	exports.SocksClient = class SocksClient extends events_1$1.EventEmitter {
-		constructor(options) {
-			super();
-			this.options = Object.assign({}, options);
-			(0, helpers_1.validateSocksClientOptions)(options);
-			this.setState(constants_1.SocksClientState.Created);
-		}
-		/**
-		* Creates a new SOCKS connection.
-		*
-		* Note: Supports callbacks and promises. Only supports the connect command.
-		* @param options { SocksClientOptions } Options.
-		* @param callback { Function } An optional callback function.
-		* @returns { Promise }
-		*/
-		static createConnection(options, callback) {
-			return new Promise((resolve, reject) => {
-				try {
-					(0, helpers_1.validateSocksClientOptions)(options, ["connect"]);
-				} catch (err) {
-					if (typeof callback === "function") {
-						callback(err);
-						return resolve(err);
-					} else return reject(err);
-				}
-				const client = new SocksClient(options);
-				client.connect(options.existing_socket);
-				client.once("established", (info) => {
-					client.removeAllListeners();
-					if (typeof callback === "function") {
-						callback(null, info);
-						resolve(info);
-					} else resolve(info);
-				});
-				client.once("error", (err) => {
-					client.removeAllListeners();
-					if (typeof callback === "function") {
-						callback(err);
-						resolve(err);
-					} else reject(err);
-				});
-			});
-		}
-		/**
-		* Creates a new SOCKS connection chain to a destination host through 2 or more SOCKS proxies.
-		*
-		* Note: Supports callbacks and promises. Only supports the connect method.
-		* Note: Implemented via createConnection() factory function.
-		* @param options { SocksClientChainOptions } Options
-		* @param callback { Function } An optional callback function.
-		* @returns { Promise }
-		*/
-		static createConnectionChain(options, callback) {
-			return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-				try {
-					(0, helpers_1.validateSocksClientChainOptions)(options);
-				} catch (err) {
-					if (typeof callback === "function") {
-						callback(err);
-						return resolve(err);
-					} else return reject(err);
-				}
-				if (options.randomizeChain) (0, util_1.shuffleArray)(options.proxies);
-				try {
-					let sock;
-					for (let i = 0; i < options.proxies.length; i++) {
-						const nextProxy = options.proxies[i];
-						const nextDestination = i === options.proxies.length - 1 ? options.destination : {
-							host: options.proxies[i + 1].host || options.proxies[i + 1].ipaddress,
-							port: options.proxies[i + 1].port
-						};
-						const result = yield SocksClient.createConnection({
-							command: "connect",
-							proxy: nextProxy,
-							destination: nextDestination,
-							existing_socket: sock
-						});
-						sock = sock || result.socket;
-					}
-					if (typeof callback === "function") {
-						callback(null, { socket: sock });
-						resolve({ socket: sock });
-					} else resolve({ socket: sock });
-				} catch (err) {
-					if (typeof callback === "function") {
-						callback(err);
-						resolve(err);
-					} else reject(err);
-				}
-			}));
-		}
-		/**
-		* Creates a SOCKS UDP Frame.
-		* @param options
-		*/
-		static createUDPFrame(options) {
-			const buff = new smart_buffer_1.SmartBuffer();
-			buff.writeUInt16BE(0);
-			buff.writeUInt8(options.frameNumber || 0);
-			if (net$3.isIPv4(options.remoteHost.host)) {
-				buff.writeUInt8(constants_1.Socks5HostType.IPv4);
-				buff.writeUInt32BE((0, helpers_1.ipv4ToInt32)(options.remoteHost.host));
-			} else if (net$3.isIPv6(options.remoteHost.host)) {
-				buff.writeUInt8(constants_1.Socks5HostType.IPv6);
-				buff.writeBuffer((0, helpers_1.ipToBuffer)(options.remoteHost.host));
-			} else {
-				buff.writeUInt8(constants_1.Socks5HostType.Hostname);
-				buff.writeUInt8(Buffer.byteLength(options.remoteHost.host));
-				buff.writeString(options.remoteHost.host);
-			}
-			buff.writeUInt16BE(options.remoteHost.port);
-			buff.writeBuffer(options.data);
-			return buff.toBuffer();
-		}
-		/**
-		* Parses a SOCKS UDP frame.
-		* @param data
-		*/
-		static parseUDPFrame(data) {
-			const buff = smart_buffer_1.SmartBuffer.fromBuffer(data);
-			buff.readOffset = 2;
-			const frameNumber = buff.readUInt8();
-			const hostType = buff.readUInt8();
-			let remoteHost;
-			if (hostType === constants_1.Socks5HostType.IPv4) remoteHost = (0, helpers_1.int32ToIpv4)(buff.readUInt32BE());
-			else if (hostType === constants_1.Socks5HostType.IPv6) remoteHost = ip_address_1.Address6.fromByteArray(Array.from(buff.readBuffer(16))).canonicalForm();
-			else remoteHost = buff.readString(buff.readUInt8());
-			const remotePort = buff.readUInt16BE();
-			return {
-				frameNumber,
-				remoteHost: {
-					host: remoteHost,
-					port: remotePort
-				},
-				data: buff.readBuffer()
-			};
-		}
-		/**
-		* Internal state setter. If the SocksClient is in an error state, it cannot be changed to a non error state.
-		*/
-		setState(newState) {
-			if (this.state !== constants_1.SocksClientState.Error) this.state = newState;
-		}
-		/**
-		* Starts the connection establishment to the proxy and destination.
-		* @param existingSocket Connected socket to use instead of creating a new one (internal use).
-		*/
-		connect(existingSocket) {
-			this.onDataReceived = (data) => this.onDataReceivedHandler(data);
-			this.onClose = () => this.onCloseHandler();
-			this.onError = (err) => this.onErrorHandler(err);
-			this.onConnect = () => this.onConnectHandler();
-			const timer = setTimeout(() => this.onEstablishedTimeout(), this.options.timeout || constants_1.DEFAULT_TIMEOUT);
-			if (timer.unref && typeof timer.unref === "function") timer.unref();
-			if (existingSocket) this.socket = existingSocket;
-			else this.socket = new net$3.Socket();
-			this.socket.once("close", this.onClose);
-			this.socket.once("error", this.onError);
-			this.socket.once("connect", this.onConnect);
-			this.socket.on("data", this.onDataReceived);
-			this.setState(constants_1.SocksClientState.Connecting);
-			this.receiveBuffer = new receivebuffer_1.ReceiveBuffer();
-			if (existingSocket) this.socket.emit("connect");
-			else {
-				this.socket.connect(this.getSocketOptions());
-				if (this.options.set_tcp_nodelay !== void 0 && this.options.set_tcp_nodelay !== null) this.socket.setNoDelay(!!this.options.set_tcp_nodelay);
-			}
-			this.prependOnceListener("established", (info) => {
-				setImmediate(() => {
-					if (this.receiveBuffer.length > 0) {
-						const excessData = this.receiveBuffer.get(this.receiveBuffer.length);
-						info.socket.emit("data", excessData);
-					}
-					info.socket.resume();
-				});
-			});
-		}
-		getSocketOptions() {
-			return Object.assign(Object.assign({}, this.options.socket_options), {
-				host: this.options.proxy.host || this.options.proxy.ipaddress,
-				port: this.options.proxy.port
-			});
-		}
-		/**
-		* Handles internal Socks timeout callback.
-		* Note: If the Socks client is not BoundWaitingForConnection or Established, the connection will be closed.
-		*/
-		onEstablishedTimeout() {
-			if (this.state !== constants_1.SocksClientState.Established && this.state !== constants_1.SocksClientState.BoundWaitingForConnection) this.closeSocket(constants_1.ERRORS.ProxyConnectionTimedOut);
-		}
-		/**
-		* Handles Socket connect event.
-		*/
-		onConnectHandler() {
-			this.setState(constants_1.SocksClientState.Connected);
-			if (this.options.proxy.type === 4) this.sendSocks4InitialHandshake();
-			else this.sendSocks5InitialHandshake();
-			this.setState(constants_1.SocksClientState.SentInitialHandshake);
-		}
-		/**
-		* Handles Socket data event.
-		* @param data
-		*/
-		onDataReceivedHandler(data) {
-			this.receiveBuffer.append(data);
-			this.processData();
-		}
-		/**
-		* Handles processing of the data we have received.
-		*/
-		processData() {
-			while (this.state !== constants_1.SocksClientState.Established && this.state !== constants_1.SocksClientState.Error && this.receiveBuffer.length >= this.nextRequiredPacketBufferSize) if (this.state === constants_1.SocksClientState.SentInitialHandshake) if (this.options.proxy.type === 4) this.handleSocks4FinalHandshakeResponse();
-			else this.handleInitialSocks5HandshakeResponse();
-			else if (this.state === constants_1.SocksClientState.SentAuthentication) this.handleInitialSocks5AuthenticationHandshakeResponse();
-			else if (this.state === constants_1.SocksClientState.SentFinalHandshake) this.handleSocks5FinalHandshakeResponse();
-			else if (this.state === constants_1.SocksClientState.BoundWaitingForConnection) if (this.options.proxy.type === 4) this.handleSocks4IncomingConnectionResponse();
-			else this.handleSocks5IncomingConnectionResponse();
-			else {
-				this.closeSocket(constants_1.ERRORS.InternalError);
-				break;
-			}
-		}
-		/**
-		* Handles Socket close event.
-		* @param had_error
-		*/
-		onCloseHandler() {
-			this.closeSocket(constants_1.ERRORS.SocketClosed);
-		}
-		/**
-		* Handles Socket error event.
-		* @param err
-		*/
-		onErrorHandler(err) {
-			this.closeSocket(err.message);
-		}
-		/**
-		* Removes internal event listeners on the underlying Socket.
-		*/
-		removeInternalSocketHandlers() {
-			this.socket.pause();
-			this.socket.removeListener("data", this.onDataReceived);
-			this.socket.removeListener("close", this.onClose);
-			this.socket.removeListener("error", this.onError);
-			this.socket.removeListener("connect", this.onConnect);
-		}
-		/**
-		* Closes and destroys the underlying Socket. Emits an error event.
-		* @param err { String } An error string to include in error event.
-		*/
-		closeSocket(err) {
-			if (this.state !== constants_1.SocksClientState.Error) {
-				this.setState(constants_1.SocksClientState.Error);
-				this.socket.destroy();
-				this.removeInternalSocketHandlers();
-				this.emit("error", new util_1.SocksClientError(err, this.options));
-			}
-		}
-		/**
-		* Sends initial Socks v4 handshake request.
-		*/
-		sendSocks4InitialHandshake() {
-			const userId = this.options.proxy.userId || "";
-			const buff = new smart_buffer_1.SmartBuffer();
-			buff.writeUInt8(4);
-			buff.writeUInt8(constants_1.SocksCommand[this.options.command]);
-			buff.writeUInt16BE(this.options.destination.port);
-			if (net$3.isIPv4(this.options.destination.host)) {
-				buff.writeBuffer((0, helpers_1.ipToBuffer)(this.options.destination.host));
-				buff.writeStringNT(userId);
-			} else {
-				buff.writeUInt8(0);
-				buff.writeUInt8(0);
-				buff.writeUInt8(0);
-				buff.writeUInt8(1);
-				buff.writeStringNT(userId);
-				buff.writeStringNT(this.options.destination.host);
-			}
-			this.nextRequiredPacketBufferSize = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks4Response;
-			this.socket.write(buff.toBuffer());
-		}
-		/**
-		* Handles Socks v4 handshake response.
-		* @param data
-		*/
-		handleSocks4FinalHandshakeResponse() {
-			const data = this.receiveBuffer.get(8);
-			if (data[1] !== constants_1.Socks4Response.Granted) this.closeSocket(`${constants_1.ERRORS.Socks4ProxyRejectedConnection} - (${constants_1.Socks4Response[data[1]]})`);
-			else if (constants_1.SocksCommand[this.options.command] === constants_1.SocksCommand.bind) {
-				const buff = smart_buffer_1.SmartBuffer.fromBuffer(data);
-				buff.readOffset = 2;
-				const remoteHost = {
-					port: buff.readUInt16BE(),
-					host: (0, helpers_1.int32ToIpv4)(buff.readUInt32BE())
-				};
-				if (remoteHost.host === "0.0.0.0") remoteHost.host = this.options.proxy.ipaddress;
-				this.setState(constants_1.SocksClientState.BoundWaitingForConnection);
-				this.emit("bound", {
-					remoteHost,
-					socket: this.socket
-				});
-			} else {
-				this.setState(constants_1.SocksClientState.Established);
-				this.removeInternalSocketHandlers();
-				this.emit("established", { socket: this.socket });
-			}
-		}
-		/**
-		* Handles Socks v4 incoming connection request (BIND)
-		* @param data
-		*/
-		handleSocks4IncomingConnectionResponse() {
-			const data = this.receiveBuffer.get(8);
-			if (data[1] !== constants_1.Socks4Response.Granted) this.closeSocket(`${constants_1.ERRORS.Socks4ProxyRejectedIncomingBoundConnection} - (${constants_1.Socks4Response[data[1]]})`);
-			else {
-				const buff = smart_buffer_1.SmartBuffer.fromBuffer(data);
-				buff.readOffset = 2;
-				const remoteHost = {
-					port: buff.readUInt16BE(),
-					host: (0, helpers_1.int32ToIpv4)(buff.readUInt32BE())
-				};
-				this.setState(constants_1.SocksClientState.Established);
-				this.removeInternalSocketHandlers();
-				this.emit("established", {
-					remoteHost,
-					socket: this.socket
-				});
-			}
-		}
-		/**
-		* Sends initial Socks v5 handshake request.
-		*/
-		sendSocks5InitialHandshake() {
-			const buff = new smart_buffer_1.SmartBuffer();
-			const supportedAuthMethods = [constants_1.Socks5Auth.NoAuth];
-			if (this.options.proxy.userId || this.options.proxy.password) supportedAuthMethods.push(constants_1.Socks5Auth.UserPass);
-			if (this.options.proxy.custom_auth_method !== void 0) supportedAuthMethods.push(this.options.proxy.custom_auth_method);
-			buff.writeUInt8(5);
-			buff.writeUInt8(supportedAuthMethods.length);
-			for (const authMethod of supportedAuthMethods) buff.writeUInt8(authMethod);
-			this.nextRequiredPacketBufferSize = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5InitialHandshakeResponse;
-			this.socket.write(buff.toBuffer());
-			this.setState(constants_1.SocksClientState.SentInitialHandshake);
-		}
-		/**
-		* Handles initial Socks v5 handshake response.
-		* @param data
-		*/
-		handleInitialSocks5HandshakeResponse() {
-			const data = this.receiveBuffer.get(2);
-			if (data[0] !== 5) this.closeSocket(constants_1.ERRORS.InvalidSocks5IntiailHandshakeSocksVersion);
-			else if (data[1] === constants_1.SOCKS5_NO_ACCEPTABLE_AUTH) this.closeSocket(constants_1.ERRORS.InvalidSocks5InitialHandshakeNoAcceptedAuthType);
-			else if (data[1] === constants_1.Socks5Auth.NoAuth) {
-				this.socks5ChosenAuthType = constants_1.Socks5Auth.NoAuth;
-				this.sendSocks5CommandRequest();
-			} else if (data[1] === constants_1.Socks5Auth.UserPass) {
-				this.socks5ChosenAuthType = constants_1.Socks5Auth.UserPass;
-				this.sendSocks5UserPassAuthentication();
-			} else if (data[1] === this.options.proxy.custom_auth_method) {
-				this.socks5ChosenAuthType = this.options.proxy.custom_auth_method;
-				this.sendSocks5CustomAuthentication();
-			} else this.closeSocket(constants_1.ERRORS.InvalidSocks5InitialHandshakeUnknownAuthType);
-		}
-		/**
-		* Sends Socks v5 user & password auth handshake.
-		*
-		* Note: No auth and user/pass are currently supported.
-		*/
-		sendSocks5UserPassAuthentication() {
-			const userId = this.options.proxy.userId || "";
-			const password = this.options.proxy.password || "";
-			const buff = new smart_buffer_1.SmartBuffer();
-			buff.writeUInt8(1);
-			buff.writeUInt8(Buffer.byteLength(userId));
-			buff.writeString(userId);
-			buff.writeUInt8(Buffer.byteLength(password));
-			buff.writeString(password);
-			this.nextRequiredPacketBufferSize = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5UserPassAuthenticationResponse;
-			this.socket.write(buff.toBuffer());
-			this.setState(constants_1.SocksClientState.SentAuthentication);
-		}
-		sendSocks5CustomAuthentication() {
-			return __awaiter(this, void 0, void 0, function* () {
-				this.nextRequiredPacketBufferSize = this.options.proxy.custom_auth_response_size;
-				this.socket.write(yield this.options.proxy.custom_auth_request_handler());
-				this.setState(constants_1.SocksClientState.SentAuthentication);
-			});
-		}
-		handleSocks5CustomAuthHandshakeResponse(data) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return yield this.options.proxy.custom_auth_response_handler(data);
-			});
-		}
-		handleSocks5AuthenticationNoAuthHandshakeResponse(data) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return data[1] === 0;
-			});
-		}
-		handleSocks5AuthenticationUserPassHandshakeResponse(data) {
-			return __awaiter(this, void 0, void 0, function* () {
-				return data[1] === 0;
-			});
-		}
-		/**
-		* Handles Socks v5 auth handshake response.
-		* @param data
-		*/
-		handleInitialSocks5AuthenticationHandshakeResponse() {
-			return __awaiter(this, void 0, void 0, function* () {
-				this.setState(constants_1.SocksClientState.ReceivedAuthenticationResponse);
-				let authResult = false;
-				if (this.socks5ChosenAuthType === constants_1.Socks5Auth.NoAuth) authResult = yield this.handleSocks5AuthenticationNoAuthHandshakeResponse(this.receiveBuffer.get(2));
-				else if (this.socks5ChosenAuthType === constants_1.Socks5Auth.UserPass) authResult = yield this.handleSocks5AuthenticationUserPassHandshakeResponse(this.receiveBuffer.get(2));
-				else if (this.socks5ChosenAuthType === this.options.proxy.custom_auth_method) authResult = yield this.handleSocks5CustomAuthHandshakeResponse(this.receiveBuffer.get(this.options.proxy.custom_auth_response_size));
-				if (!authResult) this.closeSocket(constants_1.ERRORS.Socks5AuthenticationFailed);
-				else this.sendSocks5CommandRequest();
-			});
-		}
-		/**
-		* Sends Socks v5 final handshake request.
-		*/
-		sendSocks5CommandRequest() {
-			const buff = new smart_buffer_1.SmartBuffer();
-			buff.writeUInt8(5);
-			buff.writeUInt8(constants_1.SocksCommand[this.options.command]);
-			buff.writeUInt8(0);
-			if (net$3.isIPv4(this.options.destination.host)) {
-				buff.writeUInt8(constants_1.Socks5HostType.IPv4);
-				buff.writeBuffer((0, helpers_1.ipToBuffer)(this.options.destination.host));
-			} else if (net$3.isIPv6(this.options.destination.host)) {
-				buff.writeUInt8(constants_1.Socks5HostType.IPv6);
-				buff.writeBuffer((0, helpers_1.ipToBuffer)(this.options.destination.host));
-			} else {
-				buff.writeUInt8(constants_1.Socks5HostType.Hostname);
-				buff.writeUInt8(this.options.destination.host.length);
-				buff.writeString(this.options.destination.host);
-			}
-			buff.writeUInt16BE(this.options.destination.port);
-			this.nextRequiredPacketBufferSize = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseHeader;
-			this.socket.write(buff.toBuffer());
-			this.setState(constants_1.SocksClientState.SentFinalHandshake);
-		}
-		/**
-		* Handles Socks v5 final handshake response.
-		* @param data
-		*/
-		handleSocks5FinalHandshakeResponse() {
-			const header = this.receiveBuffer.peek(5);
-			if (header[0] !== 5 || header[1] !== constants_1.Socks5Response.Granted) this.closeSocket(`${constants_1.ERRORS.InvalidSocks5FinalHandshakeRejected} - ${constants_1.Socks5Response[header[1]]}`);
-			else {
-				const addressType = header[3];
-				let remoteHost;
-				let buff;
-				if (addressType === constants_1.Socks5HostType.IPv4) {
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseIPv4;
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(4));
-					remoteHost = {
-						host: (0, helpers_1.int32ToIpv4)(buff.readUInt32BE()),
-						port: buff.readUInt16BE()
-					};
-					if (remoteHost.host === "0.0.0.0") remoteHost.host = this.options.proxy.ipaddress;
-				} else if (addressType === constants_1.Socks5HostType.Hostname) {
-					const hostLength = header[4];
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseHostname(hostLength);
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(5));
-					remoteHost = {
-						host: buff.readString(hostLength),
-						port: buff.readUInt16BE()
-					};
-				} else if (addressType === constants_1.Socks5HostType.IPv6) {
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseIPv6;
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(4));
-					remoteHost = {
-						host: ip_address_1.Address6.fromByteArray(Array.from(buff.readBuffer(16))).canonicalForm(),
-						port: buff.readUInt16BE()
-					};
-				}
-				this.setState(constants_1.SocksClientState.ReceivedFinalResponse);
-				if (constants_1.SocksCommand[this.options.command] === constants_1.SocksCommand.connect) {
-					this.setState(constants_1.SocksClientState.Established);
-					this.removeInternalSocketHandlers();
-					this.emit("established", {
-						remoteHost,
-						socket: this.socket
-					});
-				} else if (constants_1.SocksCommand[this.options.command] === constants_1.SocksCommand.bind) {
-					this.setState(constants_1.SocksClientState.BoundWaitingForConnection);
-					this.nextRequiredPacketBufferSize = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseHeader;
-					this.emit("bound", {
-						remoteHost,
-						socket: this.socket
-					});
-				} else if (constants_1.SocksCommand[this.options.command] === constants_1.SocksCommand.associate) {
-					this.setState(constants_1.SocksClientState.Established);
-					this.removeInternalSocketHandlers();
-					this.emit("established", {
-						remoteHost,
-						socket: this.socket
-					});
-				}
-			}
-		}
-		/**
-		* Handles Socks v5 incoming connection request (BIND).
-		*/
-		handleSocks5IncomingConnectionResponse() {
-			const header = this.receiveBuffer.peek(5);
-			if (header[0] !== 5 || header[1] !== constants_1.Socks5Response.Granted) this.closeSocket(`${constants_1.ERRORS.Socks5ProxyRejectedIncomingBoundConnection} - ${constants_1.Socks5Response[header[1]]}`);
-			else {
-				const addressType = header[3];
-				let remoteHost;
-				let buff;
-				if (addressType === constants_1.Socks5HostType.IPv4) {
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseIPv4;
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(4));
-					remoteHost = {
-						host: (0, helpers_1.int32ToIpv4)(buff.readUInt32BE()),
-						port: buff.readUInt16BE()
-					};
-					if (remoteHost.host === "0.0.0.0") remoteHost.host = this.options.proxy.ipaddress;
-				} else if (addressType === constants_1.Socks5HostType.Hostname) {
-					const hostLength = header[4];
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseHostname(hostLength);
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(5));
-					remoteHost = {
-						host: buff.readString(hostLength),
-						port: buff.readUInt16BE()
-					};
-				} else if (addressType === constants_1.Socks5HostType.IPv6) {
-					const dataNeeded = constants_1.SOCKS_INCOMING_PACKET_SIZES.Socks5ResponseIPv6;
-					if (this.receiveBuffer.length < dataNeeded) {
-						this.nextRequiredPacketBufferSize = dataNeeded;
-						return;
-					}
-					buff = smart_buffer_1.SmartBuffer.fromBuffer(this.receiveBuffer.get(dataNeeded).slice(4));
-					remoteHost = {
-						host: ip_address_1.Address6.fromByteArray(Array.from(buff.readBuffer(16))).canonicalForm(),
-						port: buff.readUInt16BE()
-					};
-				}
-				this.setState(constants_1.SocksClientState.Established);
-				this.removeInternalSocketHandlers();
-				this.emit("established", {
-					remoteHost,
-					socket: this.socket
-				});
-			}
-		}
-		get socksClientOptions() {
-			return Object.assign({}, this.options);
-		}
-	};
-}));
-//#endregion
-//#region ../node_modules/socks/build/index.js
-var require_build = /* @__PURE__ */ __commonJSMin(((exports) => {
-	var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		var desc = Object.getOwnPropertyDescriptor(m, k);
-		if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
-			enumerable: true,
-			get: function() {
-				return m[k];
-			}
-		};
-		Object.defineProperty(o, k2, desc);
-	}) : (function(o, m, k, k2) {
-		if (k2 === void 0) k2 = k;
-		o[k2] = m[k];
-	}));
-	var __exportStar = exports && exports.__exportStar || function(m, exports$1) {
-		for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$1, p)) __createBinding(exports$1, m, p);
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	__exportStar(require_socksclient(), exports);
+//#region __vite-optional-peer-dep:socks:mongodb
+var __vite_optional_peer_dep_socks_mongodb_exports = /* @__PURE__ */ __exportAll({ default: () => __vite_optional_peer_dep_socks_mongodb_default });
+var __vite_optional_peer_dep_socks_mongodb_default;
+var init___vite_optional_peer_dep_socks_mongodb = __esmMin((() => {
+	__vite_optional_peer_dep_socks_mongodb_default = {};
+	throw new Error(`Could not resolve "socks" imported by "mongodb". Is it installed?`);
 }));
 //#endregion
 //#region __vite-optional-peer-dep:mongodb-client-encryption:mongodb
@@ -6902,7 +4820,7 @@ var require_deps = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 	function getSocks() {
 		try {
-			return require_build();
+			return init___vite_optional_peer_dep_socks_mongodb(), __toCommonJS(__vite_optional_peer_dep_socks_mongodb_exports);
 		} catch (error) {
 			return { kModuleError: new error_1.MongoMissingDependencyError("Optional module `socks` not found. Please install it to connections over a SOCKS5 proxy", {
 				cause: error,
@@ -6935,11 +4853,11 @@ var require_compression = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.decompressResponse = decompressResponse;
 	var zlib = __require("zlib");
 	var bson_1 = require_bson();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var deps_1 = require_deps();
 	var error_1 = require_error();
 	var commands_1 = require_commands();
-	var constants_2 = require_constants$2();
+	var constants_2 = require_constants$1();
 	/** @public */
 	exports.Compressor = Object.freeze({
 		none: 0,
@@ -7074,7 +4992,7 @@ var require_commands = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var bson_1 = require_bson();
 	var error_1 = require_error();
 	var compression_1 = require_compression();
-	var constants_1 = require_constants$2();
+	var constants_1 = require_constants$1();
 	var _requestId = 0;
 	var OPTS_TAILABLE_CURSOR = 2;
 	var OPTS_SECONDARY = 4;
@@ -7587,7 +5505,7 @@ var require_insert = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var commands_1 = require_commands();
 	var responses_1 = require_responses();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/** @internal */
@@ -7739,7 +5657,7 @@ var require_update$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var responses_1 = require_responses();
 	var error_1 = require_error();
 	var sort_1 = require_sort();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/**
@@ -7902,7 +5820,7 @@ var require_common = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var insert_1 = require_insert();
 	var update_1 = require_update$1();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	/** @public */
 	exports.BatchType = Object.freeze({
@@ -8720,8 +6638,8 @@ var require_mongo_logger = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var process$6 = __require("process");
 	var util_1 = __require("util");
 	var bson_1 = require_bson();
-	var constants_1 = require_constants$1();
-	var utils_1 = require_utils$2();
+	var constants_1 = require_constants();
+	var utils_1 = require_utils$1();
 	/**
 	* @public
 	* Severity levels align with unix syslog.
@@ -9291,7 +7209,7 @@ var require_mongo_types = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.CancellationToken = exports.TypedEventEmitter = void 0;
 	var events_1 = __require("events");
 	var mongo_logger_1 = require_mongo_logger();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/**
 	* Typescript type safe event emitter
 	* @public
@@ -9604,7 +7522,7 @@ var require_sessions = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var promises_1$2 = __require("timers/promises");
 	var bson_1 = require_bson();
 	var metrics_1 = require_metrics();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_types_1 = require_mongo_types();
 	var execute_operation_1 = require_execute_operation();
@@ -9614,7 +7532,7 @@ var require_sessions = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var common_1 = require_common$1();
 	var timeout_1 = require_timeout();
 	var transactions_1 = require_transactions();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	exports.ClientSession = class ClientSession extends mongo_types_1.TypedEventEmitter {
 		/**
@@ -10237,7 +8155,7 @@ var require_abstract_cursor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var read_preference_1 = require_read_preference();
 	var sessions_1 = require_sessions();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/** @public */
 	exports.CURSOR_FLAGS = [
 		"tailable",
@@ -10955,7 +8873,7 @@ var require_aggregation_cursor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var explain_1 = require_explain();
 	var aggregate_1 = require_aggregate();
 	var execute_operation_1 = require_execute_operation();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var abstract_cursor_1 = require_abstract_cursor();
 	var explainable_cursor_1 = require_explainable_cursor();
 	exports.AggregationCursor = class AggregationCursor extends explainable_cursor_1.ExplainableCursor {
@@ -11147,7 +9065,7 @@ var require_find = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var responses_1 = require_responses();
 	var error_1 = require_error();
 	var sort_1 = require_sort();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/** @internal */
@@ -11241,7 +9159,7 @@ var require_find_cursor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var execute_operation_1 = require_execute_operation();
 	var find_1 = require_find();
 	var sort_1 = require_sort();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var explainable_cursor_1 = require_explainable_cursor();
 	/** @public Flags allowed for cursor */
 	exports.FLAGS = [
@@ -11592,7 +9510,7 @@ var require_indexes = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ListIndexesOperation = exports.DropIndexOperation = exports.CreateIndexesOperation = void 0;
 	var responses_1 = require_responses();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	var VALID_INDEX_OPTIONS = /* @__PURE__ */ new Set([
@@ -11900,7 +9818,7 @@ var require_find_and_modify = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var error_1 = require_error();
 	var read_preference_1 = require_read_preference();
 	var sort_1 = require_sort();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/** @public */
@@ -12017,7 +9935,7 @@ var require_rename = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.RenameOperation = void 0;
 	var responses_1 = require_responses();
 	var collection_1 = require_collection();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/** @internal */
@@ -12188,7 +10106,7 @@ var require_collection = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var update_2 = require_update$1();
 	var read_concern_1 = require_read_concern();
 	var read_preference_1 = require_read_preference();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	/**
 	* The **Collection** class is an internal class that embodies a MongoDB collection
@@ -12871,10 +10789,10 @@ var require_change_stream_cursor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ChangeStreamCursor = void 0;
 	var change_stream_1 = require_change_stream();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var aggregate_1 = require_aggregate();
 	var execute_operation_1 = require_execute_operation();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var abstract_cursor_1 = require_abstract_cursor();
 	exports.ChangeStreamCursor = class ChangeStreamCursor extends abstract_cursor_1.AbstractCursor {
 		constructor(client, namespace, pipeline = [], options = {}) {
@@ -13048,7 +10966,7 @@ var require_run_command_cursor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var execute_operation_1 = require_execute_operation();
 	var get_more_1 = require_get_more();
 	var run_command_1 = require_run_command();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var abstract_cursor_1 = require_abstract_cursor();
 	/** @public */
 	var RunCommandCursor = class extends abstract_cursor_1.AbstractCursor {
@@ -13138,12 +11056,12 @@ var require_create_collection = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.CreateCollectionOperation = void 0;
 	exports.createCollections = createCollections;
-	var constants_1 = require_constants$2();
+	var constants_1 = require_constants$1();
 	var responses_1 = require_responses();
 	var collection_1 = require_collection();
 	var error_1 = require_error();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var execute_operation_1 = require_execute_operation();
 	var indexes_1 = require_indexes();
@@ -13366,7 +11284,7 @@ var require_set_profiling_level = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.SetProfilingLevelOperation = exports.ProfilingLevel = void 0;
 	var responses_1 = require_responses();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var levelValues = /* @__PURE__ */ new Set([
 		"off",
@@ -13449,7 +11367,7 @@ var require_db = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var bson_1 = require_bson();
 	var change_stream_1 = require_change_stream();
 	var collection_1 = require_collection();
-	var CONSTANTS = require_constants$1();
+	var CONSTANTS = require_constants();
 	var aggregation_cursor_1 = require_aggregation_cursor();
 	var list_collections_cursor_1 = require_list_collections_cursor();
 	var run_command_cursor_1 = require_run_command_cursor();
@@ -13466,7 +11384,7 @@ var require_db = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var stats_1 = require_stats();
 	var read_concern_1 = require_read_concern();
 	var read_preference_1 = require_read_preference();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var DB_OPTIONS_ALLOW_LIST = [
 		"writeConcern",
@@ -13909,7 +11827,7 @@ var require_gssapi = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var dns$2 = __require("dns");
 	var deps_1 = require_deps();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	/** @public */
 	exports.GSSAPICanonicalizationValue = Object.freeze({
@@ -14373,7 +12291,7 @@ var require_client_metadata = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var process$5 = __require("process");
 	var bson_1 = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var NODE_DRIVER_VERSION = (init_package(), __toCommonJS(package_exports).default).version;
 	/** @internal */
 	function isDriverInfoEqual(info1, info2) {
@@ -17717,7 +15635,7 @@ var require_azure = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.fetchAzureKMSToken = fetchAzureKMSToken;
 	exports.loadAzureCredentials = loadAzureCredentials;
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var errors_1 = require_errors$1();
 	var MINIMUM_TOKEN_REFRESH_IN_MILLISECONDS = 6e3;
 	/** Base URL for getting Azure tokens. */
@@ -17900,7 +15818,7 @@ var require_state_machine = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var deps_1 = require_deps();
 	var error_1 = require_error();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var client_encryption_1 = require_client_encryption();
 	var errors_1 = require_errors$1();
 	var socks = null;
@@ -18279,7 +16197,7 @@ var require_client_encryption = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var bson_1 = require_bson();
 	var deps_1 = require_deps();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var errors_1 = require_errors$1();
 	var index_1 = require_providers();
 	var state_machine_1 = require_state_machine();
@@ -18857,11 +16775,11 @@ var require_auto_encrypter = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.AutoEncrypter = exports.AutoEncryptionLoggerLevel = void 0;
 	var net$1 = __require("net");
 	var bson_1 = require_bson();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var deps_1 = require_deps();
 	var error_1 = require_error();
 	var mongo_client_1 = require_mongo_client();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var client_encryption_1 = require_client_encryption();
 	var errors_1 = require_errors$1();
 	var mongocryptd_manager_1 = require_mongocryptd_manager();
@@ -19071,7 +16989,7 @@ var require_encrypter = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Encrypter = void 0;
 	var auto_encrypter_1 = require_auto_encrypter();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var deps_1 = require_deps();
 	var error_1 = require_error();
 	var mongo_client_1 = require_mongo_client();
@@ -19183,8 +17101,8 @@ var require_runtime_adapters = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_command_monitoring_events = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.SENSITIVE_COMMANDS = exports.CommandFailedEvent = exports.CommandSucceededEvent = exports.CommandStartedEvent = void 0;
-	var constants_1 = require_constants$1();
-	var utils_1 = require_utils$2();
+	var constants_1 = require_constants();
+	var utils_1 = require_utils$1();
 	var commands_1 = require_commands();
 	/**
 	* An event indicating the start of a given command
@@ -19389,7 +17307,7 @@ var require_server_description = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.compareTopologyVersion = compareTopologyVersion;
 	var bson_1 = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var common_1 = require_common$1();
 	var WRITABLE_SERVER_TYPES = /* @__PURE__ */ new Set([
 		common_1.ServerType.RSPrimary,
@@ -19581,7 +17499,7 @@ var require_stream_description = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_on_data = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.onData = onData;
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/**
 	* onData is adapted from Node.js' events.on helper
 	* https://nodejs.org/api/events.html#eventsonemitter-eventname-options
@@ -19691,9 +17609,9 @@ var require_topology_description = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.TopologyDescription = void 0;
 	var bson_1 = require_bson();
-	var WIRE_CONSTANTS = require_constants$2();
+	var WIRE_CONSTANTS = require_constants$1();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var common_1 = require_common$1();
 	var server_description_1 = require_server_description();
 	var MIN_SUPPORTED_SERVER_VERSION = WIRE_CONSTANTS.MIN_SUPPORTED_SERVER_VERSION;
@@ -19997,7 +17915,7 @@ var require_connection = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var stream_1$2 = __require("stream");
 	var timers_1$3 = __require("timers");
 	var bson_1 = require_bson();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_logger_1 = require_mongo_logger();
 	var mongo_types_1 = require_mongo_types();
@@ -20005,7 +17923,7 @@ var require_connection = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var common_1 = require_common$1();
 	var sessions_1 = require_sessions();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_monitoring_events_1 = require_command_monitoring_events();
 	var commands_1 = require_commands();
 	var stream_description_1 = require_stream_description();
@@ -20420,14 +18338,14 @@ var require_connect = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.makeSocket = makeSocket;
 	var net = __require("net");
 	var tls = __require("tls");
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var deps_1 = require_deps();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	var providers_1 = require_providers$1();
 	var connection_1 = require_connection();
-	var constants_2 = require_constants$2();
+	var constants_2 = require_constants$1();
 	function applyBackpressureLabels(error) {
 		error.addErrorLabel(error_1.MongoErrorLabel.SystemOverloadedError);
 		error.addErrorLabel(error_1.MongoErrorLabel.RetryableError);
@@ -20705,7 +18623,7 @@ var require_connect = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_events = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ServerHeartbeatFailedEvent = exports.ServerHeartbeatSucceededEvent = exports.ServerHeartbeatStartedEvent = exports.TopologyClosedEvent = exports.TopologyOpeningEvent = exports.TopologyDescriptionChangedEvent = exports.ServerClosedEvent = exports.ServerOpeningEvent = exports.ServerDescriptionChangedEvent = void 0;
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	/**
 	* Emitted when server description changes, but does NOT include changes to the RTT.
 	* @public
@@ -20853,8 +18771,8 @@ var require_events = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_connection_pool_events = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ConnectionPoolClearedEvent = exports.ConnectionCheckedInEvent = exports.ConnectionCheckedOutEvent = exports.ConnectionCheckOutFailedEvent = exports.ConnectionCheckOutStartedEvent = exports.ConnectionClosedEvent = exports.ConnectionReadyEvent = exports.ConnectionCreatedEvent = exports.ConnectionPoolClosedEvent = exports.ConnectionPoolReadyEvent = exports.ConnectionPoolCreatedEvent = exports.ConnectionPoolMonitoringEvent = void 0;
-	var constants_1 = require_constants$1();
-	var utils_1 = require_utils$2();
+	var constants_1 = require_constants();
+	var utils_1 = require_utils$1();
 	/**
 	* The base export class for all monitoring events published from the connection pool
 	* @public
@@ -21160,11 +19078,11 @@ var require_connection_pool = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ConnectionPool = exports.PoolState = void 0;
 	var timers_1$2 = __require("timers");
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_types_1 = require_mongo_types();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var connect_1 = require_connect();
 	var connection_1 = require_connection();
 	var connection_pool_events_1 = require_connection_pool_events();
@@ -21645,12 +19563,12 @@ var require_server = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var connection_1 = require_connection();
 	var connection_pool_1 = require_connection_pool();
 	var errors_1 = require_errors();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_types_1 = require_mongo_types();
 	var aggregate_1 = require_aggregate();
 	var transactions_1 = require_transactions();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var common_1 = require_common$1();
 	var monitor_1 = require_monitor();
@@ -21957,11 +19875,11 @@ var require_monitor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var bson_1 = require_bson();
 	var connect_1 = require_connect();
 	var client_metadata_1 = require_client_metadata();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_logger_1 = require_mongo_logger();
 	var mongo_types_1 = require_mongo_types();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var common_1 = require_common$1();
 	var events_1 = require_events();
 	var server_1 = require_server();
@@ -22429,7 +20347,7 @@ var require_connection_string = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var read_preference_1 = require_read_preference();
 	var runtime_adapters_1 = require_runtime_adapters();
 	var monitor_1 = require_monitor();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var VALID_TXT_RECORDS = [
 		"authSource",
@@ -23316,7 +21234,7 @@ var require_mongodb_aws = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var bson_1 = require_bson();
 	var BSON = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	var aws_temporary_credentials_1 = require_aws_temporary_credentials();
 	var aws4_1 = require_aws4();
@@ -23461,7 +21379,7 @@ var require_callback_workflow = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.CallbackWorkflow = exports.AUTOMATED_TIMEOUT_MS = exports.HUMAN_TIMEOUT_MS = void 0;
 	var promises_1$1 = __require("timers/promises");
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_builders_1 = require_command_builders();
 	/** 5 minutes in milliseconds */
 	exports.HUMAN_TIMEOUT_MS = 3e5;
@@ -23646,7 +21564,7 @@ var require_azure_machine_workflow = /* @__PURE__ */ __commonJSMin(((exports) =>
 	exports.azureCallback = void 0;
 	var azure_1 = require_azure();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/** Azure request headers. */
 	var AZURE_HEADERS = Object.freeze({
 		Metadata: "true",
@@ -23700,7 +21618,7 @@ var require_gcp_machine_workflow = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.gcpCallback = void 0;
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/** GCP base URL. */
 	var GCP_BASE_URL = "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity";
 	/** GCP request headers. */
@@ -23987,7 +21905,7 @@ var require_plain = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.Plain = void 0;
 	var bson_1 = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	var Plain = class extends auth_provider_1.AuthProvider {
 		async auth(authContext) {
@@ -24013,7 +21931,7 @@ var require_scram = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var saslprep_1 = require_node();
 	var bson_1 = require_bson();
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	var providers_1 = require_providers$1();
 	var ScramSHA = class extends auth_provider_1.AuthProvider {
@@ -24223,7 +22141,7 @@ var require_x509 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.X509 = void 0;
 	var error_1 = require_error();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var auth_provider_1 = require_auth_provider();
 	var X509 = class extends auth_provider_1.AuthProvider {
 		async prepare(handshakeDoc, authContext) {
@@ -24327,7 +22245,7 @@ var require_client_bulk_write = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.ClientBulkWriteOperation = void 0;
 	var responses_1 = require_responses();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var command_1 = require_command();
 	var operation_1 = require_operation();
 	/**
@@ -24377,7 +22295,7 @@ var require_client_bulk_write_cursor = /* @__PURE__ */ __commonJSMin(((exports) 
 	exports.ClientBulkWriteCursor = void 0;
 	var client_bulk_write_1 = require_client_bulk_write();
 	var execute_operation_1 = require_execute_operation();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var abstract_cursor_1 = require_abstract_cursor();
 	exports.ClientBulkWriteCursor = class ClientBulkWriteCursor extends abstract_cursor_1.AbstractCursor {
 		/** @internal */
@@ -24429,7 +22347,7 @@ var require_command_builder = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var commands_1 = require_commands();
 	var error_1 = require_error();
 	var sort_1 = require_sort();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/**
 	* The bytes overhead for the extra fields added post command generation.
 	*/
@@ -24843,7 +22761,7 @@ var require_executor = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var client_bulk_write_cursor_1 = require_client_bulk_write_cursor();
 	var error_1 = require_error();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var execute_operation_1 = require_execute_operation();
 	var client_bulk_write_1 = require_client_bulk_write();
@@ -24934,7 +22852,7 @@ var require_end_sessions = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var responses_1 = require_responses();
 	var command_1 = require_command();
 	var read_preference_1 = require_read_preference();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var operation_1 = require_operation();
 	var EndSessionsOperation = class extends command_1.CommandOperation {
 		constructor(sessions) {
@@ -24965,8 +22883,8 @@ var require_end_sessions = /* @__PURE__ */ __commonJSMin(((exports) => {
 var require_server_selection_events = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.WaitingForSuitableServerEvent = exports.ServerSelectionSucceededEvent = exports.ServerSelectionFailedEvent = exports.ServerSelectionStartedEvent = exports.ServerSelectionEvent = void 0;
-	var utils_1 = require_utils$2();
-	var constants_1 = require_constants$1();
+	var utils_1 = require_utils$1();
+	var constants_1 = require_constants();
 	/**
 	* The base export class for all logs published from server selection
 	* @internal
@@ -25056,7 +22974,7 @@ var require_srv_polling = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var timers_1 = __require("timers");
 	var error_1 = require_error();
 	var mongo_types_1 = require_mongo_types();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/**
 	* @internal
 	* @category Event
@@ -25150,13 +23068,13 @@ var require_topology = /* @__PURE__ */ __commonJSMin(((exports) => {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Topology = void 0;
 	var connection_string_1 = require_connection_string();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var error_1 = require_error();
 	var mongo_logger_1 = require_mongo_logger();
 	var mongo_types_1 = require_mongo_types();
 	var read_preference_1 = require_read_preference();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var common_1 = require_common$1();
 	var events_1 = require_events();
 	var server_1 = require_server();
@@ -25653,7 +23571,7 @@ var require_mongo_client = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var providers_1 = require_providers$1();
 	var client_metadata_1 = require_client_metadata();
 	var connection_string_1 = require_connection_string();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var db_1 = require_db();
 	var error_1 = require_error();
 	var mongo_client_auth_providers_1 = require_mongo_client_auth_providers();
@@ -25666,7 +23584,7 @@ var require_mongo_client = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var server_selection_1 = require_server_selection();
 	var topology_1 = require_topology();
 	var sessions_1 = require_sessions();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	/** @public */
 	exports.ServerApiVersion = Object.freeze({ v1: "1" });
 	/**
@@ -26126,7 +24044,7 @@ var require_change_stream = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.ChangeStream = void 0;
 	exports.filterOutOptions = filterOutOptions;
 	var collection_1 = require_collection();
-	var constants_1 = require_constants$1();
+	var constants_1 = require_constants();
 	var abstract_cursor_1 = require_abstract_cursor();
 	var change_stream_cursor_1 = require_change_stream_cursor();
 	var db_1 = require_db();
@@ -26135,7 +24053,7 @@ var require_change_stream = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var mongo_types_1 = require_mongo_types();
 	var server_selection_1 = require_server_selection();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var CHANGE_DOMAIN_TYPES = {
 		COLLECTION: Symbol("Collection"),
 		DATABASE: Symbol("Database"),
@@ -26783,7 +24701,7 @@ var require_upload = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var abstract_cursor_1 = require_abstract_cursor();
 	var error_1 = require_error();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	/**
 	* A writable stream that enables you to write buffers to GridFS.
@@ -27081,7 +24999,7 @@ var require_gridfs = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var error_1 = require_error();
 	var mongo_types_1 = require_mongo_types();
 	var timeout_1 = require_timeout();
-	var utils_1 = require_utils$2();
+	var utils_1 = require_utils$1();
 	var write_concern_1 = require_write_concern();
 	var download_1 = require_download();
 	var upload_1 = require_upload();
