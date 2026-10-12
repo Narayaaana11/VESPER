@@ -524,12 +524,13 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
         });
       }
 
-      return json({
-        available: false,
-        message: "Installer binaries are compiling or ready via Production bundle.",
-        downloadUrl: "/downloads/VESPER-Setup-1.0.0.exe",
-        checksumSha256: "9c2639de9aa7012d3855a2335993c17322258e2bbbc800bbacad16e053f91d7f",
-        version: "1.0.0",
+      // When running in serverless (e.g. Vercel) where 144MB binary is hosted on GitHub Releases
+      return new Response(null, {
+        status: 302,
+        headers: {
+          "Location": "https://github.com/Narayaaana11/VESPER/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
+          "Access-Control-Allow-Origin": "*",
+        },
       });
     }
 

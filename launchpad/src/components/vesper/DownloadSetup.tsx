@@ -366,10 +366,10 @@ export function DownloadSetup() {
                     </div>
                   </div>
                   <a
-                    href="/api/download/windows"
-                    download="VESPER-Flow-Setup.exe"
+                    href="https://github.com/Narayaaana11/VESPER/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe"
+                    download="VESPER-Setup-1.0.0.exe"
                     onClick={() => {
-                      toast.success("Starting download of VESPER-Setup-1.0.0.exe...");
+                      toast.success("Starting download of VESPER-Setup-1.0.0.exe from GitHub Releases...");
                     }}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-orange-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all active:scale-[0.98]"
                   >
