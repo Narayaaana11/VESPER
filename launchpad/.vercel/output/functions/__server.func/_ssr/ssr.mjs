@@ -623,8 +623,8 @@ var Database = class {
 					latestVersion: doc.latestVersion || "1.0.0",
 					minRequiredVersion: doc.minRequiredVersion || "1.0.0",
 					mandatory: doc.mandatory !== false,
-					downloadUrl: doc.downloadUrl || "https://vesperflow-ai.vercel.app/downloads/setup.exe",
-					directExeUrl: doc.directExeUrl || "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+					downloadUrl: doc.downloadUrl || "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/setup.exe",
+					directExeUrl: doc.directExeUrl || "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
 					webPortalUrl: doc.webPortalUrl || "https://vesperflow-ai.vercel.app/#download",
 					releaseNotes: doc.releaseNotes || "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
 					releaseDate: doc.releaseDate || "2026-10-12"
@@ -637,8 +637,8 @@ var Database = class {
 			latestVersion: process.env["APP_LATEST_VERSION"] || "1.0.0",
 			minRequiredVersion: process.env["APP_MIN_VERSION"] || "1.0.0",
 			mandatory: process.env["APP_UPDATE_MANDATORY"] !== "false",
-			downloadUrl: "https://vesperflow-ai.vercel.app/downloads/setup.exe",
-			directExeUrl: "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+			downloadUrl: "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/setup.exe",
+			directExeUrl: "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
 			webPortalUrl: "https://vesperflow-ai.vercel.app/#download",
 			releaseNotes: "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
 			releaseDate: "2026-10-12"
@@ -1276,12 +1276,12 @@ async function handleApiRequest(request) {
 					"Access-Control-Allow-Origin": "*"
 				} });
 			}
-			return json({
-				available: false,
-				message: "Installer binaries are compiling or ready via Production bundle.",
-				downloadUrl: "/downloads/VESPER-Setup-1.0.0.exe",
-				checksumSha256: "9c2639de9aa7012d3855a2335993c17322258e2bbbc800bbacad16e053f91d7f",
-				version: "1.0.0"
+			return new Response(null, {
+				status: 302,
+				headers: {
+					"Location": "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
+					"Access-Control-Allow-Origin": "*"
+				}
 			});
 		}
 		if (pathname === "/api/geo" && method === "GET") {
@@ -1569,7 +1569,7 @@ async function handleApiRequest(request) {
 }
 var serverEntryPromise;
 async function getServerEntry() {
-	if (!serverEntryPromise) serverEntryPromise = import("./server-CUPoS_4J.mjs").then((m) => m.default ?? m);
+	if (!serverEntryPromise) serverEntryPromise = import("./server-CygM03NF.mjs").then((m) => m.default ?? m);
 	return serverEntryPromise;
 }
 async function normalizeCatastrophicSsrResponse(response) {

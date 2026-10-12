@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
 import { AuthProvider } from "../lib/auth-context";
 import { AuthModal } from "../components/vesper/AuthModal";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function NotFoundComponent() {
   return (
@@ -152,6 +154,8 @@ function RootComponent() {
         <Outlet />
         <AuthModal />
         <Toaster richColors theme="light" position="bottom-right" closeButton />
+        <Analytics />
+        <SpeedInsights />
       </AuthProvider>
     </QueryClientProvider>
   );

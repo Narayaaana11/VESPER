@@ -11,7 +11,7 @@ import { t as motion } from "../_libs/motion.mjs";
 import { a as Geometry, i as Program, n as Camera, r as Renderer, t as Mesh } from "../_libs/ogl.mjs";
 import { t as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Db8ge_x6.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-Vy62zepx.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var links = [
@@ -5003,10 +5003,10 @@ function DownloadSetup() {
 												children: "VESPER-Setup-1.0.0.exe · ~170 MB · Standard NSIS"
 											})] })]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-											href: "/api/download/windows",
-											download: "VESPER-Flow-Setup.exe",
+											href: "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
+											download: "VESPER-Setup-1.0.0.exe",
 											onClick: () => {
-												toast.success("Starting download of VESPER-Setup-1.0.0.exe...");
+												toast.success("Starting download of VESPER-Setup-1.0.0.exe from GitHub Releases...");
 											},
 											className: "inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-orange-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all active:scale-[0.98]",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Download" })]

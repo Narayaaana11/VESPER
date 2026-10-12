@@ -7,7 +7,9 @@ import { M as Mail, P as Lock, n as X, o as User, ut as ArrowRight } from "../_l
 import { t as VesperLogo } from "./VesperLogo-K0DjSlQl.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-YMEhzJd2.js
+import { t as Analytics } from "../_libs/vercel__analytics.mjs";
+import { t as SpeedInsights } from "../_libs/vercel__speed-insights.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/router-CSFZkGC1.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-BUUElh7Q.css";
@@ -358,11 +360,13 @@ function RootComponent() {
 				theme: "light",
 				position: "bottom-right",
 				closeButton: true
-			})
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Analytics, {}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpeedInsights, {})
 		] })
 	});
 }
-var $$splitComponentImporter$2 = () => import("./routes-Db8ge_x6.mjs");
+var $$splitComponentImporter$2 = () => import("./routes-Vy62zepx.mjs");
 var title = "VESPER Desktop: Software 3.0 Ambient Voice-to-Action for Windows";
 var description = "The high-bandwidth biological bridge to your PC. Hold Right Alt, speak naturally, and paste pre-polished text directly at your cursor in sub-180ms. Follows the Zero-Backspace Rule.";
 var Route$2 = createFileRoute("/")({
