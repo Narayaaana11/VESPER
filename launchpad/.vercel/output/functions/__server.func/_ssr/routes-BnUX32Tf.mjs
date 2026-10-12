@@ -11,7 +11,7 @@ import { t as motion } from "../_libs/motion.mjs";
 import { a as Geometry, i as Program, n as Camera, r as Renderer, t as Mesh } from "../_libs/ogl.mjs";
 import { t as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-D5E3pCU9.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BnUX32Tf.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var links = [
@@ -2055,7 +2055,7 @@ function ContextInspector({ isOpen, onClose, activeApp = "Cursor.exe (PID 14208)
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border bg-obsidian-elevated shadow-2xl",
+			className: "relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)]",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between border-b border-titanium-border px-6 py-4 bg-titanium/50",
@@ -2521,7 +2521,7 @@ function UtoExplorerModal({ isOpen, onClose }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border bg-obsidian-elevated shadow-2xl",
+			className: "relative w-full max-w-3xl overflow-hidden rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)]",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between border-b border-titanium-border px-6 py-4 bg-titanium/50",
@@ -4236,9 +4236,9 @@ var PLANS = [
 		name: "VESPER Pro",
 		badge: "Instant License",
 		popular: true,
-		priceMonthly: "$19",
-		priceAnnual: "$15",
-		billingPeriod: "per month, billed annually",
+		priceMonthly: "$10",
+		priceAnnual: "$8",
+		billingPeriod: "per month",
 		description: "Unlimited ambient dictation, high-speed Neural LPU pipeline, and priority cloud acceleration.",
 		features: [
 			"Unlimited daily dictation (no 30m cap)",
@@ -4249,17 +4249,17 @@ var PLANS = [
 			"Custom vocabulary & voice expansion snippets",
 			"Automatic multilingual speech-to-English letters"
 		],
-		ctaText: "Activate VESPER Pro",
+		ctaText: "Activate VESPER Pro ($10/mo)",
 		ctaHref: "#pricing"
 	},
 	{
 		id: "team",
 		name: "Team & Enterprise",
-		badge: "Enterprise Ready",
-		priceMonthly: "$79",
-		priceAnnual: "$65",
-		billingPeriod: "per user / month",
-		description: "Dedicated infrastructure, custom fine-tuned Whisper models, and zero-retention privacy for engineering teams.",
+		badge: "Enterprise SLA",
+		priceMonthly: "Custom",
+		priceAnnual: "Custom",
+		billingPeriod: "tailored SLA & seats",
+		description: "Dedicated infrastructure, custom fine-tuned Whisper models, centralized team seat management, and zero-retention privacy for engineering teams.",
 		features: [
 			"Everything in VESPER Pro",
 			"Dedicated enterprise Neural LPU & local GPU clusters",
@@ -4268,7 +4268,7 @@ var PLANS = [
 			"Centralized admin console & license seats",
 			"24/7 dedicated support engineer & SLA"
 		],
-		ctaText: "Contact for Enterprise Pilot",
+		ctaText: "Contact the Team",
 		ctaHref: "#pricing"
 	}
 ];
@@ -4350,9 +4350,9 @@ function Pricing({ onOpenEnterpriseModal } = {}) {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "font-mono text-4xl font-bold tracking-tight text-stark",
 									children: displayPrice
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "text-xs text-titanium-silver",
-									children: ["/", plan.billingPeriod]
+									children: displayPrice === "Custom" ? " — tailored SLA & seats" : `/${plan.billingPeriod}`
 								})]
 							}),
 							isPro && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
@@ -4400,11 +4400,14 @@ function Pricing({ onOpenEnterpriseModal } = {}) {
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: plan.ctaText }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5 text-white" })]
 									})
 								})
-							}) : plan.id === "team" && onOpenEnterpriseModal ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							}) : plan.id === "team" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 								type: "button",
-								onClick: onOpenEnterpriseModal,
-								className: "flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-xs font-semibold text-primary transition-all hover:bg-primary/20 hover:border-primary active:scale-[0.99] cursor-pointer",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: plan.ctaText }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5 text-primary" })]
+								onClick: () => {
+									if (onOpenEnterpriseModal) onOpenEnterpriseModal();
+									else toast.info("Opening enterprise inquiry channel...");
+								},
+								className: "flex w-full items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-xs font-bold text-primary transition-all hover:bg-primary/20 hover:border-primary active:scale-[0.99] cursor-pointer shadow-sm",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Contact the Team" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5 text-primary" })]
 							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 								href: plan.ctaHref,
 								className: "flex w-full items-center justify-center gap-2 rounded-xl border border-titanium-border bg-titanium-elevated px-4 py-3 text-xs font-semibold text-stark transition-all hover:border-titanium-silver/50 hover:bg-titanium-border active:scale-[0.99]",
@@ -4477,7 +4480,7 @@ function Pricing({ onOpenEnterpriseModal } = {}) {
 			isProModalOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative w-full max-w-md rounded-2xl border border-titanium-border bg-titanium p-6 shadow-2xl text-stark",
+					className: "relative w-full max-w-md rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 							type: "button",
@@ -4945,37 +4948,37 @@ function DownloadSetup() {
 			isDownloadModalOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				role: "dialog",
 				"aria-modal": "true",
-				className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md",
+				className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
 				onClick: () => setIsDownloadModalOpen(false),
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative w-full max-w-xl rounded-2xl border border-border bg-white shadow-2xl p-6 sm:p-7 text-foreground",
+					className: "relative w-full max-w-xl rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] p-6 sm:p-7 text-stark animate-in zoom-in-95 duration-200",
 					onClick: (e) => e.stopPropagation(),
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-start justify-between gap-4 border-b border-border pb-4",
+							className: "flex items-start justify-between gap-4 border-b border-titanium-border pb-4",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "flex items-center gap-2",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary",
+										className: "flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 border border-primary/30 text-primary",
 										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WindowsIcon, { className: "h-4 w-4" })
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-										className: "text-lg font-bold text-foreground",
+										className: "text-lg font-bold text-stark",
 										children: "VESPER Installation Center"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "rounded bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 font-mono text-[10px] font-semibold",
+										className: "rounded bg-emerald/10 text-emerald border border-emerald/30 px-2 py-0.5 font-mono text-[10px] font-semibold",
 										children: "v1.0.0 Stable"
 									})
 								]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 text-xs text-muted-foreground",
+								className: "mt-1 text-xs text-titanium-silver",
 								children: "Native Windows 10 & 11 (64-bit) · Low-latency Win32 caret injection"
 							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => setIsDownloadModalOpen(false),
-								className: "rounded-lg p-1.5 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+								className: "rounded-lg p-1.5 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer",
 								"aria-label": "Close modal",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-5 w-5" })
 							})]
@@ -4984,19 +4987,19 @@ function DownloadSetup() {
 							className: "mt-5 space-y-4",
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									className: "rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex items-center justify-between gap-3",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-3",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-												className: "flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-primary",
+												className: "flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 border border-primary/30 text-primary",
 												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" })
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-												className: "text-sm font-semibold text-foreground",
+												className: "text-sm font-semibold text-stark",
 												children: "Direct Installer (.exe)"
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-												className: "font-mono text-[11px] text-muted-foreground",
+												className: "font-mono text-[11px] text-titanium-silver",
 												children: "VESPER-Setup-1.0.0.exe · ~170 MB · Standard NSIS"
 											})] })]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
@@ -5011,56 +5014,56 @@ function DownloadSetup() {
 									})
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									className: "rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex items-center justify-between gap-3 mb-2",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-2",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Terminal, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs font-semibold text-foreground",
+												className: "text-xs font-semibold text-stark",
 												children: "Windows Package Manager (winget)"
 											})]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-mono text-[10px] text-muted-foreground",
+											className: "font-mono text-[10px] text-titanium-silver",
 											children: "Recommended for CLI"
 										})]
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-xs text-foreground",
+										className: "flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-xs text-stark",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											className: "truncate",
 											children: "winget install vesper"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: copyWinget,
-											className: "shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+											className: "shrink-0 rounded p-1 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer",
 											title: "Copy command",
 											children: copiedWinget ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
 										})]
 									})]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									className: "rounded-xl border border-titanium-border bg-titanium-elevated/70 p-4 transition-all hover:border-primary/40",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex items-center justify-between gap-3 mb-2",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-2",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-xs font-semibold text-foreground",
+												className: "text-xs font-semibold text-stark",
 												children: "PowerShell One-Liner Install"
 											})]
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-mono text-[10px] text-muted-foreground",
+											className: "font-mono text-[10px] text-titanium-silver",
 											children: "Auto-fetch & run"
 										})]
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-[11px] text-foreground",
+										className: "flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-[11px] text-stark",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "truncate text-slate-600",
+											className: "truncate text-titanium-silver",
 											children: "irm .../api/download/windows -OutFile ..."
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: copyPowerShell,
-											className: "shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+											className: "shrink-0 rounded p-1 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer",
 											title: "Copy PowerShell script",
 											children: copiedPowerShell ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
 										})]
@@ -5069,16 +5072,16 @@ function DownloadSetup() {
 							]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mt-4 rounded-xl border border-border bg-orange-50/50 p-3.5 text-xs text-slate-700 space-y-1.5",
+							className: "mt-4 rounded-xl border border-titanium-border/80 bg-titanium/60 p-3.5 text-xs text-titanium-silver space-y-1.5",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "font-semibold text-foreground flex items-center gap-1.5",
+								className: "font-semibold text-stark flex items-center gap-1.5",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Windows SmartScreen Note" })]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "text-[11px] leading-relaxed text-muted-foreground",
+								className: "text-[11px] leading-relaxed text-titanium-silver",
 								children: [
 									"Because VESPER installs low-level Win32 keyboard hooks for zero-focus text injection, Windows SmartScreen may show an initial prompt on unsigned previews. Simply click ",
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
-										className: "text-foreground",
+										className: "text-stark",
 										children: "More info > Run anyway"
 									}),
 									"."
@@ -5086,10 +5089,10 @@ function DownloadSetup() {
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs",
+							className: "mt-5 flex items-center justify-between gap-3 border-t border-titanium-border pt-4 text-xs",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 								href: "/guidance",
-								className: "inline-flex items-center gap-1.5 font-medium text-primary hover:text-orange-700 transition-colors",
+								className: "inline-flex items-center gap-1.5 font-medium text-emerald hover:text-emerald/80 transition-colors",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Key, { className: "h-3.5 w-3.5" }),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Validate License Key in Guidance" }),
@@ -5098,7 +5101,7 @@ function DownloadSetup() {
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => setIsDownloadModalOpen(false),
-								className: "rounded-lg border border-border bg-slate-100 hover:bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 transition-colors cursor-pointer",
+								className: "rounded-lg border border-titanium-border bg-titanium-elevated hover:bg-titanium-border px-4 py-2 text-xs font-semibold text-stark transition-colors cursor-pointer",
 								children: "Close"
 							})]
 						})
@@ -5322,9 +5325,9 @@ function ExcelWaitlistModal({ isOpen, onClose, submissions, onClear }) {
 	};
 	if (!isOpen) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "fixed inset-0 z-50 flex items-center justify-center bg-obsidian/90 p-3 sm:p-6 backdrop-blur-md animate-in fade-in duration-200",
+		className: "fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-6 backdrop-blur-md animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-2xl border border-titanium-border bg-titanium text-stark shadow-2xl overflow-hidden font-sans",
+			className: "relative flex max-h-[92vh] w-full max-w-5xl flex-col rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl text-stark shadow-[0_24px_64px_rgba(0,0,0,0.85)] overflow-hidden font-sans",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between border-b border-titanium-border bg-titanium-elevated px-4 py-3 sm:px-6",
@@ -6133,9 +6136,9 @@ function LegalModal({ isOpen, onClose, defaultTab = "privacy" }) {
 	const [tab, setTab] = (0, import_react.useState)(defaultTab);
 	if (!isOpen) return null;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian/80 backdrop-blur-md animate-in fade-in duration-200",
+		className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-titanium-border bg-titanium shadow-2xl overflow-hidden",
+			className: "relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] overflow-hidden",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between border-b border-titanium-border px-6 py-4 bg-titanium-elevated",
@@ -6591,7 +6594,7 @@ function EnterpriseModal({ isOpen, onClose }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative w-full max-w-xl rounded-2xl border border-titanium-border bg-titanium p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark",
+			className: "relative w-full max-w-xl rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 				type: "button",
 				onClick: onClose,
@@ -6775,7 +6778,7 @@ function ArchitectureModal({ isOpen, onClose }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		className: "fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-titanium-border bg-titanium shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark",
+			className: "relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center justify-between border-b border-titanium-border px-6 py-4",

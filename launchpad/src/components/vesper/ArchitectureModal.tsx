@@ -73,7 +73,7 @@ export function ArchitectureModal({ isOpen, onClose }: ArchitectureModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-titanium-border bg-titanium shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
+      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-titanium-border px-6 py-4">
           <div className="flex items-center gap-3">

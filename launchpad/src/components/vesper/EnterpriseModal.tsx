@@ -104,7 +104,7 @@ export function EnterpriseModal({ isOpen, onClose }: EnterpriseModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl rounded-2xl border border-titanium-border bg-titanium p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
+      <div className="relative w-full max-w-xl rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 sm:p-8 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
         {/* Close button */}
         <button
           type="button"

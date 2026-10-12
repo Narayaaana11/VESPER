@@ -63,13 +63,13 @@ export function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md rounded-2xl border border-border bg-white p-6 sm:p-7 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 sm:p-7 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
         {/* Close Button */}
         <button
           type="button"
           onClick={closeAuthModal}
-          className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+          className="absolute right-4 top-4 rounded-lg p-1.5 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors cursor-pointer"
           aria-label="Close"
         >
           <X className="h-4 w-4" />
@@ -80,10 +80,10 @@ export function AuthModal() {
           <div className="mx-auto flex items-center justify-center">
             <VesperLogo size={42} />
           </div>
-          <h3 className="mt-3 text-lg font-bold tracking-tight text-slate-900">
+          <h3 className="mt-3 text-lg font-bold tracking-tight text-stark">
             {tab === "signin" ? "Sign In to VESPER" : "Create VESPER Account"}
           </h3>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-titanium-silver">
             {tab === "signin"
               ? "Access your assigned desktop software license and neural profile."
               : "Instant setup — your desktop license key is generated immediately."}
@@ -96,7 +96,7 @@ export function AuthModal() {
             type="button"
             onClick={handleGoogleClick}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-slate-50 py-2.5 px-4 text-xs font-semibold text-slate-800 transition-all hover:bg-white hover:border-slate-300 active:scale-[0.99] shadow-sm"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-titanium-border bg-titanium-elevated/70 py-2.5 px-4 text-xs font-semibold text-stark transition-all hover:bg-titanium-elevated hover:border-titanium-silver/40 active:scale-[0.99] shadow-sm cursor-pointer"
           >
             <GoogleIcon className="h-4 w-4" />
             <span>Continue with Google</span>
@@ -105,21 +105,21 @@ export function AuthModal() {
 
         {/* Divider */}
         <div className="relative my-5 flex items-center justify-center">
-          <div className="w-full border-t border-slate-200" />
-          <span className="absolute bg-white px-3 font-mono text-[10px] text-slate-400 uppercase">
+          <div className="w-full border-t border-titanium-border" />
+          <span className="absolute bg-[#121217] px-3 font-mono text-[10px] text-titanium-silver uppercase">
             Or with email
           </span>
         </div>
 
         {/* Tabs: Sign In / Create Account */}
-        <div className="flex rounded-lg border border-border bg-slate-100 p-1 text-xs">
+        <div className="flex rounded-lg border border-titanium-border bg-titanium p-1 text-xs">
           <button
             type="button"
             onClick={() => setTab("signin")}
-            className={`flex-1 rounded-md py-1.5 font-semibold transition-all ${
+            className={`flex-1 rounded-md py-1.5 font-semibold transition-all cursor-pointer ${
               tab === "signin"
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-titanium-elevated text-stark shadow-sm"
+                : "text-titanium-silver hover:text-stark"
             }`}
           >
             Sign In
@@ -127,10 +127,10 @@ export function AuthModal() {
           <button
             type="button"
             onClick={() => setTab("signup")}
-            className={`flex-1 rounded-md py-1.5 font-semibold transition-all ${
+            className={`flex-1 rounded-md py-1.5 font-semibold transition-all cursor-pointer ${
               tab === "signup"
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-500 hover:text-slate-900"
+                ? "bg-titanium-elevated text-stark shadow-sm"
+                : "text-titanium-silver hover:text-stark"
             }`}
           >
             Create Account
@@ -141,49 +141,49 @@ export function AuthModal() {
         <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
           {tab === "signup" && (
             <div>
-              <label className="block text-xs font-medium text-slate-800 mb-1">Full Name</label>
+              <label className="block text-xs font-medium text-stark/90 mb-1">Full Name</label>
               <div className="relative flex items-center">
-                <UserIcon className="absolute left-3 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+                <UserIcon className="absolute left-3 h-3.5 w-3.5 text-titanium-silver pointer-events-none" />
                 <input
                   required
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ada Lovelace"
-                  className="w-full rounded-xl border border-border bg-white pl-9 pr-3.5 py-2 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-xl border border-titanium-border bg-titanium-elevated/80 pl-9 pr-3.5 py-2 text-xs text-stark outline-none transition-all placeholder:text-titanium-silver/50 focus:border-primary focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-medium text-slate-800 mb-1">
+            <label className="block text-xs font-medium text-stark/90 mb-1">
               Work or Personal Email
             </label>
             <div className="relative flex items-center">
-              <Mail className="absolute left-3 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+              <Mail className="absolute left-3 h-3.5 w-3.5 text-titanium-silver pointer-events-none" />
               <input
                 required
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="developer@company.com"
-                className="w-full rounded-xl border border-border bg-white pl-9 pr-3.5 py-2 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-titanium-border bg-titanium-elevated/80 pl-9 pr-3.5 py-2 text-xs text-stark outline-none transition-all placeholder:text-titanium-silver/50 focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-800 mb-1">Password</label>
+            <label className="block text-xs font-medium text-stark/90 mb-1">Password</label>
             <div className="relative flex items-center">
-              <Lock className="absolute left-3 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+              <Lock className="absolute left-3 h-3.5 w-3.5 text-titanium-silver pointer-events-none" />
               <input
                 required
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-xl border border-border bg-white pl-9 pr-3.5 py-2 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary"
+                className="w-full rounded-xl border border-titanium-border bg-titanium-elevated/80 pl-9 pr-3.5 py-2 text-xs text-stark outline-none transition-all placeholder:text-titanium-silver/50 focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           </div>
@@ -191,7 +191,7 @@ export function AuthModal() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-orange-600 py-2.5 px-4 text-xs font-bold text-white shadow-[0_2px_12px_rgba(255,107,0,0.25)] transition-all active:scale-[0.99]"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary hover:bg-orange-600 py-2.5 px-4 text-xs font-bold text-white shadow-[0_2px_12px_rgba(255,107,0,0.25)] transition-all active:scale-[0.99] cursor-pointer"
           >
             <span>
               {loading

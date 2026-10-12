@@ -46,9 +46,9 @@ const PLANS: PricingPlan[] = [
     name: "VESPER Pro",
     badge: "Instant License",
     popular: true,
-    priceMonthly: "$19",
-    priceAnnual: "$15",
-    billingPeriod: "per month, billed annually",
+    priceMonthly: "$10",
+    priceAnnual: "$8",
+    billingPeriod: "per month",
     description:
       "Unlimited ambient dictation, high-speed Neural LPU pipeline, and priority cloud acceleration.",
     features: [
@@ -60,18 +60,18 @@ const PLANS: PricingPlan[] = [
       "Custom vocabulary & voice expansion snippets",
       "Automatic multilingual speech-to-English letters",
     ],
-    ctaText: "Activate VESPER Pro",
+    ctaText: "Activate VESPER Pro ($10/mo)",
     ctaHref: "#pricing",
   },
   {
     id: "team",
     name: "Team & Enterprise",
-    badge: "Enterprise Ready",
-    priceMonthly: "$79",
-    priceAnnual: "$65",
-    billingPeriod: "per user / month",
+    badge: "Enterprise SLA",
+    priceMonthly: "Custom",
+    priceAnnual: "Custom",
+    billingPeriod: "tailored SLA & seats",
     description:
-      "Dedicated infrastructure, custom fine-tuned Whisper models, and zero-retention privacy for engineering teams.",
+      "Dedicated infrastructure, custom fine-tuned Whisper models, centralized team seat management, and zero-retention privacy for engineering teams.",
     features: [
       "Everything in VESPER Pro",
       "Dedicated enterprise Neural LPU & local GPU clusters",
@@ -80,7 +80,7 @@ const PLANS: PricingPlan[] = [
       "Centralized admin console & license seats",
       "24/7 dedicated support engineer & SLA",
     ],
-    ctaText: "Contact for Enterprise Pilot",
+    ctaText: "Contact the Team",
     ctaHref: "#pricing",
   },
 ];
@@ -187,7 +187,9 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
                   <span className="font-mono text-4xl font-bold tracking-tight text-stark">
                     {displayPrice}
                   </span>
-                  <span className="text-xs text-titanium-silver">/{plan.billingPeriod}</span>
+                  <span className="text-xs text-titanium-silver">
+                    {displayPrice === "Custom" ? " — tailored SLA & seats" : `/${plan.billingPeriod}`}
+                  </span>
                 </div>
 
                 {isPro && (
@@ -235,13 +237,19 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
                       </div>
                     </StarBorder>
                   </Magnet>
-                ) : plan.id === "team" && onOpenEnterpriseModal ? (
+                ) : plan.id === "team" ? (
                   <button
                     type="button"
-                    onClick={onOpenEnterpriseModal}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-xs font-semibold text-primary transition-all hover:bg-primary/20 hover:border-primary active:scale-[0.99] cursor-pointer"
+                    onClick={() => {
+                      if (onOpenEnterpriseModal) {
+                        onOpenEnterpriseModal();
+                      } else {
+                        toast.info("Opening enterprise inquiry channel...");
+                      }
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-xs font-bold text-primary transition-all hover:bg-primary/20 hover:border-primary active:scale-[0.99] cursor-pointer shadow-sm"
                   >
-                    <span>{plan.ctaText}</span>
+                    <span>Contact the Team</span>
                     <ArrowRight className="h-3.5 w-3.5 text-primary" />
                   </button>
                 ) : (
@@ -324,7 +332,7 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
       {/* Interactive Pro License Modal */}
       {isProModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-2xl border border-titanium-border bg-titanium p-6 shadow-2xl text-stark">
+          <div className="relative w-full max-w-md rounded-2xl border border-titanium-border/80 bg-[#121217]/95 backdrop-blur-xl p-6 shadow-[0_24px_64px_rgba(0,0,0,0.85)] text-stark">
             <button
               type="button"
               onClick={() => setIsProModalOpen(false)}
