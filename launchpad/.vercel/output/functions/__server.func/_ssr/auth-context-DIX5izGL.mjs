@@ -1,11 +1,9 @@
 import { r as __toESM } from "../_runtime.mjs";
-import { c as require_react } from "../_libs/@radix-ui/react-accordion+[...].mjs";
+import { c as require_react, s as require_jsx_runtime } from "../_libs/@radix-ui/react-accordion+[...].mjs";
 import { n as toast } from "../_libs/sonner.mjs";
-import { t as require_jsx_dev_runtime } from "../_libs/react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/auth-context-CFmidOKR.js
+//#region node_modules/.nitro/vite/services/ssr/assets/auth-context-DIX5izGL.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
-var import_jsx_dev_runtime = require_jsx_dev_runtime();
-var _jsxFileName = "C:/Users/gowri/Videos/QEVRA/launchpad/src/lib/auth-context.tsx";
+var import_jsx_runtime = require_jsx_runtime();
 var AuthContext = (0, import_react.createContext)(void 0);
 var TOKEN_KEY = "vesper_auth_token";
 var USER_KEY = "vesper_auth_user";
@@ -176,7 +174,7 @@ function AuthProvider({ children }) {
 		} catch {}
 		toast.info("Signed out of VESPER.");
 	};
-	return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(AuthContext.Provider, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthContext.Provider, {
 		value: {
 			user,
 			token,
@@ -194,11 +192,7 @@ function AuthProvider({ children }) {
 			logout
 		},
 		children
-	}, void 0, false, {
-		fileName: _jsxFileName,
-		lineNumber: 237,
-		columnNumber: 5
-	}, this);
+	});
 }
 function useAuth() {
 	const context = (0, import_react.useContext)(AuthContext);
