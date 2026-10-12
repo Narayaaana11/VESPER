@@ -45,6 +45,10 @@ function getAppIcon(): Electron.NativeImage | undefined {
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
   app.quit()
+} else {
+  app.on('second-instance', () => {
+    showDashboard()
+  })
 }
 
 let dashboardWindow: BrowserWindow | null = null
@@ -139,10 +143,17 @@ function createDashboardWindow(): void {
 
   AppLogger.attachWindow(dashboardWindow, 'Dashboard')
 
+  const fallbackFile = join(__dirname, '../renderer/index.html')
   if (process.env['ELECTRON_RENDERER_URL']) {
-    dashboardWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#dashboard`)
+    dashboardWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#dashboard`).catch((err) => {
+      console.warn(`[VESPER] Dev server URL failed (${process.env['ELECTRON_RENDERER_URL']}):`, err?.message || err)
+      if (existsSync(fallbackFile)) {
+        console.log('[VESPER] Falling back to prebuilt renderer index.html')
+        dashboardWindow?.loadFile(fallbackFile, { hash: 'dashboard' })
+      }
+    })
   } else {
-    dashboardWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: 'dashboard' })
+    dashboardWindow.loadFile(fallbackFile, { hash: 'dashboard' })
   }
 }
 
@@ -200,10 +211,16 @@ function createCapsuleWindow(): void {
     return { action: 'deny' }
   })
 
+  const fallbackCapsuleFile = join(__dirname, '../renderer/index.html')
   if (process.env['ELECTRON_RENDERER_URL']) {
-    capsuleWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#capsule`)
+    capsuleWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#capsule`).catch((err) => {
+      console.warn(`[VESPER] Dev server URL failed (${process.env['ELECTRON_RENDERER_URL']}):`, err?.message || err)
+      if (existsSync(fallbackCapsuleFile)) {
+        capsuleWindow?.loadFile(fallbackCapsuleFile, { hash: 'capsule' })
+      }
+    })
   } else {
-    capsuleWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: 'capsule' })
+    capsuleWindow.loadFile(fallbackCapsuleFile, { hash: 'capsule' })
   }
 }
 
