@@ -1,4 +1,6 @@
+import { t as require_lib } from "../_libs/mongodb.mjs";
 //#region node_modules/.nitro/vite/services/ssr/index.js
+var import_lib = require_lib();
 var lastCapturedError;
 var TTL_MS = 5e3;
 function record(error) {
@@ -103,21 +105,11 @@ var state = globalForMongo._mongoConnectionState ?? {
 	lastPingMs: null
 };
 globalForMongo._mongoConnectionState = state;
-async function getMongoDriver() {
-	try {
-		// @vite-ignore prevents Vite/Rolldown from statically packaging CJS socket dependencies into client or edge worker builds
-		const mod = await import(
-			/* @vite-ignore */
-			"mongodb"
-);
-		return {
-			MongoClient: mod.MongoClient,
-			ServerApiVersion: mod.ServerApiVersion
-		};
-	} catch (err) {
-		console.warn("[MongoDB] Driver could not be loaded dynamically:", err);
-		return null;
-	}
+function getMongoDriver() {
+	return {
+		MongoClient: import_lib.MongoClient,
+		ServerApiVersion: import_lib.ServerApiVersion
+	};
 }
 async function getMongoDb() {
 	if (state.db && state.isConnected) return state.db;

@@ -1,4 +1,4 @@
-import type { MongoClient, Db, Collection } from "mongodb";
+import { MongoClient, ServerApiVersion, type Db, type Collection } from "mongodb";
 
 const uri = process.env["MONGODB_URI"] || "";
 
@@ -29,20 +29,11 @@ const state: MongoConnectionState = globalForMongo._mongoConnectionState ?? {
 
 globalForMongo._mongoConnectionState = state;
 
-// Dynamically load MongoDB driver at runtime to prevent bundlers from tracing Node-only socket deps
-async function getMongoDriver() {
-  try {
-    const pkgName = "mongodb";
-    // @vite-ignore prevents Vite/Rolldown from statically packaging CJS socket dependencies into client or edge worker builds
-    const mod = await import(/* @vite-ignore */ pkgName);
-    return {
-      MongoClient: mod.MongoClient,
-      ServerApiVersion: mod.ServerApiVersion,
-    };
-  } catch (err) {
-    console.warn("[MongoDB] Driver could not be loaded dynamically:", err);
-    return null;
-  }
+function getMongoDriver() {
+  return {
+    MongoClient,
+    ServerApiVersion,
+  };
 }
 
 export async function getMongoDb(): Promise<Db | null> {
