@@ -301,6 +301,21 @@ var Database = class {
 		} catch {}
 		return this.inMemoryUsers.get(id);
 	}
+	async findUserByLicenseKey(licenseKey) {
+		await this.ensureInitialized();
+		const cleanKey = licenseKey.trim().toUpperCase();
+		try {
+			const usersCol = await getMongoCollection("users");
+			if (usersCol) {
+				const found = await usersCol.findOne({ licenseKey: cleanKey });
+				if (found) {
+					this.inMemoryUsers.set(found.id, found);
+					return found;
+				}
+			}
+		} catch {}
+		for (const u of this.inMemoryUsers.values()) if (u.licenseKey && u.licenseKey.toUpperCase() === cleanKey) return u;
+	}
 	async createUser(user) {
 		await this.ensureInitialized();
 		this.inMemoryUsers.set(user.id, user);
@@ -1494,7 +1509,7 @@ async function handleApiRequest(request) {
 }
 var serverEntryPromise;
 async function getServerEntry() {
-	if (!serverEntryPromise) serverEntryPromise = import("./server-BX1Aty8s.mjs").then((m) => m.default ?? m);
+	if (!serverEntryPromise) serverEntryPromise = import("./server-DjjuRsPf.mjs").then((m) => m.default ?? m);
 	return serverEntryPromise;
 }
 async function normalizeCatastrophicSsrResponse(response) {

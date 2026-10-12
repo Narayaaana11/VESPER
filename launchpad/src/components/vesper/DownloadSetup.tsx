@@ -1,4 +1,4 @@
-import { Copy, Download, Eye, EyeOff, Check, ExternalLink, ShieldCheck } from "lucide-react";
+import { Copy, Download, Eye, EyeOff, Check, ExternalLink, ShieldCheck, Terminal, X, Key, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -28,6 +28,9 @@ function WindowsIcon({ className = "h-4 w-4" }: { className?: string }) {
 export function DownloadSetup() {
   const [showSha, setShowSha] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedWinget, setCopiedWinget] = useState(false);
+  const [copiedPowerShell, setCopiedPowerShell] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   const copyCode = () => {
     const code =
@@ -38,8 +41,28 @@ export function DownloadSetup() {
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
+  const copyWinget = () => {
+    void navigator.clipboard?.writeText("winget install vesper");
+    setCopiedWinget(true);
+    toast.success("Winget command copied to clipboard!");
+    setTimeout(() => setCopiedWinget(false), 2000);
+  };
+
+  const copyPowerShell = () => {
+    const cmd = "irm https://vesperflow-ai.vercel.app/api/download/windows -OutFile VESPER-Setup.exe; .\\VESPER-Setup.exe";
+    void navigator.clipboard?.writeText(cmd);
+    setCopiedPowerShell(true);
+    toast.success("PowerShell automated install script copied!");
+    setTimeout(() => setCopiedPowerShell(false), 2000);
+  };
+
+  const handleDownloadClick = () => {
+    setIsDownloadModalOpen(true);
+    toast.success("Opening VESPER Download & Verification Center...");
+  };
+
   return (
-    <section id="download" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
+    <section id="download" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24 relative">
       <div className="text-center sm:text-left">
         <p className="font-mono text-[11px] tracking-[0.2em] text-primary font-semibold">
           DOWNLOAD &amp; ONBOARDING
@@ -80,22 +103,25 @@ export function DownloadSetup() {
             {/* Direct Download with Magnet & StarBorder */}
             <div className="mt-6">
               <Magnet padding={40} magnetStrength={3} wrapperClassName="w-full">
-                <StarBorder
-                  as="a"
-                  href="#download"
-                  download="VESPER-Flow-Setup.exe"
-                  onClick={() => toast.success("Preparing secure Windows installer download...")}
-                  color="#ff6b00"
-                  speed="3s"
-                  thickness={1.5}
-                  backgroundColor="#ff6b00"
-                  className="flex w-full items-center justify-center text-sm font-semibold shadow-md transition-all hover:opacity-95 active:scale-[0.98]"
+                <button
+                  type="button"
+                  onClick={handleDownloadClick}
+                  className="w-full focus:outline-none"
                 >
-                  <div className="flex items-center justify-center gap-2 py-3 px-4 font-semibold text-white">
-                    <Download className="h-4 w-4 text-white" />
-                    <span>Download VESPER Installer (.exe)</span>
-                  </div>
-                </StarBorder>
+                  <StarBorder
+                    as="div"
+                    color="#ff6b00"
+                    speed="3s"
+                    thickness={1.5}
+                    backgroundColor="#ff6b00"
+                    className="flex w-full items-center justify-center text-sm font-semibold shadow-md transition-all hover:opacity-95 active:scale-[0.98] cursor-pointer"
+                  >
+                    <div className="flex items-center justify-center gap-2 py-3 px-4 font-semibold text-white">
+                      <Download className="h-4 w-4 text-white" />
+                      <span>Download VESPER Installer (.exe)</span>
+                    </div>
+                  </StarBorder>
+                </button>
               </Magnet>
             </div>
 
@@ -288,6 +314,145 @@ export function DownloadSetup() {
           </Accordion>
         </SpotlightCard>
       </div>
+
+      {isDownloadModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+          onClick={() => setIsDownloadModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-xl rounded-2xl border border-border bg-white shadow-2xl p-6 sm:p-7 text-foreground"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <WindowsIcon className="h-4 w-4" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">VESPER Installation Center</h3>
+                  <span className="rounded bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 font-mono text-[10px] font-semibold">
+                    v1.0.0 Stable
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Native Windows 10 &amp; 11 (64-bit) · Low-latency Win32 caret injection
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDownloadModalOpen(false)}
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-primary">
+                      <Download className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">Direct Installer (.exe)</p>
+                      <p className="font-mono text-[11px] text-muted-foreground">
+                        VESPER-Setup-1.0.0.exe · ~170 MB · Standard NSIS
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href="/api/download/windows"
+                    download="VESPER-Flow-Setup.exe"
+                    onClick={() => {
+                      toast.success("Starting download of VESPER-Setup-1.0.0.exe...");
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-orange-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all active:scale-[0.98]"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    <span>Download</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Terminal className="h-4 w-4 text-primary" />
+                    <span className="text-xs font-semibold text-foreground">Windows Package Manager (winget)</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-muted-foreground">Recommended for CLI</span>
+                </div>
+                <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-xs text-foreground">
+                  <span className="truncate">winget install vesper</span>
+                  <button
+                    type="button"
+                    onClick={copyWinget}
+                    className="shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
+                    title="Copy command"
+                  >
+                    {copiedWinget ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <span className="text-xs font-semibold text-foreground">PowerShell One-Liner Install</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-muted-foreground">Auto-fetch &amp; run</span>
+                </div>
+                <div className="flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-[11px] text-foreground">
+                  <span className="truncate text-slate-600">irm .../api/download/windows -OutFile ...</span>
+                  <button
+                    type="button"
+                    onClick={copyPowerShell}
+                    className="shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
+                    title="Copy PowerShell script"
+                  >
+                    {copiedPowerShell ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-xl border border-border bg-orange-50/50 p-3.5 text-xs text-slate-700 space-y-1.5">
+              <p className="font-semibold text-foreground flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                <span>Windows SmartScreen Note</span>
+              </p>
+              <p className="text-[11px] leading-relaxed text-muted-foreground">
+                Because VESPER installs low-level Win32 keyboard hooks for zero-focus text injection, Windows SmartScreen may show an initial prompt on unsigned previews. Simply click <strong className="text-foreground">More info &gt; Run anyway</strong>.
+              </p>
+            </div>
+
+            <div className="mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs">
+              <a
+                href="/guidance"
+                className="inline-flex items-center gap-1.5 font-medium text-primary hover:text-orange-700 transition-colors"
+              >
+                <Key className="h-3.5 w-3.5" />
+                <span>Validate License Key in Guidance</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setIsDownloadModalOpen(false)}
+                className="rounded-lg border border-border bg-slate-100 hover:bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

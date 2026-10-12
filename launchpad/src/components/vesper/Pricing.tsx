@@ -1,5 +1,8 @@
-import { Check, Sparkles, Shield, Cpu, Zap, ArrowRight } from "lucide-react";
+import { Check, Sparkles, Shield, Cpu, Zap, ArrowRight, X, Key, Copy, ExternalLink, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { useAuth } from "@/lib/auth-context";
 import { BorderGlow, SpotlightCard, StarBorder, Magnet, ShinyText } from "@/components/reactbits";
 
 interface PricingPlan {
@@ -41,7 +44,7 @@ const PLANS: PricingPlan[] = [
   {
     id: "pro",
     name: "VESPER Pro",
-    badge: "Stripe Instant",
+    badge: "Instant License",
     popular: true,
     priceMonthly: "$19",
     priceAnnual: "$15",
@@ -51,13 +54,13 @@ const PLANS: PricingPlan[] = [
     features: [
       "Unlimited daily dictation (no 30m cap)",
       "Sub-180ms ultra-low latency Neural LPU pipeline",
-      "Instant Stripe Checkout & automated licensing",
+      "Instant license generation & automated key delivery",
       "In-place Selection Transformer (Edit Mode)",
       "Multi-utterance context chaining & memory",
       "Custom vocabulary & voice expansion snippets",
       "Automatic multilingual speech-to-English letters",
     ],
-    ctaText: "Upgrade with Stripe",
+    ctaText: "Activate VESPER Pro",
     ctaHref: "#pricing",
   },
   {
@@ -88,6 +91,27 @@ export interface PricingProps {
 
 export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
+  const [isProModalOpen, setIsProModalOpen] = useState(false);
+  const [copiedKey, setCopiedKey] = useState(false);
+  const { user, openAuthModal } = useAuth();
+
+  const handleProClick = () => {
+    if (!user) {
+      toast.info("Create a free account or sign in to activate your VESPER Pro license.", {
+        description: "Your license key is generated immediately upon registration.",
+      });
+      openAuthModal();
+    } else {
+      setIsProModalOpen(true);
+    }
+  };
+
+  const copyLicense = (key: string) => {
+    void navigator.clipboard?.writeText(key);
+    setCopiedKey(true);
+    toast.success("License key copied to clipboard!");
+    setTimeout(() => setCopiedKey(false), 2000);
+  };
 
   return (
     <section id="pricing" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-28 relative">
@@ -195,14 +219,15 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
                 {isPro ? (
                   <Magnet padding={40} magnetStrength={3} wrapperClassName="w-full">
                     <StarBorder
-                      as="a"
-                      href={plan.ctaHref}
+                      as="button"
+                      type="button"
+                      onClick={handleProClick}
                       color="#ff6b00"
                       speed="3s"
                       thickness={1.5}
                       backgroundColor="#ff6b00"
                       textColor="#ffffff"
-                      className="w-full text-xs font-bold shadow-md transition-all hover:opacity-95"
+                      className="w-full text-xs font-bold shadow-md transition-all hover:opacity-95 cursor-pointer"
                     >
                       <div className="flex items-center justify-center gap-2 py-3 px-4 text-white font-bold">
                         <span>{plan.ctaText}</span>
@@ -295,6 +320,87 @@ export function Pricing({ onOpenEnterpriseModal }: PricingProps = {}) {
           </div>
         </div>
       </div>
+
+      {/* Interactive Pro License Modal */}
+      {isProModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-md rounded-2xl border border-titanium-border bg-titanium p-6 shadow-2xl text-stark">
+            <button
+              type="button"
+              onClick={() => setIsProModalOpen(false)}
+              className="rounded-lg p-1.5 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors absolute right-4 top-4"
+              aria-label="Close modal"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex items-center gap-3 border-b border-titanium-border pb-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald/40 bg-emerald/10 text-emerald">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-stark">VESPER Pro Subscription</h3>
+                <p className="text-xs text-titanium-silver">Account &amp; Software License Status</p>
+              </div>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-4">
+                <span className="font-mono text-[10px] text-titanium-silver uppercase tracking-wider">
+                  Assigned Desktop License Key
+                </span>
+                <div className="mt-1.5 flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-xs font-semibold text-emerald">
+                  <span className="truncate">{user?.licenseKey || "VSP-PRO-ACTIVE-KEY"}</span>
+                  <button
+                    type="button"
+                    onClick={() => copyLicense(user?.licenseKey || "VSP-PRO-ACTIVE-KEY")}
+                    className="text-titanium-silver hover:text-stark transition-colors p-1"
+                    title="Copy License Key"
+                  >
+                    {copiedKey ? <Check className="h-4 w-4 text-emerald" /> : <Copy className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-3">
+                  <span className="text-titanium-silver text-[11px]">Tier Status</span>
+                  <div className="mt-1 font-bold text-stark flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-emerald" />
+                    <span>{user?.tier ? user.tier.toUpperCase() : "PRO"} Active</span>
+                  </div>
+                </div>
+                <div className="rounded-xl border border-titanium-border bg-titanium-elevated p-3">
+                  <span className="text-titanium-silver text-[11px]">Speech Latency</span>
+                  <div className="mt-1 font-mono font-bold text-stark">&lt;180ms Neural</div>
+                </div>
+              </div>
+
+              <p className="text-xs text-titanium-silver leading-relaxed">
+                Your Pro license key is authorized for unlimited on-device dictation and the high-speed Neural LPU pipeline. Paste this key into the desktop client setup gate or inspect guidance below.
+              </p>
+
+              <div className="flex gap-2 pt-2">
+                <Link
+                  to="/guidance"
+                  onClick={() => setIsProModalOpen(false)}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary hover:bg-orange-600 px-4 py-2.5 text-xs font-bold text-white transition-colors"
+                >
+                  <span>Open License Validator</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsProModalOpen(false)}
+                  className="rounded-xl border border-titanium-border bg-titanium-elevated px-4 py-2.5 text-xs font-semibold text-stark hover:bg-titanium-border transition-colors"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

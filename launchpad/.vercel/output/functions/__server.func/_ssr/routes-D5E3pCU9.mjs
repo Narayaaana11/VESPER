@@ -4,14 +4,14 @@ import { n as toast } from "../_libs/sonner.mjs";
 import { n as useAuth } from "./auth-context-DIX5izGL.mjs";
 import { t as crmService } from "./crm-service-Yn1PsX10.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { $ as Clock, A as MessageSquare, B as FileSpreadsheet, C as ScanEye, D as PenTool, F as Layers, G as ExternalLink, H as FileBraces, I as Keyboard, J as Database, K as Download, M as Mail, N as LogOut, O as Network, P as Lock, Q as CodeXml, R as Gauge, S as Search, T as Radio, U as Eye, V as FileCode, W as EyeOff, X as Cpu, Y as Crosshair, Z as Copy, _ as Shield, at as Check, ct as BookOpen, d as Terminal, et as CircleQuestionMark, f as Target, ft as ArrowDown, g as SlidersHorizontal, h as Sparkles, i as Volume2, it as ChevronDown, j as Menu, k as Mic, l as Trash2, m as Star, n as X, nt as CircleCheckBig, o as User, ot as Building2, p as Table, pt as Activity, r as VolumeX, st as Briefcase, t as Zap, tt as CircleCheck, u as Ticket, ut as ArrowRight, v as ShieldCheck, x as Send, y as ShieldAlert, z as FileText } from "../_libs/lucide-react.mjs";
+import { $ as Clock, A as MessageSquare, B as FileSpreadsheet, C as ScanEye, D as PenTool, F as Layers, G as ExternalLink, H as FileBraces, I as Keyboard, J as Database, K as Download, L as Key, M as Mail, N as LogOut, O as Network, P as Lock, Q as CodeXml, R as Gauge, S as Search, T as Radio, U as Eye, V as FileCode, W as EyeOff, X as Cpu, Y as Crosshair, Z as Copy, _ as Shield, at as Check, ct as BookOpen, d as Terminal, et as CircleQuestionMark, f as Target, ft as ArrowDown, g as SlidersHorizontal, h as Sparkles, i as Volume2, it as ChevronDown, j as Menu, k as Mic, l as Trash2, m as Star, n as X, nt as CircleCheckBig, o as User, ot as Building2, p as Table, pt as Activity, r as VolumeX, st as Briefcase, t as Zap, tt as CircleCheck, u as Ticket, ut as ArrowRight, v as ShieldCheck, x as Send, y as ShieldAlert, z as FileText } from "../_libs/lucide-react.mjs";
 import { t as VesperLogo } from "./VesperLogo-K0DjSlQl.mjs";
 import { a as useMotionValue, i as useTransform, n as useAnimationFrame, r as useSpring, t as useInView } from "../_libs/framer-motion+[...].mjs";
 import { t as motion } from "../_libs/motion.mjs";
 import { a as Geometry, i as Program, n as Camera, r as Renderer, t as Mesh } from "../_libs/ogl.mjs";
 import { t as clsx } from "../_libs/clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-eTeT_kRA.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-D5E3pCU9.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var links = [
@@ -4234,7 +4234,7 @@ var PLANS = [
 	{
 		id: "pro",
 		name: "VESPER Pro",
-		badge: "Stripe Instant",
+		badge: "Instant License",
 		popular: true,
 		priceMonthly: "$19",
 		priceAnnual: "$15",
@@ -4243,13 +4243,13 @@ var PLANS = [
 		features: [
 			"Unlimited daily dictation (no 30m cap)",
 			"Sub-180ms ultra-low latency Neural LPU pipeline",
-			"Instant Stripe Checkout & automated licensing",
+			"Instant license generation & automated key delivery",
 			"In-place Selection Transformer (Edit Mode)",
 			"Multi-utterance context chaining & memory",
 			"Custom vocabulary & voice expansion snippets",
 			"Automatic multilingual speech-to-English letters"
 		],
-		ctaText: "Upgrade with Stripe",
+		ctaText: "Activate VESPER Pro",
 		ctaHref: "#pricing"
 	},
 	{
@@ -4274,6 +4274,21 @@ var PLANS = [
 ];
 function Pricing({ onOpenEnterpriseModal } = {}) {
 	const [billingCycle, setBillingCycle] = (0, import_react.useState)("annual");
+	const [isProModalOpen, setIsProModalOpen] = (0, import_react.useState)(false);
+	const [copiedKey, setCopiedKey] = (0, import_react.useState)(false);
+	const { user, openAuthModal } = useAuth();
+	const handleProClick = () => {
+		if (!user) {
+			toast.info("Create a free account or sign in to activate your VESPER Pro license.", { description: "Your license key is generated immediately upon registration." });
+			openAuthModal();
+		} else setIsProModalOpen(true);
+	};
+	const copyLicense = (key) => {
+		navigator.clipboard?.writeText(key);
+		setCopiedKey(true);
+		toast.success("License key copied to clipboard!");
+		setTimeout(() => setCopiedKey(false), 2e3);
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		id: "pricing",
 		className: "mx-auto max-w-6xl scroll-mt-20 px-5 py-28 relative",
@@ -4371,14 +4386,15 @@ function Pricing({ onOpenEnterpriseModal } = {}) {
 								magnetStrength: 3,
 								wrapperClassName: "w-full",
 								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StarBorder, {
-									as: "a",
-									href: plan.ctaHref,
+									as: "button",
+									type: "button",
+									onClick: handleProClick,
 									color: "#ff6b00",
 									speed: "3s",
 									thickness: 1.5,
 									backgroundColor: "#ff6b00",
 									textColor: "#ffffff",
-									className: "w-full text-xs font-bold shadow-md transition-all hover:opacity-95",
+									className: "w-full text-xs font-bold shadow-md transition-all hover:opacity-95 cursor-pointer",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: "flex items-center justify-center gap-2 py-3 px-4 text-white font-bold",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: plan.ctaText }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5 text-white" })]
@@ -4457,6 +4473,98 @@ function Pricing({ onOpenEnterpriseModal } = {}) {
 						]
 					})]
 				})
+			}),
+			isProModalOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative w-full max-w-md rounded-2xl border border-titanium-border bg-titanium p-6 shadow-2xl text-stark",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: () => setIsProModalOpen(false),
+							className: "rounded-lg p-1.5 text-titanium-silver hover:bg-titanium-elevated hover:text-stark transition-colors absolute right-4 top-4",
+							"aria-label": "Close modal",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-4 w-4" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-3 border-b border-titanium-border pb-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex h-10 w-10 items-center justify-center rounded-xl border border-emerald/40 bg-emerald/10 text-emerald",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-5 w-5" })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+								className: "text-base font-bold text-stark",
+								children: "VESPER Pro Subscription"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-titanium-silver",
+								children: "Account & Software License Status"
+							})] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-5 space-y-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "rounded-xl border border-titanium-border bg-titanium-elevated p-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono text-[10px] text-titanium-silver uppercase tracking-wider",
+										children: "Assigned Desktop License Key"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "mt-1.5 flex items-center justify-between gap-2 rounded-lg border border-titanium-border bg-obsidian px-3 py-2 font-mono text-xs font-semibold text-emerald",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "truncate",
+											children: user?.licenseKey || "VSP-PRO-ACTIVE-KEY"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: () => copyLicense(user?.licenseKey || "VSP-PRO-ACTIVE-KEY"),
+											className: "text-titanium-silver hover:text-stark transition-colors p-1",
+											title: "Copy License Key",
+											children: copiedKey ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4 text-emerald" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-4 w-4" })
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-3 text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "rounded-xl border border-titanium-border bg-titanium-elevated p-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-titanium-silver text-[11px]",
+											children: "Tier Status"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "mt-1 font-bold text-stark flex items-center gap-1.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2 w-2 rounded-full bg-emerald" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [user?.tier ? user.tier.toUpperCase() : "PRO", " Active"] })]
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "rounded-xl border border-titanium-border bg-titanium-elevated p-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-titanium-silver text-[11px]",
+											children: "Speech Latency"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "mt-1 font-mono font-bold text-stark",
+											children: "<180ms Neural"
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "text-xs text-titanium-silver leading-relaxed",
+									children: "Your Pro license key is authorized for unlimited on-device dictation and the high-speed Neural LPU pipeline. Paste this key into the desktop client setup gate or inspect guidance below."
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex gap-2 pt-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+										to: "/guidance",
+										onClick: () => setIsProModalOpen(false),
+										className: "flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-primary hover:bg-orange-600 px-4 py-2.5 text-xs font-bold text-white transition-colors",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Open License Validator" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3.5 w-3.5" })]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => setIsProModalOpen(false),
+										className: "rounded-xl border border-titanium-border bg-titanium-elevated px-4 py-2.5 text-xs font-semibold text-stark hover:bg-titanium-border transition-colors",
+										children: "Done"
+									})]
+								})
+							]
+						})
+					]
+				})
 			})
 		]
 	});
@@ -4503,314 +4611,501 @@ function WindowsIcon({ className = "h-4 w-4" }) {
 function DownloadSetup() {
 	const [showSha, setShowSha] = (0, import_react.useState)(false);
 	const [copiedCode, setCopiedCode] = (0, import_react.useState)(false);
+	const [copiedWinget, setCopiedWinget] = (0, import_react.useState)(false);
+	const [copiedPowerShell, setCopiedPowerShell] = (0, import_react.useState)(false);
+	const [isDownloadModalOpen, setIsDownloadModalOpen] = (0, import_react.useState)(false);
 	const copyCode = () => {
 		navigator.clipboard?.writeText("# Authorized internal developer access\ncd vesper-desktop\nnpm install\nnpm run dev");
 		setCopiedCode(true);
 		toast.success("Command copied to clipboard");
 		setTimeout(() => setCopiedCode(false), 2e3);
 	};
+	const copyWinget = () => {
+		navigator.clipboard?.writeText("winget install vesper");
+		setCopiedWinget(true);
+		toast.success("Winget command copied to clipboard!");
+		setTimeout(() => setCopiedWinget(false), 2e3);
+	};
+	const copyPowerShell = () => {
+		navigator.clipboard?.writeText("irm https://vesperflow-ai.vercel.app/api/download/windows -OutFile VESPER-Setup.exe; .\\VESPER-Setup.exe");
+		setCopiedPowerShell(true);
+		toast.success("PowerShell automated install script copied!");
+		setTimeout(() => setCopiedPowerShell(false), 2e3);
+	};
+	const handleDownloadClick = () => {
+		setIsDownloadModalOpen(true);
+		toast.success("Opening VESPER Download & Verification Center...");
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		id: "download",
-		className: "mx-auto max-w-6xl scroll-mt-20 px-5 py-24",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "text-center sm:text-left",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "font-mono text-[11px] tracking-[0.2em] text-primary font-semibold",
-					children: "DOWNLOAD & ONBOARDING"
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-					className: "mt-3 text-3xl font-semibold tracking-[-0.025em] text-foreground sm:text-4xl",
-					children: "Zero-friction setup. Running in under two minutes."
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "mt-2 text-sm text-muted-foreground",
-					children: "Download the pre-compiled native installer, activate your VESPER subscription license, and begin speaking anywhere in Windows."
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "mt-10 grid gap-6 lg:grid-cols-[400px_1fr]",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SpotlightCard, {
-				spotlightColor: "rgba(255, 107, 0, 0.15)",
-				className: "flex flex-col justify-between rounded-xl border border-border bg-white p-6 shadow-sm backdrop-blur-md",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-orange-50 shadow-inner",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WindowsIcon, { className: "h-5 w-5 text-primary" })
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-								className: "text-base font-semibold text-foreground",
-								children: "VESPER for Windows"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] text-primary font-semibold",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShinyText, {
-									text: "Official Release",
-									speed: 2,
-									color: "#ff6b00",
-									shineColor: "#ffffff"
-								})
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "font-mono text-[11px] text-muted-foreground",
-							children: "~170 MB · Windows 10 & 11 (x64) · Direct Caret Injection"
-						})] })]
+		className: "mx-auto max-w-6xl scroll-mt-20 px-5 py-24 relative",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-center sm:text-left",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "font-mono text-[11px] tracking-[0.2em] text-primary font-semibold",
+						children: "DOWNLOAD & ONBOARDING"
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "mt-6",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Magnet, {
-							padding: 40,
-							magnetStrength: 3,
-							wrapperClassName: "w-full",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StarBorder, {
-								as: "a",
-								href: "#download",
-								download: "VESPER-Flow-Setup.exe",
-								onClick: () => toast.success("Preparing secure Windows installer download..."),
-								color: "#ff6b00",
-								speed: "3s",
-								thickness: 1.5,
-								backgroundColor: "#ff6b00",
-								className: "flex w-full items-center justify-center text-sm font-semibold shadow-md transition-all hover:opacity-95 active:scale-[0.98]",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center justify-center gap-2 py-3 px-4 font-semibold text-white",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4 text-white" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Download VESPER Installer (.exe)" })]
-								})
-							})
-						})
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+						className: "mt-3 text-3xl font-semibold tracking-[-0.025em] text-foreground sm:text-4xl",
+						children: "Zero-friction setup. Running in under two minutes."
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border border-border bg-slate-50 px-3 py-2 text-xs text-muted-foreground",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center gap-1.5",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3.5 w-3.5 text-primary shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Verified Release Package" })]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-mono text-[11px] text-primary font-semibold",
-							children: "SHA-256 Checksum Verified"
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-4 rounded-lg border border-border bg-slate-50 p-3 text-[11px] leading-relaxed text-muted-foreground",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-semibold text-foreground",
-								children: "Notice:"
-							}),
-							" Because this is an unsigned community preview, Windows SmartScreen may show an initial prompt. Click",
-							" ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-foreground font-semibold underline",
-								children: "More info"
-							}),
-							" >",
-							" ",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-foreground font-semibold underline",
-								children: "Run anyway"
-							}),
-							"."
-						]
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mt-2 text-sm text-muted-foreground",
+						children: "Download the pre-compiled native installer, activate your VESPER subscription license, and begin speaking anywhere in Windows."
 					})
-				] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-6 border-t border-border pt-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-						onClick: () => setShowSha((v) => !v),
-						className: "flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground cursor-pointer",
-						children: [showSha ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EyeOff, { className: "h-3.5 w-3.5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Verify SHA256 Checksum" })]
-					}), showSha && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-2.5 flex items-start gap-2 rounded-lg border border-border bg-slate-50 p-2.5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
-							className: "break-all font-mono text-[10px] leading-4 text-muted-foreground",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DecryptedText, {
-								text: SHA256_CHECKSUM,
-								speed: 25,
-								maxIterations: 6,
-								animateOn: "view",
-								className: "text-primary font-mono font-medium",
-								encryptedClassName: "text-muted-foreground font-mono"
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-10 grid gap-6 lg:grid-cols-[400px_1fr]",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SpotlightCard, {
+					spotlightColor: "rgba(255, 107, 0, 0.15)",
+					className: "flex flex-col justify-between rounded-xl border border-border bg-white p-6 shadow-sm backdrop-blur-md",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-orange-50 shadow-inner",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WindowsIcon, { className: "h-5 w-5 text-primary" })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+									className: "text-base font-semibold text-foreground",
+									children: "VESPER for Windows"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] text-primary font-semibold",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShinyText, {
+										text: "Official Release",
+										speed: 2,
+										color: "#ff6b00",
+										shineColor: "#ffffff"
+									})
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "font-mono text-[11px] text-muted-foreground",
+								children: "~170 MB · Windows 10 & 11 (x64) · Direct Caret Injection"
+							})] })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "mt-6",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Magnet, {
+								padding: 40,
+								magnetStrength: 3,
+								wrapperClassName: "w-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: handleDownloadClick,
+									className: "w-full focus:outline-none",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StarBorder, {
+										as: "div",
+										color: "#ff6b00",
+										speed: "3s",
+										thickness: 1.5,
+										backgroundColor: "#ff6b00",
+										className: "flex w-full items-center justify-center text-sm font-semibold shadow-md transition-all hover:opacity-95 active:scale-[0.98] cursor-pointer",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center justify-center gap-2 py-3 px-4 font-semibold text-white",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4 text-white" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Download VESPER Installer (.exe)" })]
+										})
+									})
+								})
 							})
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							onClick: () => {
-								navigator.clipboard?.writeText(SHA256_CHECKSUM);
-								toast.success("SHA256 checksum copied to clipboard");
-							},
-							className: "shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-slate-200 hover:text-foreground cursor-pointer",
-							"aria-label": "Copy checksum",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border border-border bg-slate-50 px-3 py-2 text-xs text-muted-foreground",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-3.5 w-3.5 text-primary shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Verified Release Package" })]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-mono text-[11px] text-primary font-semibold",
+								children: "SHA-256 Checksum Verified"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-4 rounded-lg border border-border bg-slate-50 p-3 text-[11px] leading-relaxed text-muted-foreground",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-semibold text-foreground",
+									children: "Notice:"
+								}),
+								" Because this is an unsigned community preview, Windows SmartScreen may show an initial prompt. Click",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-foreground font-semibold underline",
+									children: "More info"
+								}),
+								" >",
+								" ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-foreground font-semibold underline",
+									children: "Run anyway"
+								}),
+								"."
+							]
+						})
+					] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-6 border-t border-border pt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							onClick: () => setShowSha((v) => !v),
+							className: "flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground cursor-pointer",
+							children: [showSha ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(EyeOff, { className: "h-3.5 w-3.5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Eye, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Verify SHA256 Checksum" })]
+						}), showSha && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-2.5 flex items-start gap-2 rounded-lg border border-border bg-slate-50 p-2.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
+								className: "break-all font-mono text-[10px] leading-4 text-muted-foreground",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DecryptedText, {
+									text: SHA256_CHECKSUM,
+									speed: 25,
+									maxIterations: 6,
+									animateOn: "view",
+									className: "text-primary font-mono font-medium",
+									encryptedClassName: "text-muted-foreground font-mono"
+								})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => {
+									navigator.clipboard?.writeText(SHA256_CHECKSUM);
+									toast.success("SHA256 checksum copied to clipboard");
+								},
+								className: "shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-slate-200 hover:text-foreground cursor-pointer",
+								"aria-label": "Copy checksum",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
+							})]
 						})]
 					})]
-				})]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpotlightCard, {
-				spotlightColor: "rgba(255, 107, 0, 0.12)",
-				className: "rounded-xl border border-border bg-white px-6 py-4 shadow-sm backdrop-blur-md",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Accordion, {
-					type: "single",
-					collapsible: true,
-					defaultValue: "s1",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
-							value: "s1",
-							className: "border-border",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
-								className: "text-left text-sm font-medium hover:no-underline py-4",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
-										children: "1"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-foreground font-semibold",
-										children: "Activate Your VESPER Subscription License"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpotlightCard, {
+					spotlightColor: "rgba(255, 107, 0, 0.12)",
+					className: "rounded-xl border border-border bg-white px-6 py-4 shadow-sm backdrop-blur-md",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Accordion, {
+						type: "single",
+						collapsible: true,
+						defaultValue: "s1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
+								value: "s1",
+								className: "border-border",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
+									className: "text-left text-sm font-medium hover:no-underline py-4",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
+											children: "1"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-foreground font-semibold",
+											children: "Activate Your VESPER Subscription License"
+										})]
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
+									className: "space-y-3.5 text-sm text-muted-foreground pb-4",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "VESPER authenticates desktop sessions against your developer subscription license. Sign in with Google or verify your email on this portal to generate your license key." }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", {
+											className: "list-decimal space-y-1.5 pl-5 text-xs text-muted-foreground",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Create your account or sign in using the top navigation bar." }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Verify your email address via the 6-digit PIN sent to your inbox." }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+													"Copy your assigned license key (format:",
+													" ",
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+														className: "font-mono text-foreground font-medium",
+														children: "VESPER-XXXX-XXXX-XXXX"
+													}),
+													")."
+												] })
+											]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+											href: "/guidance",
+											className: "inline-flex items-center gap-2 rounded-lg border border-border bg-slate-50 px-3.5 py-2 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-slate-100",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Open Guidance & License Gate" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3.5 w-3.5 text-primary" })]
+										})
+									]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
+								value: "s2",
+								className: "border-border",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
+									className: "text-left text-sm font-medium hover:no-underline py-4",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
+											children: "2"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-foreground font-semibold",
+											children: "Enable Windows Microphone Permissions"
+										})]
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
+									className: "space-y-2.5 text-sm text-muted-foreground pb-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Ensure Windows grants desktop apps permission to access your microphone:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "rounded-lg border border-border bg-slate-50 p-3 font-mono text-xs text-muted-foreground",
+										children: "Settings > Privacy & security > Microphone > Allow desktop apps to access your microphone (ON)"
 									})]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
-								className: "space-y-3.5 text-sm text-muted-foreground pb-4",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "VESPER authenticates desktop sessions against your developer subscription license. Sign in with Google or verify your email on this portal to generate your license key." }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ol", {
-										className: "list-decimal space-y-1.5 pl-5 text-xs text-muted-foreground",
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
+								value: "s3",
+								className: "border-border",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
+									className: "text-left text-sm font-medium hover:no-underline py-4",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
+											children: "3"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-foreground font-semibold",
+											children: "Launch VESPER & Paste Your License Key"
+										})]
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
+									className: "space-y-3 text-sm text-muted-foreground pb-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Run the installer or click the desktop shortcut." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
+										className: "list-disc space-y-1 pl-5 text-xs text-muted-foreground",
 										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Create your account or sign in using the top navigation bar." }),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Verify your email address via the 6-digit PIN sent to your inbox." }),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
-												"Copy your assigned license key (format:",
+												"Press",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "kbd font-mono text-[11px] text-foreground bg-slate-100 border border-slate-300 px-1 py-0.5 rounded",
+													children: "Ctrl + Shift + Space"
+												}),
+												" ",
+												"(or click the system tray icon) to open the VESPER Flow Dashboard."
+											] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+												"Navigate to Settings, paste your",
 												" ",
 												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 													className: "font-mono text-foreground font-medium",
-													children: "VESPER-XXXX-XXXX-XXXX"
+													children: "VESPER_LICENSE_KEY"
 												}),
-												")."
+												", and pick your preferred mode (Direct Dictation or Smart Copilot)."
+											] }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
+												"Click ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "font-mono text-foreground font-medium",
+													children: "Save Settings"
+												}),
+												": you are now ready to hold",
+												" ",
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													className: "kbd font-mono text-[11px] text-foreground bg-slate-100 border border-slate-300 px-1 py-0.5 rounded",
+													children: "F8"
+												}),
+												" and speak anywhere!"
 											] })
 										]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-										href: "/guidance",
-										className: "inline-flex items-center gap-2 rounded-lg border border-border bg-slate-50 px-3.5 py-2 text-xs font-medium text-foreground transition-colors hover:border-border hover:bg-slate-100",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Open Guidance & License Gate" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3.5 w-3.5 text-primary" })]
+									})]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
+								value: "s4",
+								className: "border-none",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
+									className: "text-left text-sm font-medium hover:no-underline py-4",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 font-mono text-[10px] font-semibold text-slate-700",
+											children: "4"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "text-foreground font-semibold",
+											children: "Private Developer Setup (Authorized Contributors)"
+										})]
 									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
+									className: "space-y-3 text-sm text-muted-foreground pb-4",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs",
+										children: "Source code repositories are private. Authorized contributors with organization access can run and test locally:"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "relative rounded-lg border border-border bg-slate-50 p-3 font-mono text-xs text-foreground",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											onClick: copyCode,
+											className: "absolute right-2.5 top-2.5 rounded p-1 text-muted-foreground transition-colors hover:bg-slate-200 hover:text-foreground cursor-pointer",
+											title: "Copy commands",
+											children: copiedCode ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
+											className: "overflow-x-auto text-[11px] leading-5",
+											children: `# Authorized internal developer access\ncd vesper-desktop\nnpm install\nnpm run dev`
+										})]
+									})]
+								})]
+							})
+						]
+					})
+				})]
+			}),
+			isDownloadModalOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				role: "dialog",
+				"aria-modal": "true",
+				className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md",
+				onClick: () => setIsDownloadModalOpen(false),
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative w-full max-w-xl rounded-2xl border border-border bg-white shadow-2xl p-6 sm:p-7 text-foreground",
+					onClick: (e) => e.stopPropagation(),
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-start justify-between gap-4 border-b border-border pb-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WindowsIcon, { className: "h-4 w-4" })
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+										className: "text-lg font-bold text-foreground",
+										children: "VESPER Installation Center"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "rounded bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 font-mono text-[10px] font-semibold",
+										children: "v1.0.0 Stable"
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 text-xs text-muted-foreground",
+								children: "Native Windows 10 & 11 (64-bit) · Low-latency Win32 caret injection"
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setIsDownloadModalOpen(false),
+								className: "rounded-lg p-1.5 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+								"aria-label": "Close modal",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-5 w-5" })
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-5 space-y-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between gap-3",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-3",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-primary",
+												children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-4 w-4" })
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "text-sm font-semibold text-foreground",
+												children: "Direct Installer (.exe)"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "font-mono text-[11px] text-muted-foreground",
+												children: "VESPER-Setup-1.0.0.exe · ~170 MB · Standard NSIS"
+											})] })]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+											href: "/api/download/windows",
+											download: "VESPER-Flow-Setup.exe",
+											onClick: () => {
+												toast.success("Starting download of VESPER-Setup-1.0.0.exe...");
+											},
+											className: "inline-flex items-center gap-1.5 rounded-lg bg-primary hover:bg-orange-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all active:scale-[0.98]",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Download" })]
+										})]
+									})
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between gap-3 mb-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Terminal, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs font-semibold text-foreground",
+												children: "Windows Package Manager (winget)"
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-mono text-[10px] text-muted-foreground",
+											children: "Recommended for CLI"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-xs text-foreground",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "truncate",
+											children: "winget install vesper"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: copyWinget,
+											className: "shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+											title: "Copy command",
+											children: copiedWinget ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "rounded-xl border border-border bg-slate-50/70 p-4 transition-all hover:border-primary/40",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between gap-3 mb-2",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center gap-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-xs font-semibold text-foreground",
+												children: "PowerShell One-Liner Install"
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-mono text-[10px] text-muted-foreground",
+											children: "Auto-fetch & run"
+										})]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center justify-between gap-2 rounded-lg border border-border bg-white px-3 py-2 font-mono text-[11px] text-foreground",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "truncate text-slate-600",
+											children: "irm .../api/download/windows -OutFile ..."
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: copyPowerShell,
+											className: "shrink-0 rounded p-1 text-muted-foreground hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer",
+											title: "Copy PowerShell script",
+											children: copiedPowerShell ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
+										})]
+									})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-4 rounded-xl border border-border bg-orange-50/50 p-3.5 text-xs text-slate-700 space-y-1.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "font-semibold text-foreground flex items-center gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-primary" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Windows SmartScreen Note" })]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-[11px] leading-relaxed text-muted-foreground",
+								children: [
+									"Because VESPER installs low-level Win32 keyboard hooks for zero-focus text injection, Windows SmartScreen may show an initial prompt on unsigned previews. Simply click ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-foreground",
+										children: "More info > Run anyway"
+									}),
+									"."
 								]
 							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
-							value: "s2",
-							className: "border-border",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
-								className: "text-left text-sm font-medium hover:no-underline py-4",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
-										children: "2"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-foreground font-semibold",
-										children: "Enable Windows Microphone Permissions"
-									})]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
-								className: "space-y-2.5 text-sm text-muted-foreground pb-4",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Ensure Windows grants desktop apps permission to access your microphone:" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "rounded-lg border border-border bg-slate-50 p-3 font-mono text-xs text-muted-foreground",
-									children: "Settings > Privacy & security > Microphone > Allow desktop apps to access your microphone (ON)"
-								})]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
-							value: "s3",
-							className: "border-border",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
-								className: "text-left text-sm font-medium hover:no-underline py-4",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 font-mono text-[10px] font-semibold text-primary",
-										children: "3"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-foreground font-semibold",
-										children: "Launch VESPER & Paste Your License Key"
-									})]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
-								className: "space-y-3 text-sm text-muted-foreground pb-4",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Run the installer or click the desktop shortcut." }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
-									className: "list-disc space-y-1 pl-5 text-xs text-muted-foreground",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
-											"Press",
-											" ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "kbd font-mono text-[11px] text-foreground bg-slate-100 border border-slate-300 px-1 py-0.5 rounded",
-												children: "Ctrl + Shift + Space"
-											}),
-											" ",
-											"(or click the system tray icon) to open the VESPER Flow Dashboard."
-										] }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
-											"Navigate to Settings, paste your",
-											" ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-mono text-foreground font-medium",
-												children: "VESPER_LICENSE_KEY"
-											}),
-											", and pick your preferred mode (Direct Dictation or Smart Copilot)."
-										] }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { children: [
-											"Click ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-mono text-foreground font-medium",
-												children: "Save Settings"
-											}),
-											": you are now ready to hold",
-											" ",
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "kbd font-mono text-[11px] text-foreground bg-slate-100 border border-slate-300 px-1 py-0.5 rounded",
-												children: "F8"
-											}),
-											" and speak anywhere!"
-										] })
-									]
-								})]
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionItem, {
-							value: "s4",
-							className: "border-none",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AccordionTrigger, {
-								className: "text-left text-sm font-medium hover:no-underline py-4",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-3",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 font-mono text-[10px] font-semibold text-slate-700",
-										children: "4"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-foreground font-semibold",
-										children: "Private Developer Setup (Authorized Contributors)"
-									})]
-								})
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AccordionContent, {
-								className: "space-y-3 text-sm text-muted-foreground pb-4",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "text-xs",
-									children: "Source code repositories are private. Authorized contributors with organization access can run and test locally:"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "relative rounded-lg border border-border bg-slate-50 p-3 font-mono text-xs text-foreground",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-										onClick: copyCode,
-										className: "absolute right-2.5 top-2.5 rounded p-1 text-muted-foreground transition-colors hover:bg-slate-200 hover:text-foreground cursor-pointer",
-										title: "Copy commands",
-										children: copiedCode ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-primary" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5" })
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
-										className: "overflow-x-auto text-[11px] leading-5",
-										children: `# Authorized internal developer access\ncd vesper-desktop\nnpm install\nnpm run dev`
-									})]
-								})]
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-5 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+								href: "/guidance",
+								className: "inline-flex items-center gap-1.5 font-medium text-primary hover:text-orange-700 transition-colors",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Key, { className: "h-3.5 w-3.5" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Validate License Key in Guidance" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-3 w-3" })
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setIsDownloadModalOpen(false),
+								className: "rounded-lg border border-border bg-slate-100 hover:bg-slate-200 px-4 py-2 text-xs font-semibold text-slate-800 transition-colors cursor-pointer",
+								children: "Close"
 							})]
 						})
 					]
 				})
-			})]
-		})]
+			})
+		]
 	});
 }
 var PHASES = [

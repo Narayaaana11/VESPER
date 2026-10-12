@@ -217,6 +217,29 @@ class Database {
     return this.inMemoryUsers.get(id);
   }
 
+  public async findUserByLicenseKey(licenseKey: string): Promise<User | undefined> {
+    await this.ensureInitialized();
+    const cleanKey = licenseKey.trim().toUpperCase();
+
+    try {
+      const usersCol = await getMongoCollection<User>("users");
+      if (usersCol) {
+        const found = await usersCol.findOne({ licenseKey: cleanKey });
+        if (found) {
+          this.inMemoryUsers.set(found.id, found);
+          return found;
+        }
+      }
+    } catch {
+      // Degrade to memory
+    }
+
+    for (const u of this.inMemoryUsers.values()) {
+      if (u.licenseKey && u.licenseKey.toUpperCase() === cleanKey) return u;
+    }
+    return undefined;
+  }
+
   public async createUser(user: User): Promise<User> {
     await this.ensureInitialized();
     this.inMemoryUsers.set(user.id, user);
