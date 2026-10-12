@@ -528,7 +528,7 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
       return new Response(null, {
         status: 302,
         headers: {
-          "Location": "https://github.com/Narayaaana11/VESPER/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
+          "Location": "https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe",
           "Access-Control-Allow-Origin": "*",
         },
       });

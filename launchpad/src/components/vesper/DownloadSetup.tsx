@@ -366,7 +366,7 @@ export function DownloadSetup() {
                     </div>
                   </div>
                   <a
-                    href="https://github.com/Narayaaana11/VESPER/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe"
+                    href="https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/VESPER-Setup-1.0.0.exe"
                     download="VESPER-Setup-1.0.0.exe"
                     onClick={() => {
                       toast.success("Starting download of VESPER-Setup-1.0.0.exe from GitHub Releases...");

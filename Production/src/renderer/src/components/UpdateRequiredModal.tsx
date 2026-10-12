@@ -33,7 +33,7 @@ export const UpdateRequiredModal: React.FC<UpdateRequiredModalProps> = ({
   const currentVersion = updateInfo.currentVersion || '1.0.0'
   const latestVersion = updateInfo.latestVersion || '1.10.0'
   const downloadUrl =
-    updateInfo.downloadUrl || 'https://github.com/Narayaaana11/VESPER/releases/download/v1.0.0/setup.exe'
+    updateInfo.downloadUrl || 'https://github.com/Narayaaana11/vesper-release/releases/download/v1.0.0/setup.exe'
   const portalUrl =
     updateInfo.webPortalUrl || 'https://vesperflow-ai.vercel.app/#download'
   const releaseNotes =
