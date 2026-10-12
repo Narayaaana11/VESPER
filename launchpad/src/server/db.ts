@@ -650,6 +650,88 @@ class Database {
       console.warn("[MongoDB] Reset failed:", err);
     }
   }
+
+  public async getAppVersionConfig(): Promise<{
+    latestVersion: string;
+    minRequiredVersion: string;
+    mandatory: boolean;
+    downloadUrl: string;
+    directExeUrl: string;
+    webPortalUrl: string;
+    releaseNotes: string;
+    releaseDate: string;
+  }> {
+    try {
+      const configCol = await getMongoCollection<any>("app_config");
+      if (configCol) {
+        const doc = await configCol.findOne({ key: "version_control" });
+        if (doc) {
+          return {
+            latestVersion: doc.latestVersion || "1.0.0",
+            minRequiredVersion: doc.minRequiredVersion || "1.0.0",
+            mandatory: doc.mandatory !== false,
+            downloadUrl: doc.downloadUrl || "https://vesperflow-ai.vercel.app/downloads/setup.exe",
+            directExeUrl: doc.directExeUrl || "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+            webPortalUrl: doc.webPortalUrl || "https://vesperflow-ai.vercel.app/#download",
+            releaseNotes: doc.releaseNotes || "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
+            releaseDate: doc.releaseDate || "2026-10-12",
+          };
+        }
+      }
+    } catch (err) {
+      console.warn("[MongoDB] getAppVersionConfig failed, returning environment defaults:", err);
+    }
+
+    return {
+      latestVersion: process.env["APP_LATEST_VERSION"] || "1.0.0",
+      minRequiredVersion: process.env["APP_MIN_VERSION"] || "1.0.0",
+      mandatory: process.env["APP_UPDATE_MANDATORY"] !== "false",
+      downloadUrl: "https://vesperflow-ai.vercel.app/downloads/setup.exe",
+      directExeUrl: "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+      webPortalUrl: "https://vesperflow-ai.vercel.app/#download",
+      releaseNotes: "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
+      releaseDate: "2026-10-12",
+    };
+  }
+
+  public async setAppVersionConfig(payload: {
+    latestVersion?: string;
+    minRequiredVersion?: string;
+    mandatory?: boolean;
+    downloadUrl?: string;
+    directExeUrl?: string;
+    webPortalUrl?: string;
+    releaseNotes?: string;
+  }): Promise<any> {
+    const current = await this.getAppVersionConfig();
+    const updated = {
+      key: "version_control",
+      latestVersion: payload.latestVersion || current.latestVersion,
+      minRequiredVersion: payload.minRequiredVersion || current.minRequiredVersion,
+      mandatory: payload.mandatory !== undefined ? payload.mandatory : current.mandatory,
+      downloadUrl: payload.downloadUrl || current.downloadUrl,
+      directExeUrl: payload.directExeUrl || current.directExeUrl,
+      webPortalUrl: payload.webPortalUrl || current.webPortalUrl,
+      releaseNotes: payload.releaseNotes || current.releaseNotes,
+      releaseDate: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      const configCol = await getMongoCollection<any>("app_config");
+      if (configCol) {
+        await configCol.updateOne(
+          { key: "version_control" },
+          { $set: updated },
+          { upsert: true }
+        );
+      }
+    } catch (err) {
+      console.warn("[MongoDB] setAppVersionConfig Atlas write failed:", err);
+    }
+
+    return updated;
+  }
 }
 
 export const db = new Database();

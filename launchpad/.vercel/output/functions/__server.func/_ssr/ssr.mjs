@@ -614,6 +614,58 @@ var Database = class {
 			console.warn("[MongoDB] Reset failed:", err);
 		}
 	}
+	async getAppVersionConfig() {
+		try {
+			const configCol = await getMongoCollection("app_config");
+			if (configCol) {
+				const doc = await configCol.findOne({ key: "version_control" });
+				if (doc) return {
+					latestVersion: doc.latestVersion || "1.0.0",
+					minRequiredVersion: doc.minRequiredVersion || "1.0.0",
+					mandatory: doc.mandatory !== false,
+					downloadUrl: doc.downloadUrl || "https://vesperflow-ai.vercel.app/downloads/setup.exe",
+					directExeUrl: doc.directExeUrl || "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+					webPortalUrl: doc.webPortalUrl || "https://vesperflow-ai.vercel.app/#download",
+					releaseNotes: doc.releaseNotes || "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
+					releaseDate: doc.releaseDate || "2026-10-12"
+				};
+			}
+		} catch (err) {
+			console.warn("[MongoDB] getAppVersionConfig failed, returning environment defaults:", err);
+		}
+		return {
+			latestVersion: process.env["APP_LATEST_VERSION"] || "1.0.0",
+			minRequiredVersion: process.env["APP_MIN_VERSION"] || "1.0.0",
+			mandatory: process.env["APP_UPDATE_MANDATORY"] !== "false",
+			downloadUrl: "https://vesperflow-ai.vercel.app/downloads/setup.exe",
+			directExeUrl: "https://vesperflow-ai.vercel.app/downloads/VESPER-Setup-1.0.0.exe",
+			webPortalUrl: "https://vesperflow-ai.vercel.app/#download",
+			releaseNotes: "VESPER v1.0 Production Release with ambient voice intelligence and MongoDB Atlas integration.",
+			releaseDate: "2026-10-12"
+		};
+	}
+	async setAppVersionConfig(payload) {
+		const current = await this.getAppVersionConfig();
+		const updated = {
+			key: "version_control",
+			latestVersion: payload.latestVersion || current.latestVersion,
+			minRequiredVersion: payload.minRequiredVersion || current.minRequiredVersion,
+			mandatory: payload.mandatory !== void 0 ? payload.mandatory : current.mandatory,
+			downloadUrl: payload.downloadUrl || current.downloadUrl,
+			directExeUrl: payload.directExeUrl || current.directExeUrl,
+			webPortalUrl: payload.webPortalUrl || current.webPortalUrl,
+			releaseNotes: payload.releaseNotes || current.releaseNotes,
+			releaseDate: (/* @__PURE__ */ new Date()).toISOString(),
+			updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+		};
+		try {
+			const configCol = await getMongoCollection("app_config");
+			if (configCol) await configCol.updateOne({ key: "version_control" }, { $set: updated }, { upsert: true });
+		} catch (err) {
+			console.warn("[MongoDB] setAppVersionConfig Atlas write failed:", err);
+		}
+		return updated;
+	}
 };
 var db = new Database();
 var MailerService = class {
@@ -897,6 +949,14 @@ async function handleApiRequest(request) {
 				service: "VESPER Production API",
 				version: "1.0.0-release",
 				uptimeSeconds: Math.round(process.uptime())
+			});
+		}
+		if ((pathname === "/api/app/version" || pathname === "/api/updates") && method === "GET") return json(await db.getAppVersionConfig());
+		if (pathname === "/api/admin/version" && method === "POST") {
+			const body = await parseBody();
+			return json({
+				success: true,
+				config: await db.setAppVersionConfig(body)
 			});
 		}
 		const parseBody = async () => {

@@ -55,6 +55,27 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
       });
     }
 
+    // GET /api/app/version or /api/updates
+    if ((pathname === "/api/app/version" || pathname === "/api/updates") && method === "GET") {
+      const config = await db.getAppVersionConfig();
+      return json(config);
+    }
+
+    // POST /api/admin/version
+    if (pathname === "/api/admin/version" && method === "POST") {
+      const body = await parseBody<{
+        latestVersion?: string;
+        minRequiredVersion?: string;
+        mandatory?: boolean;
+        downloadUrl?: string;
+        directExeUrl?: string;
+        webPortalUrl?: string;
+        releaseNotes?: string;
+      }>();
+      const updated = await db.setAppVersionConfig(body);
+      return json({ success: true, config: updated });
+    }
+
     // Helper to safely parse JSON body
     const parseBody = async <T = Record<string, unknown>>(): Promise<T> => {
       try {

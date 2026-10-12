@@ -8,6 +8,8 @@ directories:
 files:
   - out/**/*
   - node_modules/**/*
+  - "!**/node_modules/node-global-key-listener/bin/MacKeyServer*"
+  - "!**/node_modules/node-global-key-listener/bin/X11KeyServer*"
   - package.json
 
 asar: true

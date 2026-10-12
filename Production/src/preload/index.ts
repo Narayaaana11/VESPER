@@ -68,6 +68,9 @@ export interface IElectronAPI {
   focusWindow?: () => void
   writeClipboard?: (text: string) => Promise<boolean>
   openExternalUrl?: (url: string) => Promise<any>
+  getUpdateStatus?: () => Promise<any>
+  checkForUpdates?: () => Promise<any>
+  onUpdateRequired?: (callback: (data: any) => void) => () => void
 }
 
 const electronAPI: IElectronAPI = {
@@ -169,7 +172,16 @@ const electronAPI: IElectronAPI = {
   getHardwareInfo: () => ipcRenderer.invoke('vesper:get-hardware-info'),
   focusWindow: () => ipcRenderer.send('vesper:focus-window'),
   writeClipboard: (text: string) => ipcRenderer.invoke('vesper:write-clipboard', text),
-  openExternalUrl: (url: string) => ipcRenderer.invoke('vesper:open-external-url', url)
+  openExternalUrl: (url: string) => ipcRenderer.invoke('vesper:open-external-url', url),
+  getUpdateStatus: () => ipcRenderer.invoke('vesper:get-update-status'),
+  checkForUpdates: () => ipcRenderer.invoke('vesper:check-for-updates'),
+  onUpdateRequired: (callback: (data: any) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('vesper:update-required', handler)
+    return () => {
+      ipcRenderer.removeListener('vesper:update-required', handler)
+    }
+  }
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)

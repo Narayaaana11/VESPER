@@ -11,7 +11,7 @@
     "preview": "electron-vite preview",
     "test": "vitest run",
     "pack": "electron-vite build && electron-builder --dir",
-    "dist:win": "npm run build && electron-builder --win --config.directories.output=\"%TEMP%/vesper-dist\" && node -e \"const fs=require('fs'), path=require('path'); const src=path.join(process.env.TEMP, 'vesper-dist'); fs.mkdirSync('dist', {recursive:true}); const d='../launchpad/public/downloads'; fs.mkdirSync(d, {recursive:true}); fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe'), 'dist/VESPER-Setup-1.0.0.exe'); if(fs.existsSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'))) fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'), 'dist/VESPER-Setup-1.0.0.exe.blockmap'); fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe'), path.join(d, 'VESPER-Setup-1.0.0.exe'));\""
+    "dist:win": "npm run build && electron-builder --win --config.directories.output=\"%TEMP%/vesper-dist\" && node -e \"const fs=require('fs'), path=require('path'); const src=path.join(process.env.TEMP, 'vesper-dist'); fs.mkdirSync('dist', {recursive:true}); const d='../launchpad/public/downloads'; fs.mkdirSync(d, {recursive:true}); const exeSrc=path.join(src, 'VESPER-Setup-1.0.0.exe'); fs.copyFileSync(exeSrc, 'dist/VESPER-Setup-1.0.0.exe'); fs.copyFileSync(exeSrc, 'dist/setup.exe'); fs.copyFileSync(exeSrc, path.join(d, 'VESPER-Setup-1.0.0.exe')); fs.copyFileSync(exeSrc, path.join(d, 'setup.exe')); if(fs.existsSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'))) fs.copyFileSync(path.join(src, 'VESPER-Setup-1.0.0.exe.blockmap'), 'dist/VESPER-Setup-1.0.0.exe.blockmap');\""
   },
   "dependencies": {
     "@types/animejs": "^3.1.13",

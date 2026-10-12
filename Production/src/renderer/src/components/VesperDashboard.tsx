@@ -17,6 +17,7 @@ import {
 import { PricingTable } from './PricingTable'
 import { ProfileSection } from './ProfileSection'
 import { AuthGateModal } from './AuthGateModal'
+import { UpdateRequiredModal, UpdateInfo } from './UpdateRequiredModal'
 import { VesperLogo } from './VesperLogo'
 import { SpotlightCard, CountUp } from './reactbits'
 import { DailyUsageService, DailyUsageData } from '../core/daily-usage-service'
@@ -84,10 +85,36 @@ export const VesperDashboard: React.FC<VesperDashboardProps> = ({
 
   const effectiveSettings = propSettings || localSettings
 
-  // Daily Usage Tracking (30-minute limit, resets at 12:00 AM midnight)
   const [dailyUsage, setDailyUsage] = useState<DailyUsageData>(() => DailyUsageService.getDailyUsage())
   const [resetCountdown, setResetCountdown] = useState<string>(() => DailyUsageService.getResetCountdown())
   const [tokenUsage, setTokenUsage] = useState<TokenDailyData>(() => TokenUsageService.getTodayTokens())
+
+  // Mandatory App Update State
+  const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
+
+  useEffect(() => {
+    // 1. Initial update status poll from Electron Main
+    if (window.electronAPI?.getUpdateStatus) {
+      window.electronAPI
+        .getUpdateStatus()
+        .then((status) => {
+          if (status && status.isUpdateRequired) {
+            setUpdateInfo(status)
+          }
+        })
+        .catch(() => {})
+    }
+
+    // 2. Listen for live update required broadcast
+    if (window.electronAPI?.onUpdateRequired) {
+      const unsub = window.electronAPI.onUpdateRequired((data) => {
+        if (data && data.isUpdateRequired) {
+          setUpdateInfo(data)
+        }
+      })
+      return () => unsub()
+    }
+  }, [])
 
   useEffect(() => {
     setDailyUsage(DailyUsageService.getDailyUsage())
@@ -648,6 +675,18 @@ export const VesperDashboard: React.FC<VesperDashboardProps> = ({
           setShowAuthGate(false)
         }}
         onClose={() => setShowAuthGate(false)}
+      />
+
+      {/* Mandatory Version Update Modal */}
+      <UpdateRequiredModal
+        isOpen={Boolean(updateInfo?.isUpdateRequired)}
+        updateInfo={updateInfo}
+        onCheckAgain={async () => {
+          if (window.electronAPI?.checkForUpdates) {
+            const res = await window.electronAPI.checkForUpdates()
+            if (res) setUpdateInfo(res)
+          }
+        }}
       />
     </div>
   )

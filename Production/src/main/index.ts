@@ -22,8 +22,9 @@ import { HoldToTalkManager } from './hold-to-talk'
 
 import { ContextManager } from './context/context-manager'
 import { VesperMcpServer } from './mcp/vesper-mcp-server'
+import { UpdateManager } from './update-manager'
 
-function getAppIcon(): Electron.NativeImage | undefined {
+export function getAppIcon(): Electron.NativeImage | undefined {
   try {
     const resPath = typeof process !== 'undefined' && process.resourcesPath ? process.resourcesPath : ''
     const iconCandidates = [
@@ -347,6 +348,18 @@ app.whenReady().then(() => {
     holdToTalkManager?.setTargetKey(key)
   })
 
+  // Mandatory App Update Enforcer IPC bridges
+  ipcMain.handle('vesper:get-update-status', () => {
+    return UpdateManager.getInstance().getState()
+  })
+
+  ipcMain.handle('vesper:check-for-updates', async () => {
+    return await UpdateManager.getInstance().checkForUpdates()
+  })
+
+  // Start background update monitor
+  UpdateManager.getInstance().startPeriodicCheck()
+
   // Second instance handler (when user searches VESPER in Windows and clicks it)
   app.on('second-instance', () => {
     showDashboard()
@@ -365,6 +378,7 @@ app.whenReady().then(() => {
 app.on('will-quit', () => {
   unregisterAllShortcuts()
   holdToTalkManager?.destroy()
+  UpdateManager.getInstance().destroy()
   ContextManager.getInstance().destroy()
   VesperMcpServer.getInstance().stop()
   if (tray && !tray.isDestroyed()) {

@@ -172,6 +172,7 @@ export const App: React.FC = () => {
   const [guidanceWorkflow, setGuidanceWorkflow] = useState<GuidanceWorkflow | null>(null)
   const [guidanceStepIndex, setGuidanceStepIndex] = useState<number>(0)
   const [contextPackage, setContextPackage] = useState<CompressedContextPackage | null>(null)
+  const [updateInfo, setUpdateInfo] = useState<any>(null)
 
   const [context, setContext] = useState<SystemContext>({
     activeApp: 'Cursor',
@@ -331,6 +332,16 @@ export const App: React.FC = () => {
       // Pre-warm audio capture channel for instant <5ms response time on key hold / click
       audioRecorderRef.current.prewarm().catch(() => {})
 
+      // 0. Update Enforcer Listener
+      if (window.electronAPI?.getUpdateStatus) {
+        window.electronAPI.getUpdateStatus().then((info) => {
+          if (info && info.isUpdateRequired) setUpdateInfo(info)
+        }).catch(() => {})
+      }
+      const unsubUpdate = window.electronAPI?.onUpdateRequired?.((info) => {
+        if (info && info.isUpdateRequired) setUpdateInfo(info)
+      })
+
       // 1. Global hotkey listener (Ctrl+Shift+Space): Toggle voice recording
       const unsubHotkey = window.electronAPI.onHotkeyTriggered(() => {
         refreshContext()
@@ -428,6 +439,17 @@ export const App: React.FC = () => {
 
   const startListening = async () => {
     if (isRecordingRef.current) return
+    // Mandatory update gate: block dictation if update is required
+    if (updateInfo?.isUpdateRequired) {
+      audioChimes.playError(settings.soundFeedback !== false)
+      setExecutionStatus('⚠️ Mandatory update required. Opening dashboard...')
+      if (window.electronAPI?.showDashboard) {
+        window.electronAPI.showDashboard()
+      }
+      setTimeout(() => setExecutionStatus(null), 4000)
+      return
+    }
+
     // Daily free 30-minute limit guard (resets nightly at 12:00 AM)
     if (DailyUsageService.isDailyLimitExceeded()) {
       audioChimes.playError(settings.soundFeedback !== false)

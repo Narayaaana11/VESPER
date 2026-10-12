@@ -1,6 +1,7 @@
 import { GlobalKeyboardListener, IGlobalKeyEvent } from 'node-global-key-listener'
 import { BrowserWindow } from 'electron'
 import { resolveBinary } from './binary-resolver'
+import { UpdateManager } from './update-manager'
 
 export type PushToTalkKey = 'ANY ALT' | 'RIGHT ALT' | 'LEFT ALT' | 'RIGHT CTRL' | 'LEFT CTRL' | 'CAPS LOCK' | 'FN' | 'F8'
 
@@ -147,6 +148,11 @@ export class HoldToTalkManager {
 
 
   private handleKeyDown(): void {
+    // 0. Update Gate: If update is required, intercept Alt key, show Windows notification, and block recording
+    if (UpdateManager.getInstance().handleAltPressInterception()) {
+      return
+    }
+
     const now = Date.now()
     this.pressTimestamp = now
 
